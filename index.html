@@ -293,6 +293,25 @@
         align-items: flex-start;
       }
     }
+ /* --- MODE CLAIR --- */
+body.light {
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --card-soft: #f1f5f9;
+  --text-main: #1e293b;
+  --text-soft: #64748b;
+  --border-soft: #d0d7e2;
+
+  --emerald: #16a34a;
+  --blue: #3b82f6;
+  --amber: #d97706;
+  --rose: #dc2626;
+}
+
+/* Transition douce entre les thèmes */
+body {
+  transition: background 0.3s ease, color 0.3s ease;
+}
   </style>
 </head>
 <body class="dark">
@@ -700,6 +719,7 @@ document.addEventListener('DOMContentLoaded', render);
 
 </body>
 </html>
+
 
 
 
