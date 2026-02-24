@@ -311,16 +311,19 @@ body.light {
   --rose: #dc2626;          /* Rouge lisible */
   --gold: #ca8a04;          /* Or pour badges premium */
 }
-
+ /* Fond radial uniquement en mode sombre */
+body:not(.light) {
+  background: radial-gradient(circle at top, #111827 0, #020617 55%);
+}
+    /* Fond radial uniquement en mode sombre */
+body:not(.light) {
+  background: radial-gradient(circle at top, #111827 0, #020617 55%);
+}
 /* Transition douce entre les thèmes */
 body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-    /* Fond radial uniquement en mode sombre */
-body:not(.light) {
-  background: radial-gradient(circle at top, #111827 0, #020617 55%);
-}
   </style>
 </head>
 <body class="dark">
@@ -749,6 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
