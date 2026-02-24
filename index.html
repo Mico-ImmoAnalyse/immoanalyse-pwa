@@ -714,7 +714,18 @@ function exportCSV() {
   link.click();
 }
 
-document.addEventListener('DOMContentLoaded', render);
+// --- Gestion du thème clair / sombre ---
+function toggleTheme() {
+  const isLight = document.body.classList.toggle("light");
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light");
+  }
+  render();
+});
 </script>
 
 </body>
