@@ -226,19 +226,19 @@
       border: 1px solid rgba(248, 113, 113, 0.4);
     }
 
-    .help-panel {
-      position: fixed;
-      top: 0;
-      right: -420px;
-      width: 400px;
-      height: 100vh;
-      background: #020617;
-      border-left: 1px solid #1f2937;
-      padding: 20px 18px 24px;
-      overflow-y: auto;
-      transition: right .25s ease-out;
-      z-index: 40;
-    }
+   .help-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  height: 100vh;
+  background: var(--card);
+  border-left: 1px solid var(--border-soft);
+  padding: 20px 18px 24px;
+  overflow-y: auto;
+  transition: right .25s ease-out;
+  z-index: 40;
+   }
 
     .help-panel.open {
       right: 0;
@@ -744,6 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
