@@ -293,19 +293,22 @@
         align-items: flex-start;
       }
     }
- /* --- MODE CLAIR --- */
+ /* --- MODE CLAIR (aligné sur ton thème sombre) --- */
 body.light {
-  --bg: #f5f7fa;
-  --card: #ffffff;
-  --card-soft: #f1f5f9;
-  --text-main: #1e293b;
-  --text-soft: #64748b;
-  --border-soft: #d0d7e2;
-
-  --emerald: #16a34a;
-  --blue: #3b82f6;
-  --amber: #d97706;
-  --rose: #dc2626;
+  --bg: #f3f4f6;            /* Fond clair mais pas blanc pur */
+  --card: #ffffff;          /* Cartes blanches nettes */
+  --card-soft: #f1f5f9;     /* Cartes secondaires */
+  
+  --text-main: #1f2937;     /* Texte principal gris anthracite */
+  --text-soft: #6b7280;     /* Texte secondaire */
+  
+  --border-soft: #d1d5db;   /* Bordures visibles mais douces */
+  
+  --emerald: #16a34a;       /* Vert adapté au clair */
+  --blue: #2563eb;          /* Bleu plus lisible sur fond clair */
+  --amber: #d97706;         /* Orangé adapté */
+  --rose: #dc2626;          /* Rouge lisible */
+  --gold: #ca8a04;          /* Or pour badges premium */
 }
 
 /* Transition douce entre les thèmes */
@@ -740,6 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
