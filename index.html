@@ -718,6 +718,10 @@ function exportCSV() {
 function toggleTheme() {
   const isLight = document.body.classList.toggle("light");
   localStorage.setItem("theme", isLight ? "light" : "dark");
+
+  // Mise à jour du texte du bouton
+  const btn = document.getElementById("themeBtn");
+  btn.textContent = isLight ? "Mode sombre" : "Mode clair";
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -730,6 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
