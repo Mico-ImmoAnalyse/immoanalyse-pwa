@@ -725,15 +725,22 @@ function toggleTheme() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById("themeBtn");
+
   if (localStorage.getItem("theme") === "light") {
     document.body.classList.add("light");
+    btn.textContent = "Mode sombre";
+  } else {
+    btn.textContent = "Mode clair";
   }
+
   render();
 });
 </script>
 
 </body>
 </html>
+
 
 
 
