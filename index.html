@@ -436,11 +436,47 @@ body:not(.light) {
 
 </div> <!-- dashboard -->
 
-<div id="overlay" onclick="toggleHelp()"></div>
+<div id="overlay" class="overlay" onclick="toggleHelp()"></div>
 
 <div id="helpPanel" class="help-panel">
-<h2>Guide d'analyse v3.4.0</h2>
-<p>Ce moteur IA combine LTV, LTA, LTC, marge, précom, liquidité et garantie pour produire un score de risque, un statut et une suggestion de ticket.</p>
+    <h2>Guide d’analyse v3.4.0</h2>
+
+    <p><b>Ce moteur IA analyse automatiquement un projet immobilier</b> en combinant :</p>
+    <ul>
+        <li>LTV (Loan-to-Value)</li>
+        <li>LTA (Loan-to-Asset)</li>
+        <li>LTC (Loan-to-Cost)</li>
+        <li>Marge opérationnelle</li>
+        <li>Pré-commercialisation</li>
+        <li>Liquidité du marché</li>
+        <li>Type de sûreté (Fiducie / Hypothèque)</li>
+    </ul>
+
+    <h3>Comment utiliser l’outil</h3>
+    <p><b>1. Remplissez les champs du formulaire :</b> LTV, marge, précom, liquidité, sûreté, couverture, LTA, LTC et mise réelle.</p>
+
+    <p><b>2. Cliquez sur “AUDITER & SAUVEGARDER”.</b> Le moteur IA calcule :</p>
+    <ul>
+        <li>LTV net ajusté</li>
+        <li>Score de risque (0 à 100)</li>
+        <li>Statut : 💎 Premium / ✅ Safe / ⚠️ Tendu / 🚨 Critique</li>
+        <li>Ticket IA recommandé (100 à 1000 €)</li>
+    </ul>
+
+    <h3>Interprétation du score</h3>
+    <ul>
+        <li><b>0–30 :</b> 💎 Premium — risque très faible</li>
+        <li><b>31–50 :</b> ✅ Safe — risque modéré</li>
+        <li><b>51–70 :</b> ⚠️ Tendu — vigilance nécessaire</li>
+        <li><b>71–100 :</b> 🚨 Critique — risque élevé</li>
+    </ul>
+
+    <h3>Fonctionnalités supplémentaires</h3>
+    <ul>
+        <li><b>Export CSV :</b> génère un fichier Excel de tous vos audits</li>
+        <li><b>Mode clair / sombre :</b> change le thème</li>
+        <li><b>Suppression :</b> retire un projet du tableau</li>
+    </ul>
 </div>
 
 <script type="module">
@@ -752,6 +788,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 
