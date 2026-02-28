@@ -443,22 +443,21 @@ body:not(.light) {
 <p>Ce moteur IA combine LTV, LTA, LTC, marge, précom, liquidité et garantie pour produire un score de risque, un statut et une suggestion de ticket.</p>
 </div>
 
-<!-- ===========================
-SCRIPT UNIQUE ET FONCTIONNEL
-=========================== -->
 <script type="module">
 
 import { runLPBEngine } from './engine/engine.js';
 
-/* === AIDE === */
+// ===========================
+// AIDE
+// ===========================
 function toggleHelp() {
     document.getElementById('helpPanel').classList.toggle('open');
     document.getElementById('overlay').classList.toggle('open');
 }
 
-/* ===========================
-CALCULS V3.4.0
-=========================== */
+// ===========================
+// CALCULS V3.4.0
+// ===========================
 function calculLtvNet(ltv, cov, type, liq) {
     const liqEffective = Math.min(10, liq + 2);
     const pondSurete = (type === 'fid') ? 1.2 : 1.0;
@@ -541,9 +540,9 @@ function calculStatut(scoreRisque, ltv, marge, precom) {
     return "🚨 CRITIQUE";
 }
 
-/* ===========================
-AJOUT / RENDU
-=========================== */
+// ===========================
+// AJOUT / RENDU
+// ===========================
 function ajouterProjet() {
     const nom = document.getElementById('nom').value || "Projet Master";
     const ltv = parseFloat(document.getElementById('ltv').value) || 0;
@@ -708,9 +707,9 @@ function exportCSV() {
     link.click();
 }
 
-/* ===========================
-THÈME CLAIR / SOMBRE
-=========================== */
+// ===========================
+// THÈME CLAIR / SOMBRE
+// ===========================
 function toggleTheme() {
     const isLight = document.body.classList.toggle("light");
     localStorage.setItem("theme", isLight ? "light" : "dark");
@@ -731,24 +730,29 @@ document.addEventListener('DOMContentLoaded', () => {
     render();
 });
 
-<!-- ===========================
-ENREGISTREMENT SERVICE WORKER
-=========================== -->
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-}
-
-  // Exposition des fonctions au scope global
+// ===========================
+// EXPOSITION DES FONCTIONS
+// ===========================
 window.ajouterProjet = ajouterProjet;
 window.toggleHelp = toggleHelp;
 window.toggleTheme = toggleTheme;
 window.exportCSV = exportCSV;
 window.suppr = suppr;
+
+</script>
+
+<!-- ===========================
+SERVICE WORKER
+=========================== -->
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
 </script>
 
 </body>
 </html>
+
 
 
 
