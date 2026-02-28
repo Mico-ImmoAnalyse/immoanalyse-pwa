@@ -452,305 +452,296 @@ import { runLPBEngine } from './engine/engine.js';
 
 /* === AIDE === */
 function toggleHelp() {
-  document.getElementById('helpPanel').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('open');
+    document.getElementById('helpPanel').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('open');
 }
 
 /* ===========================
 CALCULS V3.4.0
 =========================== */
-
 function calculLtvNet(ltv, cov, type, liq) {
-  const liqEffective = Math.min(10, liq + 2);
-  const pondSurete = (type === 'fid') ? 1.2 : 1.0;
-  let ltvNet = ltv - (cov / 100 * pondSurete * (liqEffective / 10) * 100);
-  return Math.max(0, Math.round(ltvNet));
+    const liqEffective = Math.min(10, liq + 2);
+    const pondSurete = (type === 'fid') ? 1.2 : 1.0;
+    let ltvNet = ltv - (cov / 100 * pondSurete * (liqEffective / 10) * 100);
+    return Math.max(0, Math.round(ltvNet));
 }
 
 function calculScoreRisque(ltv, lta, ltc, marge, precom, liq, type) {
-  let score = 0;
+    let score = 0;
 
-  if (ltv <= 60) score += 5;
-  else if (ltv <= 75) score += 15;
-  else if (ltv <= 85) score += 30;
-  else score += 45;
+    if (ltv <= 60) score += 5;
+    else if (ltv <= 75) score += 15;
+    else if (ltv <= 85) score += 30;
+    else score += 45;
 
-  if (!isNaN(lta) && lta > 0) {
-    if (lta <= 90) score += 5;
-    else if (lta <= 100) score += 15;
+    if (!isNaN(lta) && lta > 0) {
+        if (lta <= 90) score += 5;
+        else if (lta <= 100) score += 15;
+        else score += 30;
+    }
+
+    if (!isNaN(ltc) && ltc > 0) {
+        if (ltc <= 85) score += 5;
+        else if (ltc <= 90) score += 15;
+        else score += 30;
+    }
+
+    if (marge >= 20) score += 5;
+    else if (marge >= 15) score += 15;
+    else if (marge >= 10) score += 25;
+    else score += 40;
+
+    if (precom >= 80) score += 5;
+    else if (precom >= 50) score += 15;
+    else if (precom >= 25) score += 25;
+    else score += 35;
+
+    if (liq >= 8) score += 5;
+    else if (liq >= 6) score += 15;
     else score += 30;
-  }
 
-  if (!isNaN(ltc) && ltc > 0) {
-    if (ltc <= 85) score += 5;
-    else if (ltc <= 90) score += 15;
-    else score += 30;
-  }
+    if (type === 'fid') score -= 10;
 
-  if (marge >= 20) score += 5;
-  else if (marge >= 15) score += 15;
-  else if (marge >= 10) score += 25;
-  else score += 40;
-
-  if (precom >= 80) score += 5;
-  else if (precom >= 50) score += 15;
-  else if (precom >= 25) score += 25;
-  else score += 35;
-
-  if (liq >= 8) score += 5;
-  else if (liq >= 6) score += 15;
-  else score += 30;
-
-  if (type === 'fid') score -= 10;
-
-  return Math.max(0, Math.min(100, Math.round(score)));
+    return Math.max(0, Math.min(100, Math.round(score)));
 }
 
 function calculSuggestionIA(ltv, lta, ltc, marge, precom, liq, type, scoreRisque) {
-  let suggest = 1000;
+    let suggest = 1000;
 
-  if (scoreRisque >= 80) suggest = 150;
-  else if (scoreRisque >= 65) suggest = 250;
-  else if (scoreRisque >= 50) suggest = 400;
-  else if (scoreRisque >= 35) suggest = 600;
-  else suggest = 800;
+    if (scoreRisque >= 80) suggest = 150;
+    else if (scoreRisque >= 65) suggest = 250;
+    else if (scoreRisque >= 50) suggest = 400;
+    else if (scoreRisque >= 35) suggest = 600;
+    else suggest = 800;
 
-  if (ltv > 90) suggest = Math.min(suggest, 100);
-  else if (ltv > 80) suggest = Math.min(suggest, 250);
+    if (ltv > 90) suggest = Math.min(suggest, 100);
+    else if (ltv > 80) suggest = Math.min(suggest, 250);
 
-  if (!isNaN(lta) && lta > 100) suggest = Math.min(suggest, 250);
-  if (!isNaN(ltc) && ltc > 90) suggest = Math.min(suggest, 250);
+    if (!isNaN(lta) && lta > 100) suggest = Math.min(suggest, 250);
+    if (!isNaN(ltc) && ltc > 90) suggest = Math.min(suggest, 250);
 
-  if (marge < 8) suggest = Math.min(suggest, 150);
-  else if (marge < 12) suggest = Math.min(suggest, 250);
+    if (marge < 8) suggest = Math.min(suggest, 150);
+    else if (marge < 12) suggest = Math.min(suggest, 250);
 
-  if (precom < 25) suggest = Math.min(suggest, 300);
+    if (precom < 25) suggest = Math.min(suggest, 300);
 
-  if (type === 'fid' && scoreRisque <= 50) {
-    suggest = Math.min(1000, suggest + 150);
-  }
+    if (type === 'fid' && scoreRisque <= 50) {
+        suggest = Math.min(1000, suggest + 150);
+    }
 
-  return Math.max(100, Math.min(1000, Math.round(suggest)));
+    return Math.max(100, Math.min(1000, Math.round(suggest)));
 }
 
 function calculStatut(scoreRisque, ltv, marge, precom) {
-  if (ltv > 100) return "🚨 CRITIQUE";
-  if (marge < 5) return "🚨 CRITIQUE";
-  if (scoreRisque <= 30 && marge >= 20 && precom >= 50) return "💎 PREMIUM";
-  if (scoreRisque <= 50) return "✅ SAFE";
-  if (scoreRisque <= 70) return "⚠️ TENDU";
-  return "🚨 CRITIQUE";
+    if (ltv > 100) return "🚨 CRITIQUE";
+    if (marge < 5) return "🚨 CRITIQUE";
+    if (scoreRisque <= 30 && marge >= 20 && precom >= 50) return "💎 PREMIUM";
+    if (scoreRisque <= 50) return "✅ SAFE";
+    if (scoreRisque <= 70) return "⚠️ TENDU";
+    return "🚨 CRITIQUE";
 }
 
 /* ===========================
 AJOUT / RENDU
 =========================== */
-
 function ajouterProjet() {
+    const nom = document.getElementById('nom').value || "Projet Master";
+    const ltv = parseFloat(document.getElementById('ltv').value) || 0;
+    const marge = parseFloat(document.getElementById('marge').value) || 0;
+    const precom = parseFloat(document.getElementById('precom').value) || 0;
+    const liq = parseInt(document.getElementById('liq').value) || 5;
+    const type = document.getElementById('typeSurete').value;
+    const cov = parseFloat(document.getElementById('cov').value) || 100;
+    const lta = parseFloat(document.getElementById('lta').value) || 0;
+    const ltc = parseFloat(document.getElementById('ltc').value) || 0;
+    const realInvest = parseFloat(document.getElementById('realInvest').value) || 0;
 
-  const nom = document.getElementById('nom').value || "Projet Master";
-  const ltv = parseFloat(document.getElementById('ltv').value) || 0;
-  const marge = parseFloat(document.getElementById('marge').value) || 0;
-  const precom = parseFloat(document.getElementById('precom').value) || 0;
-  const liq = parseInt(document.getElementById('liq').value) || 5;
-  const type = document.getElementById('typeSurete').value;
-  const cov = parseFloat(document.getElementById('cov').value) || 100;
-  const lta = parseFloat(document.getElementById('lta').value) || 0;
-  const ltc = parseFloat(document.getElementById('ltc').value) || 0;
-  const realInvest = parseFloat(document.getElementById('realInvest').value) || 0;
+    const input = {
+        type: 'MDB',
+        besoin: realInvest,
+        valeurs: {
+            prixAchat: 100000,
+            valeurActif: 100000,
+            travaux: 0,
+            frais: 0,
+            chiffreAffaires: 0,
+            precommercialisation: precom,
+            dureeProjetMois: liq * 3,
+            liquiditeMarche: liq * 10,
+            couverture: cov,
+            fondsPropres: 0,
+            dette: ltv / 100 * 100000
+        },
+        garanties: {
+            fiducie: type === 'fid',
+            gpd: false,
+            hyp1: type === 'hypo',
+            nantissement: false,
+            caution: false,
+            aucune: false
+        }
+    };
 
-  /* ===========================
-  LPB V6 — INPUT
-  ============================ */
+    const resultatV6 = runLPBEngine(input);
+    console.log("LPB V6 →", resultatV6);
 
-  const input = {
-    type: 'MDB',
-    besoin: realInvest,
+    const ltvNet = calculLtvNet(ltv, cov, type, liq);
+    const scoreRisque = calculScoreRisque(ltv, lta, ltc, marge, precom, liq, type);
+    const suggest = calculSuggestionIA(ltv, lta, ltc, marge, precom, liq, type, scoreRisque);
+    const status = calculStatut(scoreRisque, ltv, marge, precom);
 
-    valeurs: {
-      prixAchat: 100000,
-      valeurActif: 100000,
-      travaux: 0,
-      frais: 0,
-      chiffreAffaires: 0,
-      precommercialisation: precom,
-      dureeProjetMois: liq * 3,
-      liquiditeMarche: liq * 10,
-      couverture: cov,
-      fondsPropres: 0,
-      dette: ltv / 100 * 100000
-    },
+    const p = {
+        date: new Date().toLocaleDateString('fr-FR'),
+        nom,
+        ltv,
+        marge,
+        precom,
+        liq,
+        type,
+        cov,
+        lta,
+        ltc,
+        ltvNet,
+        scoreRisque,
+        status,
+        investSuggest: suggest,
+        investReal: realInvest
+    };
 
-    garanties: {
-      fiducie: type === 'fid',
-      gpd: false,
-      hyp1: type === 'hypo',
-      nantissement: false,
-      caution: false,
-      aucune: false
-    }
-  };
+    let db = JSON.parse(localStorage.getItem('immo_v34')) || [];
+    db.push(p);
+    localStorage.setItem('immo_v34', JSON.stringify(db));
 
-  const resultatV6 = runLPBEngine(input);
-  console.log("LPB V6 →", resultatV6);
-
-  /* ===========================
-  MOTEUR V3.4.0 (AFFICHAGE)
-  ============================ */
-
-  const ltvNet = calculLtvNet(ltv, cov, type, liq);
-  const scoreRisque = calculScoreRisque(ltv, lta, ltc, marge, precom, liq, type);
-  const suggest = calculSuggestionIA(ltv, lta, ltc, marge, precom, liq, type, scoreRisque);
-  const status = calculStatut(scoreRisque, ltv, marge, precom);
-
-  const p = {
-    date: new Date().toLocaleDateString('fr-FR'),
-    nom,
-    ltv,
-    marge,
-    precom,
-    liq,
-    type,
-    cov,
-    lta,
-    ltc,
-    ltvNet,
-    scoreRisque,
-    status,
-    investSuggest: suggest,
-    investReal: realInvest
-  };
-
-  let db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  db.push(p);
-  localStorage.setItem('immo_v34', JSON.stringify(db));
-
-  render();
-  document.getElementById('realInvest').value = '';
+    render();
+    document.getElementById('realInvest').value = '';
 }
 
 function render() {
-  const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  const body = document.getElementById('bodyTable');
-  body.innerHTML = "";
+    const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
+    const body = document.getElementById('bodyTable');
+    body.innerHTML = "";
 
-  let sScore = 0, sTotal = 0;
+    let sScore = 0, sTotal = 0;
 
-  [...db].reverse().forEach((p, idx) => {
-    sScore += p.scoreRisque || 0;
-    sTotal += p.investReal || 0;
+    [...db].reverse().forEach((p, idx) => {
+        sScore += p.scoreRisque || 0;
+        sTotal += p.investReal || 0;
 
-    let badgeClass =
-      p.status.includes('💎') ? 'badge-premium' :
-      p.status.includes('✅') ? 'badge-safe' :
-      p.status.includes('⚠️') ? 'badge-tendu' :
-      'badge-critique';
+        let badgeClass =
+            p.status.includes('💎') ? 'badge-premium' :
+            p.status.includes('✅') ? 'badge-safe' :
+            p.status.includes('⚠️') ? 'badge-tendu' :
+            'badge-critique';
 
-    body.innerHTML += `
-      <tr>
-        <td>
-          <b>${p.nom}</b><br>
-          <small style="color:var(--text-soft);">
-            ${p.date} • Pré: ${p.precom}% • LTA: ${p.lta || '-'}% • LTC: ${p.ltc || '-'}%
-          </small>
-        </td>
+        body.innerHTML += `
+<tr>
+<td>
+<b>${p.nom}</b><br>
+<small style="color:var(--text-soft);">
+${p.date} • Pré: ${p.precom}% • LTA: ${p.lta || '-'}% • LTC: ${p.ltc || '-'}%
+</small>
+</td>
+<td style="font-weight:bold;">
+${p.ltvNet}%<br>
+<small style="color:var(--text-soft);">LTV brut: ${p.ltv}%</small>
+</td>
+<td>
+<span class="badge ${badgeClass}">${p.status}</span><br>
+<small style="color:var(--text-soft);">
+Marge: ${p.marge}% • Score: ${p.scoreRisque}/100
+</small>
+</td>
+<td>
+<small style="color:var(--text-soft);">IA: ${p.investSuggest}€</small><br>
+<b style="color:var(--blue)">RÉEL: ${p.investReal}€</b>
+</td>
+<td>
+<button onclick="suppr(${db.length - 1 - idx})"
+style="border:none; background:none; cursor:pointer; color:var(--text-soft);">
+✖
+</button>
+</td>
+</tr>`;
+    });
 
-        <td style="font-weight:bold;">
-          ${p.ltvNet}%<br>
-          <small style="color:var(--text-soft);">LTV brut: ${p.ltv}%</small>
-        </td>
+    if (db.length > 0) {
+        const avgScore = Math.round(sScore / db.length);
+        document.getElementById('avgRisk').innerText = avgScore + "/100";
+        document.getElementById('totalInvest').innerText = sTotal + " €";
 
-        <td>
-          <span class="badge ${badgeClass}">${p.status}</span><br>
-          <small style="color:var(--text-soft);">
-            Marge: ${p.marge}% • Score: ${p.scoreRisque}/100
-          </small>
-        </td>
+        const label = document.getElementById('riskLabel');
+        if (avgScore <= 30) { label.innerText = "SÉCURISÉ 🛡️"; label.style.color = "var(--emerald)"; }
+        else if (avgScore <= 50) { label.innerText = "ÉQUILIBRÉ ⚖️"; label.style.color = "var(--blue)"; }
+        else if (avgScore <= 70) { label.innerText = "VIGILANCE ⚠️"; label.style.color = "var(--amber)"; }
+        else { label.innerText = "CRITIQUE 🚨"; label.style.color = "var(--rose)"; }
 
-        <td>
-          <small style="color:var(--text-soft);">IA: ${p.investSuggest}€</small><br>
-          <b style="color:var(--blue)">RÉEL: ${p.investReal}€</b>
-        </td>
-
-        <td>
-          <button onclick="suppr(${db.length - 1 - idx})"
-            style="border:none; background:none; cursor:pointer; color:var(--text-soft);">
-            ✖
-          </button>
-        </td>
-      </tr>`;
-  });
-
-  if (db.length > 0) {
-    const avgScore = Math.round(sScore / db.length);
-    document.getElementById('avgRisk').innerText = avgScore + "/100";
-    document.getElementById('totalInvest').innerText = sTotal + " €";
-
-    const label = document.getElementById('riskLabel');
-
-    if (avgScore <= 30) { label.innerText = "SÉCURISÉ 🛡️"; label.style.color = "var(--emerald)"; }
-    else if (avgScore <= 50) { label.innerText = "ÉQUILIBRÉ ⚖️"; label.style.color = "var(--blue)"; }
-    else if (avgScore <= 70) { label.innerText = "VIGILANCE ⚠️"; label.style.color = "var(--amber)"; }
-    else { label.innerText = "CRITIQUE 🚨"; label.style.color = "var(--rose)"; }
-
-  } else {
-    document.getElementById('avgRisk').innerText = "0/100";
-    document.getElementById('totalInvest').innerText = "0 €";
-    const label = document.getElementById('riskLabel');
-    label.innerText = "Aucun projet";
-    label.style.color = "var(--text-soft)";
-  }
+    } else {
+        document.getElementById('avgRisk').innerText = "0/100";
+        document.getElementById('totalInvest').innerText = "0 €";
+        const label = document.getElementById('riskLabel');
+        label.innerText = "Aucun projet";
+        label.style.color = "var(--text-soft)";
+    }
 }
 
 function suppr(idx) {
-  let db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  db.splice(idx, 1);
-  localStorage.setItem('immo_v34', JSON.stringify(db));
-  render();
+    let db = JSON.parse(localStorage.getItem('immo_v34')) || [];
+    db.splice(idx, 1);
+    localStorage.setItem('immo_v34', JSON.stringify(db));
+    render();
 }
 
 function exportCSV() {
-  const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  if (db.length === 0) return alert("Aucune donnée.");
+    const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
+    if (db.length === 0) return alert("Aucune donnée.");
 
-  let csv = "Date;Nom;LTV;Marge;Precom;Liq;Surete;Couv;LTA;LTC;LTVNet;Score;Status;IA;Reel\n";
+    let csv = "Date;Nom;LTV;Marge;Precom;Liq;Surete;Couv;LTA;LTC;LTVNet;Score;Status;IA;Reel\n";
 
-  db.forEach(p => {
-    csv += `${p.date};${p.nom};${p.ltv};${p.marge};${p.precom};${p.liq};${p.type};${p.cov};${p.lta || ""};${p.ltc || ""};${p.ltvNet};${p.scoreRisque};${p.status};${p.investSuggest};${p.investReal}\n`;
-  });
+    db.forEach(p => {
+        csv += `${p.date};${p.nom};${p.ltv};${p.marge};${p.precom};${p.liq};${p.type};${p.cov};${p.lta || ""};${p.ltc || ""};${p.ltvNet};${p.scoreRisque};${p.status};${p.investSuggest};${p.investReal}\n`;
+    });
 
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.setAttribute("download", `Audit_Master_v34.csv`);
-  link.click();
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", `Audit_Master_v34.csv`);
+    link.click();
 }
 
 /* ===========================
 THÈME CLAIR / SOMBRE
 =========================== */
-
 function toggleTheme() {
-  const isLight = document.body.classList.toggle("light");
-  localStorage.setItem("theme", isLight ? "light" : "dark");
-  const btn = document.getElementById("themeBtn");
-  btn.textContent = isLight ? "Mode sombre" : "Mode clair";
+    const isLight = document.body.classList.toggle("light");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    const btn = document.getElementById("themeBtn");
+    btn.textContent = isLight ? "Mode sombre" : "Mode clair";
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById("themeBtn");
+    const btn = document.getElementById("themeBtn");
 
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light");
-    btn.textContent = "Mode sombre";
-  } else {
-    btn.textContent = "Mode clair";
-  }
+    if (localStorage.getItem("theme") === "light") {
+        document.body.classList.add("light");
+        btn.textContent = "Mode sombre";
+    } else {
+        btn.textContent = "Mode clair";
+    }
 
-  render();
+    render();
 });
 
 </script>
 
+<!-- ===========================
+ENREGISTREMENT SERVICE WORKER
+=========================== -->
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
 </body>
 </html>
+
