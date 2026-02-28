@@ -740,8 +740,17 @@ ENREGISTREMENT SERVICE WORKER
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
 }
+
+  // Exposition des fonctions au scope global
+window.ajouterProjet = ajouterProjet;
+window.toggleHelp = toggleHelp;
+window.toggleTheme = toggleTheme;
+window.exportCSV = exportCSV;
+window.suppr = suppr;
+
 </script>
 
 </body>
 </html>
+
 
