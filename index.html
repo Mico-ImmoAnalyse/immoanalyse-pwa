@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>ImmoAnalyse v3.4.1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="manifest" href="manifest.webmanifest">
 
   <style>
@@ -25,6 +24,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
+      line-height: 1.5;
     }
 
     body.light {
@@ -36,27 +36,28 @@
     }
 
     .app {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 0 auto;
       padding: 16px;
     }
 
     h1 {
       margin: 0 0 4px;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
+      font-weight: 700;
     }
 
     .sub {
       color: var(--text-soft);
       font-size: 0.85rem;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .top-bar {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .top-bar button {
@@ -71,8 +72,8 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 1.2fr 1.4fr;
-      gap: 16px;
+      grid-template-columns: 1.1fr 1.4fr;
+      gap: 14px;
     }
 
     @media (max-width: 800px) {
@@ -84,12 +85,14 @@
     .card {
       background: var(--card);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
     }
 
     .card h2 {
       margin: 0 0 8px;
       font-size: 1rem;
+      font-weight: 600;
     }
 
     .metric-title {
@@ -111,8 +114,8 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 14px;
       font-size: 0.85rem;
     }
 
@@ -125,17 +128,20 @@
     .form-grid input,
     .form-grid select {
       width: 100%;
-      padding: 6px 8px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border-radius: 9px;
       border: 1px solid #374151;
       background: var(--bg-soft);
       color: var(--text);
       font-size: 0.85rem;
       box-sizing: border-box;
+      transition: 0.2s;
     }
 
-    .form-grid input::placeholder {
-      color: #6b7280;
+    .form-grid input:focus {
+      border-color: var(--blue);
+      outline: none;
+      box-shadow: 0 0 0 2px #3b82f655;
     }
 
     .full {
@@ -145,7 +151,7 @@
     .primary-btn {
       width: 100%;
       margin-top: 8px;
-      padding: 8px 10px;
+      padding: 10px;
       border-radius: 999px;
       border: none;
       background: var(--blue);
@@ -153,16 +159,22 @@
       font-weight: 600;
       cursor: pointer;
       font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: #2563eb;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
+      margin-top: 6px;
     }
 
     th, td {
-      padding: 6px 4px;
+      padding: 8px 4px;
       border-bottom: 1px solid #1f2937;
       vertical-align: top;
     }
@@ -174,9 +186,13 @@
       font-size: 0.75rem;
     }
 
+    tbody tr:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
     .badge {
       display: inline-block;
-      padding: 2px 6px;
+      padding: 3px 7px;
       border-radius: 999px;
       font-size: 0.7rem;
       font-weight: 600;
@@ -187,16 +203,45 @@
     .badge-tendu   { background: #f59e0b33; color: #f59e0b; }
     .badge-critique{ background: #f43f5e33; color: #f43f5e; }
 
-    .garantie-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 4px 0;
+    /* Garanties – version compacte 2 colonnes */
+    .garanties-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 10px;
     }
 
-    .garantie-row input[type="number"] {
-      width: 70px;
-      padding: 4px;
+    .garantie-cell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .g-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .g-left input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .g-left label {
+      cursor: pointer;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .garantie-cell input[type="number"] {
+      width: 60px;
+      padding: 5px;
       border-radius: 8px;
       border: 1px solid #374151;
       background: var(--bg-soft);
@@ -208,13 +253,13 @@
       position: fixed;
       top: 0;
       right: 0;
-      width: 80%;
+      width: 85%;
       max-width: 420px;
       height: 100%;
       background: var(--card);
       color: var(--text);
-      padding: 18px 16px;
-      box-shadow: -4px 0 12px rgba(0,0,0,0.4);
+      padding: 20px 18px;
+      box-shadow: -6px 0 16px rgba(0,0,0,0.4);
       transform: translateX(100%);
       transition: 0.3s ease;
       overflow-y: auto;
@@ -229,7 +274,7 @@
     .help-panel h2 {
       margin-top: 0;
       margin-bottom: 8px;
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
 
     .help-panel h3 {
@@ -265,7 +310,6 @@
 <body>
 
 <div class="app">
-
   <h1>ImmoAnalyse v3.4.1</h1>
   <div class="sub">Moteur IA v3.4.0 – LTV / LTA / LTC / Marge / Précom / Liquidité / Garanties</div>
 
@@ -320,25 +364,46 @@
 
         <div class="full">
           <h3>Sûretés & Couvertures (%)</h3>
+          <div class="garanties-grid">
+            <div class="garantie-cell">
+              <div class="g-left">
+                <input type="checkbox" id="g_fid">
+                <label for="g_fid">Fiducie-Sûreté</label>
+              </div>
+              <input type="number" id="p_fid" placeholder="%" min="0" max="100">
+            </div>
 
-          <div class="garantie-row">
-            <label><input type="checkbox" id="g_fid"> Fiducie-Sûreté</label>
-            <input type="number" id="p_fid" placeholder="%" min="0" max="100">
-          </div>
+            <div class="garantie-cell">
+              <div class="g-left">
+                <input type="checkbox" id="g_hypo">
+                <label for="g_hypo">Hypothèque 1er rang</label>
+              </div>
+              <input type="number" id="p_hypo" placeholder="%" min="0" max="100">
+            </div>
 
-          <div class="garantie-row">
-            <label><input type="checkbox" id="g_hypo"> Hypothèque 1er rang</label>
-            <input type="number" id="p_hypo" placeholder="%" min="0" max="100">
-          </div>
+            <div class="garantie-cell">
+              <div class="g-left">
+                <input type="checkbox" id="g_nant">
+                <label for="g_nant">Nantissement</label>
+              </div>
+              <input type="number" id="p_nant" placeholder="%" min="0" max="100">
+            </div>
 
-          <div class="garantie-row">
-            <label><input type="checkbox" id="g_nant"> Nantissement</label>
-            <input type="number" id="p_nant" placeholder="%" min="0" max="100">
-          </div>
+            <div class="garantie-cell">
+              <div class="g-left">
+                <input type="checkbox" id="g_caution">
+                <label for="g_caution">Caution</label>
+              </div>
+              <input type="number" id="p_caution" placeholder="%" min="0" max="100">
+            </div>
 
-          <div class="garantie-row">
-            <label><input type="checkbox" id="g_caution"> Caution</label>
-            <input type="number" id="p_caution" placeholder="%" min="0" max="100">
+            <div class="garantie-cell">
+              <div class="g-left">
+                <input type="checkbox" id="g_gpd">
+                <label for="g_gpd">Garantie 1ère demande</label>
+              </div>
+              <input type="number" id="p_gpd" placeholder="%" min="0" max="100">
+            </div>
           </div>
         </div>
 
@@ -361,7 +426,7 @@
     </div>
   </div>
 
-  <div class="card" style="margin-top:16px;">
+  <div class="card" style="margin-top:14px;">
     <h2>Projets audités</h2>
     <table>
       <thead>
@@ -376,7 +441,6 @@
       <tbody id="bodyTable"></tbody>
     </table>
   </div>
-
 </div>
 
 <div id="overlay" class="overlay" onclick="toggleHelp()"></div>
@@ -392,11 +456,11 @@
     <li>Marge opérationnelle</li>
     <li>Pré-commercialisation</li>
     <li>Liquidité du marché</li>
-    <li>Type et couverture des sûretés (Fiducie, Hypothèque, Nantissement, Caution)</li>
+    <li>Sûretés et couvertures (Fiducie, Hypothèque, Nantissement, Caution, GPD)</li>
   </ul>
 
   <h3>Comment utiliser l’outil</h3>
-  <p><b>1.</b> Remplissez les champs du formulaire (LTV, marge, précom, liquidité, LTA, LTC, mise, garanties + %).</p>
+  <p><b>1.</b> Remplissez les champs (LTV, marge, précom, liq, LTA, LTC, mise, garanties + %).</p>
   <p><b>2.</b> Cliquez sur “AUDITER & SAUVEGARDER”.</p>
   <p><b>3.</b> Le moteur IA calcule :</p>
   <ul>
@@ -473,6 +537,7 @@ function calculScoreRisque(ltv, lta, ltc, marge, precom, liq, garanties) {
 
   if (garanties.fiducie) score -= 10;
   if (garanties.hyp1) score -= 5;
+  if (garanties.gpd) score -= 8;
 
   return Math.max(0, Math.min(100, Math.round(score)));
 }
@@ -521,7 +586,7 @@ function ajouterProjet() {
     hyp1: document.getElementById('g_hypo').checked,
     nantissement: document.getElementById('g_nant').checked,
     caution: document.getElementById('g_caution').checked,
-    gpd: false,
+    gpd: document.getElementById('g_gpd').checked,
     aucune: false
   };
 
@@ -529,14 +594,16 @@ function ajouterProjet() {
     fiducie: parseFloat(document.getElementById('p_fid').value) || 0,
     hyp1: parseFloat(document.getElementById('p_hypo').value) || 0,
     nantissement: parseFloat(document.getElementById('p_nant').value) || 0,
-    caution: parseFloat(document.getElementById('p_caution').value) || 0
+    caution: parseFloat(document.getElementById('p_caution').value) || 0,
+    gpd: parseFloat(document.getElementById('p_gpd').value) || 0
   };
 
   const covTotal =
     couvertures.fiducie +
     couvertures.hyp1 +
     couvertures.nantissement +
-    couvertures.caution;
+    couvertures.caution +
+    couvertures.gpd;
 
   const input = {
     type: 'MDB',
