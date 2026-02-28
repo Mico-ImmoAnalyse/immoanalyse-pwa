@@ -7,20 +7,16 @@
 <link rel="manifest" href="manifest.webmanifest">
 
 <style>
-
 /* ===========================
-   VARIABLES MODE SOMBRE
-   =========================== */
+VARIABLES MODE SOMBRE
+=========================== */
 :root {
   --bg: #050816;
   --card: #0b1020;
   --card-soft: #11172a;
-
   --text-main: #e5e7eb;
   --text-soft: #9ca3af;
-
   --border-soft: #1f2937;
-
   --emerald: #22c55e;
   --blue: #3b82f6;
   --amber: #f59e0b;
@@ -29,11 +25,9 @@
 }
 
 /* ===========================
-   RESET
-   =========================== */
-* {
-  box-sizing: border-box;
-}
+RESET
+=========================== */
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -44,12 +38,9 @@ body {
 }
 
 /* ===========================
-   LAYOUT
-   =========================== */
-h1 {
-  font-size: 1.4rem;
-  margin: 18px 0 10px;
-}
+LAYOUT
+=========================== */
+h1 { font-size: 1.4rem; margin: 18px 0 10px; }
 
 .dashboard {
   max-width: 1200px;
@@ -71,8 +62,8 @@ h1 {
 }
 
 /* ===========================
-   BOUTONS
-   =========================== */
+BOUTONS
+=========================== */
 .btn {
   border-radius: 999px;
   border: 1px solid var(--border-soft);
@@ -83,9 +74,7 @@ h1 {
   cursor: pointer;
 }
 
-.btn-ghost {
-  background: transparent;
-}
+.btn-ghost { background: transparent; }
 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), color-mix(in srgb, var(--gold) 70%, #ffffff));
@@ -96,8 +85,8 @@ h1 {
 }
 
 /* ===========================
-   SUMMARY CARDS
-   =========================== */
+SUMMARY CARDS
+=========================== */
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -133,8 +122,8 @@ h1 {
 }
 
 /* ===========================
-   FORM CARD
-   =========================== */
+FORM CARD
+=========================== */
 .card {
   background: var(--card);
   border-radius: 16px;
@@ -179,8 +168,8 @@ input:focus, select:focus {
 }
 
 /* ===========================
-   TABLEAU
-   =========================== */
+TABLEAU
+=========================== */
 .table-wrapper {
   background: var(--card);
   border-radius: 16px;
@@ -196,9 +185,7 @@ table {
   font-size: 0.82rem;
 }
 
-thead {
-  background: var(--card-soft);
-}
+thead { background: var(--card-soft); }
 
 th, td {
   padding: 10px 12px;
@@ -216,13 +203,11 @@ th {
   letter-spacing: .08em;
 }
 
-tr:hover td {
-  background: var(--card-soft);
-}
+tr:hover td { background: var(--card-soft); }
 
 /* ===========================
-   BADGES
-   =========================== */
+BADGES
+=========================== */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -258,8 +243,8 @@ tr:hover td {
 }
 
 /* ===========================
-   HELP PANEL
-   =========================== */
+HELP PANEL
+=========================== */
 .help-panel {
   position: fixed;
   top: 0;
@@ -274,20 +259,10 @@ tr:hover td {
   z-index: 40;
 }
 
-.help-panel.open {
-  right: 0;
-}
+.help-panel.open { right: 0; }
 
-.help-panel h2 {
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
-
-.help-panel h3 {
-  font-size: 0.9rem;
-  margin-top: 16px;
-  margin-bottom: 6px;
-}
+.help-panel h2 { font-size: 1rem; margin-bottom: 8px; }
+.help-panel h3 { font-size: 0.9rem; margin-top: 16px; margin-bottom: 6px; }
 
 .help-panel p, .help-panel li {
   font-size: 0.8rem;
@@ -295,8 +270,8 @@ tr:hover td {
 }
 
 /* ===========================
-   OVERLAY
-   =========================== */
+OVERLAY
+=========================== */
 #overlay {
   position: fixed;
   inset: 0;
@@ -314,40 +289,15 @@ tr:hover td {
 }
 
 /* ===========================
-   RESPONSIVE
-   =========================== */
-@media (max-width: 900px) {
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-  .form-body {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 640px) {
-  .form-body {
-    grid-template-columns: 1fr;
-  }
-  .top-bar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* ===========================
-   MODE CLAIR
-   =========================== */
+MODE CLAIR
+=========================== */
 body.light {
   --bg: #f3f4f6;
   --card: #ffffff;
   --card-soft: #f1f5f9;
-
   --text-main: #1f2937;
   --text-soft: #6b7280;
-
   --border-soft: #d1d5db;
-
   --emerald: #16a34a;
   --blue: #2563eb;
   --amber: #d97706;
@@ -356,206 +306,164 @@ body.light {
 }
 
 /* ===========================
-   FOND RADIAL SOMBRE (NOUVEAU)
-   =========================== */
+FOND RADIAL SOMBRE
+=========================== */
 body:not(.light) {
-  background: radial-gradient(
-    circle at 30% 0%,
-    #0f172a 0%,
-    #0a1120 40%,
-    #050816 100%
-  );
+  background: radial-gradient(circle at 30% 0%, #0f172a 0%, #0a1120 40%, #050816 100%);
 }
-
 </style>
 </head>
+
 <body>
 
 <div class="dashboard">
 
-  <div class="top-bar">
-    <div>
-      <h1>ImmoAnalyse v3.4.1</h1>
-      <div style="font-size:0.8rem; color:var(--text-soft);">
-        Moteur IA v3.4.0 – LTV / LTA / LTC / Marge / Précom / Liquidité / Garantie
-      </div>
-    </div>
-
-    <div class="top-bar-right">
-      <button class="btn btn-ghost" onclick="toggleHelp()">Guide v3.4.0</button>
-      <button class="btn" onclick="exportCSV()">Export CSV</button>
-      <button id="themeBtn" class="btn" onclick="toggleTheme()">Mode clair</button>
+<div class="top-bar">
+  <div>
+    <h1>ImmoAnalyse v3.4.1</h1>
+    <div style="font-size:0.8rem; color:var(--text-soft);">
+      Moteur IA v3.4.0 – LTV / LTA / LTC / Marge / Précom / Liquidité / Garantie
     </div>
   </div>
 
-  <div class="summary-grid">
+  <div class="top-bar-right">
+    <button class="btn btn-ghost" onclick="toggleHelp()">Guide v3.4.0</button>
+    <button class="btn" onclick="exportCSV()">Export CSV</button>
+    <button id="themeBtn" class="btn" onclick="toggleTheme()">Mode clair</button>
+  </div>
+</div>
 
-    <div class="summary-card">
-      <div class="summary-label">Score moyen du portefeuille</div>
-      <div class="summary-value" id="avgRisk">0/100</div>
-      <div class="summary-tag" id="riskLabel">Aucun projet</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">Total investi</div>
-      <div class="summary-value" id="totalInvest">0 €</div>
-      <div class="summary-tag">Capital engagé sur les dossiers audités</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">Moteur IA</div>
-      <div class="summary-tag">
-        Scoring automatique, statuts PREMIUM / SAFE / TENDU / CRITIQUE, bridage des tickets selon le risque.
-      </div>
-    </div>
-
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="summary-label">Score moyen du portefeuille</div>
+    <div class="summary-value" id="avgRisk">0/100</div>
+    <div class="summary-tag" id="riskLabel">Aucun projet</div>
   </div>
 
-  <div class="card">
-    <h2>Nouvel audit</h2>
+  <div class="summary-card">
+    <div class="summary-label">Total investi</div>
+    <div class="summary-value" id="totalInvest">0 €</div>
+    <div class="summary-tag">Capital engagé sur les dossiers audités</div>
+  </div>
 
-    <div class="form-body">
-
-      <div style="grid-column: span 2;">
-        <label>Projet</label>
-        <input type="text" id="nom" placeholder="Nom du dossier">
-      </div>
-
-      <div>
-        <label>LTV (%)</label>
-        <input type="number" id="ltv" value="70">
-      </div>
-
-      <div>
-        <label>Marge (%)</label>
-        <input type="number" id="marge" value="15">
-      </div>
-
-      <div>
-        <label>Pré-Comm (%)</label>
-        <input type="number" id="precom" value="0">
-      </div>
-
-      <div>
-        <label>Liq. (1-10)</label>
-        <input type="number" id="liq" value="7">
-      </div>
-
-      <div>
-        <label>Sûreté</label>
-        <select id="typeSurete">
-          <option value="fid">Fiducie-Sûreté</option>
-          <option value="hypo">Hypothèque 1er R.</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Couv. (%)</label>
-        <input type="number" id="cov" value="100">
-      </div>
-
-      <div>
-        <label>LTA (%)</label>
-        <input type="number" id="lta" placeholder="Ex: 95">
-      </div>
-
-      <div>
-        <label>LTC (%)</label>
-        <input type="number" id="ltc" placeholder="Ex: 88">
-      </div>
-
-      <div>
-        <label>Mise (€)</label>
-        <input type="number" id="realInvest" placeholder="Ex: 500">
-      </div>
-
-      <div style="grid-column: span 4; text-align:right; margin-top:4px;">
-        <button class="btn btn-gold" onclick="ajouterProjet()">AUDITER & SAUVEGARDER</button>
-      </div>
-
+  <div class="summary-card">
+    <div class="summary-label">Moteur IA</div>
+    <div class="summary-tag">
+      Scoring automatique, statuts PREMIUM / SAFE / TENDU / CRITIQUE, bridage des tickets selon le risque.
     </div>
   </div>
+</div>
 
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Projet</th>
-          <th>LTV net</th>
-          <th>Risque</th>
-          <th>Tickets</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="bodyTable"></tbody>
-    </table>
-  </div>
+<div class="card">
+<h2>Nouvel audit</h2>
+
+<div class="form-body">
+
+<div style="grid-column: span 2;">
+  <label>Projet</label>
+  <input type="text" id="nom" placeholder="Nom du dossier">
+</div>
+
+<div>
+  <label>LTV (%)</label>
+  <input type="number" id="ltv" value="70">
+</div>
+
+<div>
+  <label>Marge (%)</label>
+  <input type="number" id="marge" value="15">
+</div>
+
+<div>
+  <label>Pré-Comm (%)</label>
+  <input type="number" id="precom" value="0">
+</div>
+
+<div>
+  <label>Liq. (1-10)</label>
+  <input type="number" id="liq" value="7">
+</div>
+
+<div>
+  <label>Sûreté</label>
+  <select id="typeSurete">
+    <option value="fid">Fiducie-Sûreté</option>
+    <option value="hypo">Hypothèque 1er R.</option>
+  </select>
+</div>
+
+<div>
+  <label>Couv. (%)</label>
+  <input type="number" id="cov" value="100">
+</div>
+
+<div>
+  <label>LTA (%)</label>
+  <input type="number" id="lta" placeholder="Ex: 95">
+</div>
+
+<div>
+  <label>LTC (%)</label>
+  <input type="number" id="ltc" placeholder="Ex: 88">
+</div>
+
+<div>
+  <label>Mise (€)</label>
+  <input type="number" id="realInvest" placeholder="Ex: 500">
+</div>
+
+<div style="grid-column: span 4; text-align:right; margin-top:4px;">
+  <button class="btn btn-gold" onclick="ajouterProjet()">AUDITER & SAUVEGARDER</button>
+</div>
 
 </div>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+  <th>Projet</th>
+  <th>LTV net</th>
+  <th>Risque</th>
+  <th>Tickets</th>
+  <th></th>
+</tr>
+</thead>
+<tbody id="bodyTable"></tbody>
+</table>
+</div>
+
+</div> <!-- dashboard -->
 
 <div id="overlay" onclick="toggleHelp()"></div>
 
 <div id="helpPanel" class="help-panel">
-
-  <h2>Guide d'analyse v3.4.0</h2>
-
-  <p>Ce moteur IA combine LTV, LTA, LTC, marge, précom, liquidité et garantie pour produire un score de risque, un statut et une suggestion de ticket.</p>
-
-  <h3>1. Paramètres clés</h3>
-  <ul>
-    <li><b>LTV :</b> dette / valeur. &lt;60% excellent, 60–75% bon, 75–85% tendu, &gt;85% dangereux, &gt;100% critique.</li>
-    <li><b>LTA :</b> dette / coût d'acquisition. &lt;90% sain, 90–100% limite, &gt;100% critique.</li>
-    <li><b>LTC :</b> dette / coût total. &lt;85% sain, 85–90% tendu, &gt;90% dangereux.</li>
-    <li><b>Marge :</b> coussin de sécurité. &gt;20% excellent, 15–20% bon, 10–15% moyen, &lt;10% dangereux, &lt;5% critique.</li>
-    <li><b>Précom :</b> traction commerciale. &gt;80% très bon, 50–80% correct, 25–50% faible, &lt;25% dangereux.</li>
-    <li><b>Liquidité :</b> 8–10 très liquide, 6–7 correct, 4–5 faible, &lt;4 très faible.</li>
-    <li><b>Garantie :</b> fiducie = bonus sécurité, hypothèque = neutre.</li>
-  </ul>
-
-  <h3>2. Score de risque</h3>
-  <ul>
-    <li><b>0–30 :</b> faible risque.</li>
-    <li><b>30–50 :</b> risque modéré.</li>
-    <li><b>50–70 :</b> risque élevé.</li>
-    <li><b>&gt;70 :</b> risque critique.</li>
-  </ul>
-
-  <h3>3. Statuts</h3>
-  <ul>
-    <li><b>💎 PREMIUM :</b> score ≤30, marge ≥20%, précom ≥50%.</li>
-    <li><b>✅ SAFE :</b> score ≤50, aucun indicateur rouge.</li>
-    <li><b>⚠️ TENDU :</b> score ≤70, un ou deux points faibles.</li>
-    <li><b>🚨 CRITIQUE :</b> LTV&gt;100%, marge&lt;5%, LTA&gt;100%, LTC&gt;90%, précom&lt;25%.</li>
-  </ul>
-
-  <h3>4. Tickets IA</h3>
-  <ul>
-    <li><b>LTV&gt;90% :</b> IA ≤100€.</li>
-    <li><b>80–90% :</b> IA ≤250€.</li>
-    <li><b>LTA&gt;100% ou LTC&gt;90% :</b> IA ≤250€.</li>
-    <li><b>Marge&lt;8% :</b> IA ≤150€ ; marge&lt;12% : IA ≤250€.</li>
-    <li><b>Précom&lt;25% :</b> IA ≤300€.</li>
-    <li><b>Fiducie :</b> +150€ si score ≤50.</li>
-  </ul>
-
+<h2>Guide d'analyse v3.4.0</h2>
+<p>Ce moteur IA combine LTV, LTA, LTC, marge, précom, liquidité et garantie pour produire un score de risque, un statut et une suggestion de ticket.</p>
 </div>
-<script>
 
+<!-- ===========================
+SCRIPT UNIQUE ET FONCTIONNEL
+=========================== -->
+<script type="module">
+
+import { runLPBEngine } from './engine/engine.js';
+
+/* === AIDE === */
 function toggleHelp() {
   document.getElementById('helpPanel').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('open');
 }
 
 /* ===========================
-   CALCULS
-   =========================== */
+CALCULS V3.4.0
+=========================== */
 
 function calculLtvNet(ltv, cov, type, liq) {
   const liqEffective = Math.min(10, liq + 2);
   const pondSurete = (type === 'fid') ? 1.2 : 1.0;
-
   let ltvNet = ltv - (cov / 100 * pondSurete * (liqEffective / 10) * 100);
-
   return Math.max(0, Math.round(ltvNet));
 }
 
@@ -628,19 +536,18 @@ function calculSuggestionIA(ltv, lta, ltc, marge, precom, liq, type, scoreRisque
 function calculStatut(scoreRisque, ltv, marge, precom) {
   if (ltv > 100) return "🚨 CRITIQUE";
   if (marge < 5) return "🚨 CRITIQUE";
-
   if (scoreRisque <= 30 && marge >= 20 && precom >= 50) return "💎 PREMIUM";
   if (scoreRisque <= 50) return "✅ SAFE";
   if (scoreRisque <= 70) return "⚠️ TENDU";
-
   return "🚨 CRITIQUE";
 }
 
 /* ===========================
-   AJOUT / RENDU
-   =========================== */
+AJOUT / RENDU
+=========================== */
 
 function ajouterProjet() {
+
   const nom = document.getElementById('nom').value || "Projet Master";
   const ltv = parseFloat(document.getElementById('ltv').value) || 0;
   const marge = parseFloat(document.getElementById('marge').value) || 0;
@@ -651,6 +558,45 @@ function ajouterProjet() {
   const lta = parseFloat(document.getElementById('lta').value) || 0;
   const ltc = parseFloat(document.getElementById('ltc').value) || 0;
   const realInvest = parseFloat(document.getElementById('realInvest').value) || 0;
+
+  /* ===========================
+  LPB V6 — INPUT
+  ============================ */
+
+  const input = {
+    type: 'MDB',
+    besoin: realInvest,
+
+    valeurs: {
+      prixAchat: 100000,
+      valeurActif: 100000,
+      travaux: 0,
+      frais: 0,
+      chiffreAffaires: 0,
+      precommercialisation: precom,
+      dureeProjetMois: liq * 3,
+      liquiditeMarche: liq * 10,
+      couverture: cov,
+      fondsPropres: 0,
+      dette: ltv / 100 * 100000
+    },
+
+    garanties: {
+      fiducie: type === 'fid',
+      gpd: false,
+      hyp1: type === 'hypo',
+      nantissement: false,
+      caution: false,
+      aucune: false
+    }
+  };
+
+  const resultatV6 = runLPBEngine(input);
+  console.log("LPB V6 →", resultatV6);
+
+  /* ===========================
+  MOTEUR V3.4.0 (AFFICHAGE)
+  ============================ */
 
   const ltvNet = calculLtvNet(ltv, cov, type, liq);
   const scoreRisque = calculScoreRisque(ltv, lta, ltc, marge, precom, liq, type);
@@ -686,7 +632,6 @@ function ajouterProjet() {
 function render() {
   const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
   const body = document.getElementById('bodyTable');
-
   body.innerHTML = "";
 
   let sScore = 0, sTotal = 0;
@@ -702,38 +647,38 @@ function render() {
       'badge-critique';
 
     body.innerHTML += `
-<tr>
-  <td>
-    <b>${p.nom}</b><br>
-    <small style="color:var(--text-soft);">
-      ${p.date} • Pré: ${p.precom}% • LTA: ${p.lta || '-'}% • LTC: ${p.ltc || '-'}%
-    </small>
-  </td>
+      <tr>
+        <td>
+          <b>${p.nom}</b><br>
+          <small style="color:var(--text-soft);">
+            ${p.date} • Pré: ${p.precom}% • LTA: ${p.lta || '-'}% • LTC: ${p.ltc || '-'}%
+          </small>
+        </td>
 
-  <td style="font-weight:bold;">
-    ${p.ltvNet}%<br>
-    <small style="color:var(--text-soft);">LTV brut: ${p.ltv}%</small>
-  </td>
+        <td style="font-weight:bold;">
+          ${p.ltvNet}%<br>
+          <small style="color:var(--text-soft);">LTV brut: ${p.ltv}%</small>
+        </td>
 
-  <td>
-    <span class="badge ${badgeClass}">${p.status}</span><br>
-    <small style="color:var(--text-soft);">
-      Marge: ${p.marge}% • Score: ${p.scoreRisque}/100
-    </small>
-  </td>
+        <td>
+          <span class="badge ${badgeClass}">${p.status}</span><br>
+          <small style="color:var(--text-soft);">
+            Marge: ${p.marge}% • Score: ${p.scoreRisque}/100
+          </small>
+        </td>
 
-  <td>
-    <small style="color:var(--text-soft);">IA: ${p.investSuggest}€</small><br>
-    <b style="color:var(--blue)">RÉEL: ${p.investReal}€</b>
-  </td>
+        <td>
+          <small style="color:var(--text-soft);">IA: ${p.investSuggest}€</small><br>
+          <b style="color:var(--blue)">RÉEL: ${p.investReal}€</b>
+        </td>
 
-  <td>
-    <button onclick="suppr(${db.length - 1 - idx})"
-      style="border:none; background:none; cursor:pointer; color:var(--text-soft);">
-      ✖
-    </button>
-  </td>
-</tr>`;
+        <td>
+          <button onclick="suppr(${db.length - 1 - idx})"
+            style="border:none; background:none; cursor:pointer; color:var(--text-soft);">
+            ✖
+          </button>
+        </td>
+      </tr>`;
   });
 
   if (db.length > 0) {
@@ -751,7 +696,6 @@ function render() {
   } else {
     document.getElementById('avgRisk').innerText = "0/100";
     document.getElementById('totalInvest').innerText = "0 €";
-
     const label = document.getElementById('riskLabel');
     label.innerText = "Aucun projet";
     label.style.color = "var(--text-soft)";
@@ -783,13 +727,12 @@ function exportCSV() {
 }
 
 /* ===========================
-   THÈME CLAIR / SOMBRE
-   =========================== */
+THÈME CLAIR / SOMBRE
+=========================== */
 
 function toggleTheme() {
   const isLight = document.body.classList.toggle("light");
   localStorage.setItem("theme", isLight ? "light" : "dark");
-
   const btn = document.getElementById("themeBtn");
   btn.textContent = isLight ? "Mode sombre" : "Mode clair";
 }
