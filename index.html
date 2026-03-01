@@ -232,6 +232,21 @@ th {
 .guide-content h2 { margin-top: 0; font-size: 18px; }
 .guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
 
+  /* Correction largeur onglets */
+.guide-tabs {
+  display: flex;          /* <-- essentiel */
+  width: 100%;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Largeur minimale des onglets */
+.guide-tab {
+  min-width: 100px;
+  text-align: center;
+}
+
 /* ---------- GARANTIES ---------- */
 .garanties-grid {
   display: grid;
@@ -902,6 +917,7 @@ window.runEngine = function() {
 
 </body>
 </html>
+
 
 
 
