@@ -767,20 +767,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  <script>
-document.addEventListener("click", (e) => {
-  const panel = document.getElementById("guidePanel");
-  if (!panel.classList.contains("open")) return;
-
-  const isInside = panel.contains(e.target);
-  const isButton = e.target.closest(".secondary") || e.target.id === "toggleTheme";
-
-  if (!isInside && !isButton) {
-    closeGuide();
-  }
-});
-</script>
-
   // Accordéons
   document.querySelectorAll(".accordion-header").forEach(header => {
     header.addEventListener("click", () => {
@@ -1002,6 +988,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
