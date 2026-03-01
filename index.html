@@ -883,6 +883,12 @@ function loadProjects() {
 function saveProjects(projects) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
 }
+  const RISK_COLORS = {
+  "PREMIUM": "#4da3ff",   // bleu accent
+  "SAFE": "#4caf50",      // vert
+  "TENDU": "#ff9800",     // orange
+  "CRITIQUE": "#f44336"   // rouge
+};
 
 // --- Rendu du tableau + recalcul portefeuille ---
 function renderProjects() {
@@ -1043,6 +1049,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
