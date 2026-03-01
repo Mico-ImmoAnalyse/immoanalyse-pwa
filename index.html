@@ -119,22 +119,22 @@ body {
 .section {
   background: var(--bg-section);
   border: 1px solid var(--border);
-  padding: 22px;
+  padding: 14px;
   border-radius: 10px;
-  margin: 20px auto;
+  margin: 14px auto;
   transition: background 0.3s ease, border 0.3s ease;
 }
 
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 10px;
 }
 
 .grid-3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
+  gap: 10px;
 }
 
 @media (max-width: 800px) {
@@ -156,7 +156,7 @@ body {
 
 .card {
   background: #1a1a1a;
-  padding: 16px;
+  padding: 10px;
   border-radius: 8px;
   border: 1px solid #333;
 }
@@ -209,27 +209,75 @@ body {
 .theme-toggle button:hover {
   background: var(--accent);
   color: #000;
-}    
+}  
+.header-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.secondary:hover {
+  background: var(--accent);
+  color: #000;
+}
   </style>
 </head>
+<div id="guide" class="section">
+  <h2>Guide</h2>
+  <p>Ce module explique comment analyser vos projets immobiliers selon les critères MDB ou LDT.</p>
+  <p>Il détaille les ratios LTV, LTA, LTC, la marge, la pré-commercialisation, la liquidité et les garanties.</p>
+</div>
 
 <script>
   const toggleBtn = document.getElementById("toggleTheme");
 
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "light") {
-    document.body.classList.add("light");
-    toggleBtn.textContent = "🌞";
+  function applyTheme(theme) {
+    if (theme === "light") {
+      document.body.classList.add("light");
+      toggleBtn.textContent = "🌞";
+    } else {
+      document.body.classList.remove("light");
+      toggleBtn.textContent = "🌙";
+    }
   }
 
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(savedTheme);
+
   toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-
-    const isLight = document.body.classList.contains("light");
-    toggleBtn.textContent = isLight ? "🌞" : "🌙";
-
-    localStorage.setItem("theme", isLight ? "light" : "dark");
+    const newTheme = document.body.classList.contains("light") ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    applyTheme(newTheme);
   });
+</script>
+<script>
+function exportCSV() {
+  let rows = [["Projet", "LTV NET", "Risque", "Tickets"]];
+
+  document.querySelectorAll("#tableProjets tr").forEach(tr => {
+    let cells = [...tr.children].map(td => td.innerText);
+    if (cells.length) rows.push(cells);
+  });
+
+  let csv = rows.map(r => r.join(";")).join("\n");
+  let blob = new Blob([csv], { type: "text/csv" });
+  let url = URL.createObjectURL(blob);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "projets_audites.csv";
+  a.click();
+}
 </script>
 
 <body>
@@ -241,6 +289,10 @@ body {
 <!-- MODULE 1 — Portefeuille / Moteur IA -->
 <div class="section header-block">
   <h1>ImmoAnalyse v6</h1>
+  <div class="header-buttons">
+  <button class="secondary" onclick="document.getElementById('guide').scrollIntoView()">Guide</button>
+  <button class="secondary" onclick="exportCSV()">Export CSV</button>
+</div>
   <p class="subtitle">Moteur IA – LTV / LTA / LTC / Marge / Précom / Liquidité / Garanties</p>
 
   <div class="grid-2">
@@ -368,5 +420,6 @@ body {
 
 </body>
 </html>
+
 
 
