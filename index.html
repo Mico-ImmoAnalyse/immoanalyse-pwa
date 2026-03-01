@@ -2,78 +2,66 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>ImmoAnalyse v3.4.1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImmoAnalyse PWA</title>
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#000000">
 
+  <!-- Style global -->
   <style>
-    :root {
-      --bg: #050816;
-      --bg-soft: #0b1020;
-      --card: #111827;
-      --text: #f9fafb;
-      --text-soft: #9ca3af;
-      --blue: #3b82f6;
-      --emerald: #10b981;
-      --amber: #f59e0b;
-      --rose: #f43f5e;
-    }
-
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
+      padding: 0;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
     }
 
-    body.light {
-      --bg: #f3f4f6;
-      --bg-soft: #e5e7eb;
-      --card: #ffffff;
-      --text: #111827;
-      --text-soft: #6b7280;
+    h1, h2 {
+      text-align: center;
+      margin-top: 20px;
+      color: #4da3ff;
     }
 
-    .app {
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 16px;
+    .container {
+      width: 92%;
+      max-width: 900px;
+      margin: auto;
+      padding-bottom: 40px;
     }
 
-    h1 {
-      margin: 0 0 4px;
-      font-size: 1.5rem;
-      font-weight: 700;
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 14px 0;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #1a1a1a;
+      color: #e0e0e0;
     }
 
-    .sub {
-      color: var(--text-soft);
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-    }
-
-    .top-bar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .top-bar button {
-      border-radius: 999px;
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4da3ff;
       border: none;
-      padding: 6px 12px;
-      font-size: 0.85rem;
+      border-radius: 6px;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
-      background: var(--card);
-      color: var(--text);
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #6bb4ff;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
 
     @media (max-width: 800px) {
@@ -82,713 +70,129 @@
       }
     }
 
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 14px 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-    }
-
-    .card h2 {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .metric-title {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .metric-value {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-
-    .metric-sub {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px 14px;
-      font-size: 0.85rem;
-    }
-
-    .form-grid label {
-      display: block;
-      margin-bottom: 2px;
-      color: var(--text-soft);
-    }
-
-    .form-grid input,
-    .form-grid select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 9px;
-      border: 1px solid #374151;
-      background: var(--bg-soft);
-      color: var(--text);
-      font-size: 0.85rem;
-      box-sizing: border-box;
-      transition: 0.2s;
-    }
-
-    .form-grid input:focus {
-      border-color: var(--blue);
-      outline: none;
-      box-shadow: 0 0 0 2px #3b82f655;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    .primary-btn {
-      width: 100%;
-      margin-top: 8px;
-      padding: 10px;
-      border-radius: 999px;
-      border: none;
-      background: var(--blue);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: 0.2s;
-    }
-
-    .primary-btn:hover {
-      background: #2563eb;
+    .section {
+      background: #111;
+      padding: 18px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #222;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
-      margin-top: 6px;
+      margin-top: 18px;
     }
 
     th, td {
-      padding: 8px 4px;
-      border-bottom: 1px solid #1f2937;
-      vertical-align: top;
+      border: 1px solid #333;
+      padding: 10px;
+      text-align: center;
     }
 
     th {
-      text-align: left;
-      color: var(--text-soft);
-      font-weight: 500;
-      font-size: 0.75rem;
-    }
-
-    tbody tr:hover {
-      background: rgba(255,255,255,0.04);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 7px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-
-    .badge-premium { background: #22c55e33; color: #22c55e; }
-    .badge-safe    { background: #3b82f633; color: #3b82f6; }
-    .badge-tendu   { background: #f59e0b33; color: #f59e0b; }
-    .badge-critique{ background: #f43f5e33; color: #f43f5e; }
-
-    /* Garanties – version compacte 2 colonnes */
-    .garanties-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px 10px;
-    }
-
-    .garantie-cell {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .g-left {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .g-left input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-
-    .g-left label {
-      cursor: pointer;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .garantie-cell input[type="number"] {
-      width: 60px;
-      padding: 5px;
-      border-radius: 8px;
-      border: 1px solid #374151;
-      background: var(--bg-soft);
-      color: var(--text);
-      font-size: 0.8rem;
-    }
-
-    .help-panel {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 85%;
-      max-width: 420px;
-      height: 100%;
-      background: var(--card);
-      color: var(--text);
-      padding: 20px 18px;
-      box-shadow: -6px 0 16px rgba(0,0,0,0.4);
-      transform: translateX(100%);
-      transition: 0.3s ease;
-      overflow-y: auto;
-      z-index: 9999;
-      font-size: 0.85rem;
-    }
-
-    .help-panel.open {
-      transform: translateX(0);
-    }
-
-    .help-panel h2 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-
-    .help-panel h3 {
-      margin-top: 12px;
-      margin-bottom: 4px;
-      font-size: 0.9rem;
-    }
-
-    .help-panel ul {
-      padding-left: 18px;
-      margin: 4px 0;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.45);
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.3s ease;
-      z-index: 9998;
-    }
-
-    .overlay.open {
-      opacity: 1;
-      pointer-events: auto;
+      background: #1a1a1a;
     }
   </style>
 </head>
+
 <body>
 
-<div class="app">
-  <h1>ImmoAnalyse v3.4.1</h1>
-  <div class="sub">Moteur IA v3.4.0 – LTV / LTA / LTC / Marge / Précom / Liquidité / Garanties</div>
+  <h1>ImmoAnalyse PWA</h1>
+  <div class="container">
 
-  <div class="top-bar">
-    <button onclick="toggleHelp()">Guide v3.4.0</button>
-    <button onclick="exportCSV()">Export CSV</button>
-    <button id="themeBtn" onclick="toggleTheme()">Mode sombre</button>
-  </div>
+    <!-- Sélecteur MDB / LDT -->
+    <div class="section">
+      <h2>Type de projet</h2>
+      <select id="projectType">
+        <option value="MDB">MDB – Marchand de biens</option>
+        <option value="LDT">LDT – Location de tourisme</option>
+      </select>
+    </div>
 
-  <div class="grid">
-    <div class="card">
-      <h2>Portefeuille</h2>
-      <div class="metric-title">Score moyen du portefeuille</div>
-      <div class="metric-value" id="avgRisk">0/100</div>
-      <div class="metric-sub" id="riskLabel">Aucun projet</div>
-      <div style="margin-top:10px;"></div>
-      <div class="metric-title">Total investi</div>
-      <div class="metric-value" id="totalInvest">0 €</div>
-      <div class="metric-sub">Capital engagé sur les dossiers audités</div>
-      <div style="margin-top:10px;"></div>
-      <div class="metric-title">Moteur IA</div>
-      <div class="metric-sub">
-        Scoring automatique, statuts PREMIUM / SAFE / TENDU / CRITIQUE, bridage des tickets selon score.
+    <!-- Formulaire MDB -->
+    <div id="formMDB" class="section">
+      <h2>Paramètres MDB</h2>
+      <input id="prixAchat" type="number" placeholder="Prix d'achat (€)">
+      <input id="travaux" type="number" placeholder="Travaux (€)">
+      <input id="frais" type="number" placeholder="Frais (€)">
+      <input id="prixRevente" type="number" placeholder="Prix de revente (€)">
+    </div>
+
+    <!-- Formulaire LDT -->
+    <div id="formLDT" class="section" style="display:none;">
+      <h2>Paramètres LDT</h2>
+      <input id="prixAchatLDT" type="number" placeholder="Prix d'achat (€)">
+      <input id="travauxLDT" type="number" placeholder="Travaux (€)">
+      <input id="loyer" type="number" placeholder="Loyer mensuel estimé (€)">
+      <input id="charges" type="number" placeholder="Charges mensuelles (€)">
+    </div>
+
+    <!-- Garanties -->
+    <div class="section">
+      <h2>Garanties</h2>
+      <div class="grid">
+        <label><input type="checkbox" id="g1"> Garantie 1</label>
+        <label><input type="checkbox" id="g2"> Garantie 2</label>
+        <label><input type="checkbox" id="g3"> Garantie 3</label>
+        <label><input type="checkbox" id="g4"> Garantie 4</label>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Nouvel audit</h2>
-      <div class="form-grid">
-        <div class="full">
-          <label for="nom">Projet</label>
-          <input id="nom" type="text" placeholder="Nom du dossier">
-        </div>
+    <!-- Bouton -->
+    <button onclick="runEngine()">Analyser</button>
 
-        <div>
-          <label for="ltv">LTV (%)</label>
-          <input id="ltv" type="number" placeholder="Ex: 70">
-        </div>
-        <div>
-          <label for="marge">Marge (%)</label>
-          <input id="marge" type="number" placeholder="Ex: 15">
-        </div>
-
-        <div>
-          <label for="precom">Pré-Comm (%)</label>
-          <input id="precom" type="number" placeholder="Ex: 50">
-        </div>
-        <div>
-          <label for="liq">Liq. (1–10)</label>
-          <input id="liq" type="number" min="1" max="10" placeholder="Ex: 7">
-        </div>
-
-        <div class="full">
-          <h3>Sûretés & Couvertures (%)</h3>
-          <div class="garanties-grid">
-            <div class="garantie-cell">
-              <div class="g-left">
-                <input type="checkbox" id="g_fid">
-                <label for="g_fid">Fiducie-Sûreté</label>
-              </div>
-              <input type="number" id="p_fid" placeholder="%" min="0" max="100">
-            </div>
-
-            <div class="garantie-cell">
-              <div class="g-left">
-                <input type="checkbox" id="g_hypo">
-                <label for="g_hypo">Hypothèque 1er rang</label>
-              </div>
-              <input type="number" id="p_hypo" placeholder="%" min="0" max="100">
-            </div>
-
-            <div class="garantie-cell">
-              <div class="g-left">
-                <input type="checkbox" id="g_nant">
-                <label for="g_nant">Nantissement</label>
-              </div>
-              <input type="number" id="p_nant" placeholder="%" min="0" max="100">
-            </div>
-
-            <div class="garantie-cell">
-              <div class="g-left">
-                <input type="checkbox" id="g_caution">
-                <label for="g_caution">Caution</label>
-              </div>
-              <input type="number" id="p_caution" placeholder="%" min="0" max="100">
-            </div>
-
-            <div class="garantie-cell">
-              <div class="g-left">
-                <input type="checkbox" id="g_gpd">
-                <label for="g_gpd">Garantie 1ère demande</label>
-              </div>
-              <input type="number" id="p_gpd" placeholder="%" min="0" max="100">
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label for="lta">LTA (%)</label>
-          <input id="lta" type="number" placeholder="Ex: 95">
-        </div>
-        <div>
-          <label for="ltc">LTC (%)</label>
-          <input id="ltc" type="number" placeholder="Ex: 88">
-        </div>
-
-        <div class="full">
-          <label for="realInvest">Mise (€)</label>
-          <input id="realInvest" type="number" placeholder="Ex: 500">
-        </div>
-      </div>
-
-      <button class="primary-btn" onclick="ajouterProjet()">AUDITER & SAUVEGARDER</button>
+    <!-- Résultats -->
+    <div id="results" class="section" style="display:none;">
+      <h2>Résultats</h2>
+      <table>
+        <tr><th>Critère</th><th>Valeur</th></tr>
+        <tr><td>Score</td><td id="score"></td></tr>
+        <tr><td>Statut</td><td id="status"></td></tr>
+      </table>
     </div>
+
+    <!-- Guide -->
+    <div class="section">
+      <h2>Guide</h2>
+      <p>Ce module analyse automatiquement vos projets immobiliers selon les critères MDB ou LDT.</p>
+    </div>
+
   </div>
 
-  <div class="card" style="margin-top:14px;">
-    <h2>Projets audités</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>PROJET</th>
-          <th>LTV NET</th>
-          <th>RISQUE</th>
-          <th>TICKETS</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="bodyTable"></tbody>
-    </table>
-  </div>
-</div>
+  <!-- Scripts -->
+  <script src="engine/engine.js"></script>
+  <script src="engine/scoring.js"></script>
+  <script src="engine/ratios.js"></script>
+  <script src="engine/garanties.js"></script>
+  <script src="engine/diagnostic.js"></script>
+  <script src="engine/crossAnalysis.js"></script>
+  <script src="engine/ticket.js"></script>
+  <script src="engine/types.js"></script>
 
-<div id="overlay" class="overlay" onclick="toggleHelp()"></div>
+  <script>
+    const typeSelect = document.getElementById("projectType");
+    const formMDB = document.getElementById("formMDB");
+    const formLDT = document.getElementById("formLDT");
 
-<div id="helpPanel" class="help-panel">
-  <h2>Guide d’analyse v3.4.0</h2>
+    typeSelect.addEventListener("change", () => {
+      formMDB.style.display = typeSelect.value === "MDB" ? "block" : "none";
+      formLDT.style.display = typeSelect.value === "LDT" ? "block" : "none";
+    });
 
-  <p><b>Ce moteur IA analyse automatiquement un projet immobilier</b> en combinant :</p>
-  <ul>
-    <li>LTV (Loan-to-Value)</li>
-    <li>LTA (Loan-to-Asset)</li>
-    <li>LTC (Loan-to-Cost)</li>
-    <li>Marge opérationnelle</li>
-    <li>Pré-commercialisation</li>
-    <li>Liquidité du marché</li>
-    <li>Sûretés et couvertures (Fiducie, Hypothèque, Nantissement, Caution, GPD)</li>
-  </ul>
+    function runEngine() {
+      const result = computeAnalysis();
+      document.getElementById("score").textContent = result.score;
+      document.getElementById("status").textContent = result.status;
+      document.getElementById("results").style.display = "block";
+    }
+  </script>
 
-  <h3>Comment utiliser l’outil</h3>
-  <p><b>1.</b> Remplissez les champs (LTV, marge, précom, liq, LTA, LTC, mise, garanties + %).</p>
-  <p><b>2.</b> Cliquez sur “AUDITER & SAUVEGARDER”.</p>
-  <p><b>3.</b> Le moteur IA calcule :</p>
-  <ul>
-    <li>LTV net ajusté</li>
-    <li>Score de risque (0 à 100)</li>
-    <li>Statut : 💎 Premium / ✅ Safe / ⚠️ Tendu / 🚨 Critique</li>
-    <li>Ticket IA recommandé (100 à 1000 €)</li>
-  </ul>
-
-  <h3>Interprétation du score</h3>
-  <ul>
-    <li><b>0–30 :</b> 💎 Premium — risque très faible</li>
-    <li><b>31–50 :</b> ✅ Safe — risque modéré</li>
-    <li><b>51–70 :</b> ⚠️ Tendu — vigilance nécessaire</li>
-    <li><b>71–100 :</b> 🚨 Critique — risque élevé</li>
-  </ul>
-
-  <h3>Fonctionnalités supplémentaires</h3>
-  <ul>
-    <li><b>Export CSV :</b> génère un fichier Excel de tous vos audits</li>
-    <li><b>Mode clair / sombre :</b> change le thème</li>
-    <li><b>Suppression :</b> retire un projet du tableau</li>
-  </ul>
-</div>
-
-<script type="module">
-import { runLPBEngine } from './engine/engine.js';
-
-function toggleHelp() {
-  document.getElementById('helpPanel').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('open');
-}
-
-function calculLtvNet(ltv, covTotal, liq) {
-  const liqEffective = Math.min(10, liq + 2);
-  const pond = liqEffective / 10;
-  let ltvNet = ltv - (covTotal * pond);
-  return Math.max(0, Math.round(ltvNet));
-}
-
-function calculScoreRisque(ltv, lta, ltc, marge, precom, liq, garanties) {
-  let score = 0;
-
-  if (ltv <= 60) score += 5;
-  else if (ltv <= 75) score += 15;
-  else if (ltv <= 85) score += 30;
-  else score += 45;
-
-  if (!isNaN(lta) && lta > 0) {
-    if (lta <= 90) score += 5;
-    else if (lta <= 100) score += 15;
-    else score += 30;
-  }
-
-  if (!isNaN(ltc) && ltc > 0) {
-    if (ltc <= 85) score += 5;
-    else if (ltc <= 90) score += 15;
-    else score += 30;
-  }
-
-  if (marge >= 20) score += 5;
-  else if (marge >= 15) score += 15;
-  else if (marge >= 10) score += 25;
-  else score += 40;
-
-  if (precom >= 80) score += 5;
-  else if (precom >= 50) score += 15;
-  else if (precom >= 25) score += 25;
-  else score += 35;
-
-  if (liq >= 8) score += 5;
-  else if (liq >= 6) score += 15;
-  else score += 30;
-
-  if (garanties.fiducie) score -= 10;
-  if (garanties.hyp1) score -= 5;
-  if (garanties.gpd) score -= 8;
-
-  return Math.max(0, Math.min(100, Math.round(score)));
-}
-
-function calculSuggestionIA(ltv, marge, precom, liq, scoreRisque) {
-  let suggest = 1000;
-
-  if (scoreRisque >= 80) suggest = 150;
-  else if (scoreRisque >= 65) suggest = 250;
-  else if (scoreRisque >= 50) suggest = 400;
-  else if (scoreRisque >= 35) suggest = 600;
-  else suggest = 800;
-
-  if (ltv > 90) suggest = Math.min(suggest, 100);
-  else if (ltv > 80) suggest = Math.min(suggest, 250);
-
-  if (marge < 8) suggest = Math.min(suggest, 150);
-  else if (marge < 12) suggest = Math.min(suggest, 250);
-
-  if (precom < 25) suggest = Math.min(suggest, 300);
-
-  return Math.max(100, Math.min(1000, Math.round(suggest)));
-}
-
-function calculStatut(scoreRisque, ltv, marge, precom) {
-  if (ltv > 100) return "🚨 CRITIQUE";
-  if (marge < 5) return "🚨 CRITIQUE";
-  if (scoreRisque <= 30 && marge >= 20 && precom >= 50) return "💎 PREMIUM";
-  if (scoreRisque <= 50) return "✅ SAFE";
-  if (scoreRisque <= 70) return "⚠️ TENDU";
-  return "🚨 CRITIQUE";
-}
-
-function ajouterProjet() {
-  const nom = document.getElementById('nom').value || "Projet Master";
-  const ltv = parseFloat(document.getElementById('ltv').value) || 0;
-  const marge = parseFloat(document.getElementById('marge').value) || 0;
-  const precom = parseFloat(document.getElementById('precom').value) || 0;
-  const liq = parseInt(document.getElementById('liq').value) || 5;
-  const lta = parseFloat(document.getElementById('lta').value) || 0;
-  const ltc = parseFloat(document.getElementById('ltc').value) || 0;
-  const realInvest = parseFloat(document.getElementById('realInvest').value) || 0;
-
-  const garanties = {
-    fiducie: document.getElementById('g_fid').checked,
-    hyp1: document.getElementById('g_hypo').checked,
-    nantissement: document.getElementById('g_nant').checked,
-    caution: document.getElementById('g_caution').checked,
-    gpd: document.getElementById('g_gpd').checked,
-    aucune: false
-  };
-
-  const couvertures = {
-    fiducie: parseFloat(document.getElementById('p_fid').value) || 0,
-    hyp1: parseFloat(document.getElementById('p_hypo').value) || 0,
-    nantissement: parseFloat(document.getElementById('p_nant').value) || 0,
-    caution: parseFloat(document.getElementById('p_caution').value) || 0,
-    gpd: parseFloat(document.getElementById('p_gpd').value) || 0
-  };
-
-  const covTotal =
-    couvertures.fiducie +
-    couvertures.hyp1 +
-    couvertures.nantissement +
-    couvertures.caution +
-    couvertures.gpd;
-
-  const input = {
-    type: 'MDB',
-    besoin: realInvest,
-    valeurs: {
-      prixAchat: 100000,
-      valeurActif: 100000,
-      travaux: 0,
-      frais: 0,
-      chiffreAffaires: 0,
-      precommercialisation: precom,
-      dureeProjetMois: liq * 3,
-      liquiditeMarche: liq * 10,
-      couverture: couvertures,
-      fondsPropres: 0,
-      dette: ltv / 100 * 100000
-    },
-    garanties: garanties
-  };
-
-  const resultatV6 = runLPBEngine(input);
-  console.log("LPB V6 →", resultatV6);
-
-  const ltvNet = calculLtvNet(ltv, covTotal, liq);
-  const scoreRisque = calculScoreRisque(ltv, lta, ltc, marge, precom, liq, garanties);
-  const suggest = calculSuggestionIA(ltv, marge, precom, liq, scoreRisque);
-  const status = calculStatut(scoreRisque, ltv, marge, precom);
-
-  const garantiesTxt = Object.keys(garanties)
-    .filter(k => garanties[k])
-    .map(k => `${k} (${couvertures[k]}%)`)
-    .join(", ");
-
-  const p = {
-    date: new Date().toLocaleDateString('fr-FR'),
-    nom,
-    ltv,
-    marge,
-    precom,
-    liq,
-    lta,
-    ltc,
-    garantiesTxt,
-    ltvNet,
-    scoreRisque,
-    status,
-    investSuggest: suggest,
-    investReal: realInvest
-  };
-
-  let db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  db.push(p);
-  localStorage.setItem('immo_v34', JSON.stringify(db));
-
-  render();
-  document.getElementById('realInvest').value = '';
-}
-
-function render() {
-  const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  const body = document.getElementById('bodyTable');
-  body.innerHTML = "";
-
-  let sScore = 0, sTotal = 0;
-
-  [...db].reverse().forEach((p, idx) => {
-    sScore += p.scoreRisque || 0;
-    sTotal += p.investReal || 0;
-
-    let badgeClass =
-      p.status.includes('💎') ? 'badge-premium' :
-      p.status.includes('✅') ? 'badge-safe' :
-      p.status.includes('⚠️') ? 'badge-tendu' :
-      'badge-critique';
-
-    body.innerHTML += `
-<tr>
-  <td>
-    <b>${p.nom}</b><br>
-    <small style="color:var(--text-soft);">
-      ${p.date} • Pré: ${p.precom}% • Garanties: ${p.garantiesTxt}
-    </small>
-  </td>
-  <td style="font-weight:bold;">
-    ${p.ltvNet}%<br>
-    <small style="color:var(--text-soft);">LTV brut: ${p.ltv}%</small>
-  </td>
-  <td>
-    <span class="badge ${badgeClass}">${p.status}</span><br>
-    <small style="color:var(--text-soft);">
-      Marge: ${p.marge}% • Score: ${p.scoreRisque}/100
-    </small>
-  </td>
-  <td>
-    <small style="color:var(--text-soft);">IA: ${p.investSuggest}€</small><br>
-    <b style="color:var(--blue)">RÉEL: ${p.investReal}€</b>
-  </td>
-  <td>
-    <button onclick="suppr(${db.length - 1 - idx})"
-      style="border:none; background:none; cursor:pointer; color:var(--text-soft);">
-      ✖
-    </button>
-  </td>
-</tr>`;
-  });
-
-  if (db.length > 0) {
-    const avgScore = Math.round(sScore / db.length);
-    document.getElementById('avgRisk').innerText = avgScore + "/100";
-    document.getElementById('totalInvest').innerText = sTotal + " €";
-
-    const label = document.getElementById('riskLabel');
-    if (avgScore <= 30) { label.innerText = "SÉCURISÉ 🛡️"; label.style.color = "var(--emerald)"; }
-    else if (avgScore <= 50) { label.innerText = "ÉQUILIBRÉ ⚖️"; label.style.color = "var(--blue)"; }
-    else if (avgScore <= 70) { label.innerText = "VIGILANCE ⚠️"; label.style.color = "var(--amber)"; }
-    else { label.innerText = "CRITIQUE 🚨"; label.style.color = "var(--rose)"; }
-
-  } else {
-    document.getElementById('avgRisk').innerText = "0/100";
-    document.getElementById('totalInvest').innerText = "0 €";
-    const label = document.getElementById('riskLabel');
-    label.innerText = "Aucun projet";
-    label.style.color = "var(--text-soft)";
-  }
-}
-
-function suppr(idx) {
-  let db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  db.splice(idx, 1);
-  localStorage.setItem('immo_v34', JSON.stringify(db));
-  render();
-}
-
-function exportCSV() {
-  const db = JSON.parse(localStorage.getItem('immo_v34')) || [];
-  if (db.length === 0) {
-    alert("Aucune donnée.");
-    return;
-  }
-
-  let csv = "Date;Nom;LTV;Marge;Precom;Liq;Garanties;LTVNet;Score;Status;IA;Reel\n";
-
-  db.forEach(p => {
-    csv += `${p.date};${p.nom};${p.ltv};${p.marge};${p.precom};${p.liq};${p.garantiesTxt};${p.ltvNet};${p.scoreRisque};${p.status};${p.investSuggest};${p.investReal}\n`;
-  });
-
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.setAttribute("download", `Audit_Master_v34.csv`);
-  link.click();
-}
-
-function toggleTheme() {
-  const isLight = document.body.classList.toggle("light");
-  localStorage.setItem("theme", isLight ? "light" : "dark");
-  const btn = document.getElementById("themeBtn");
-  btn.textContent = isLight ? "Mode sombre" : "Mode clair";
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById("themeBtn");
-
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light");
-    btn.textContent = "Mode sombre";
-  } else {
-    btn.textContent = "Mode clair";
-  }
-
-  render();
-});
-
-window.ajouterProjet = ajouterProjet;
-window.toggleHelp = toggleHelp;
-window.toggleTheme = toggleTheme;
-window.exportCSV = exportCSV;
-window.suppr = suppr;
-</script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
 
 </body>
 </html>
