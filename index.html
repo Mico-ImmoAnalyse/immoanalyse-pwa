@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,69 +10,87 @@
 <link rel="manifest" href="manifest.webmanifest">
 
 <style>
-
-/* -------------------- MODE SOMBRE AMÉLIORÉ -------------------- */
+/* ---------- THEMES ---------- */
 :root {
-  --bg: #0b0b0b;
-  --bg-section: #141414;
-  --bg-card: #1c1c1c;
-  --text: #e6e6e6;
+  --bg: #0f1012;
+  --bg-section: #18191c;
+  --bg-card: #202226;
+  --text: #e7e7ea;
+  --muted: #a0a0a8;
   --accent: #4da3ff;
-  --border: #2a2a2a;
+  --border: #2a2c31;
+  --badge-bg: #2b2d33;
+  --badge-border: #555861;
 }
 
 .light {
-  --bg: #f5f5f5;
+  --bg: #f5f6f8;
   --bg-section: #ffffff;
-  --bg-card: #f0f0f0;
-  --text: #222;
+  --bg-card: #f3f4f7;
+  --text: #22252b;
+  --muted: #6b6f78;
   --accent: #0077cc;
-  --border: #ccc;
+  --border: #d0d3dc;
+  --badge-bg: #e4e6ee;
+  --badge-border: #b5b8c3;
 }
 
-/* -------------------- BASE -------------------- */
+/* ---------- BASE ---------- */
 body {
   margin: 0;
   padding: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: Arial, sans-serif;
-  transition: background 0.3s ease, color 0.3s ease;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
-h1 { text-align: center; margin: 10px 0 6px 0; color: var(--accent); }
-h2 { text-align: center; margin: 8px 0 6px 0; color: var(--accent); }
-h3 { margin: 6px 0 4px 0; color: var(--accent); }
+h1 { text-align: center; margin: 10px 0 6px 0; color: var(--accent); font-size: 22px; }
+h2 { text-align: center; margin: 8px 0 6px 0; color: var(--accent); font-size: 18px; }
+h3 { margin: 6px 0 4px 0; color: var(--accent); font-size: 15px; }
 
-/* -------------------- CONTAINER (ÉLARGI) -------------------- */
+label { font-size: 13px; }
+
+/* ---------- CONTAINER ---------- */
 .container {
   width: 94%;
   max-width: 560px;
-  margin: auto;
+  margin: 10px auto 20px auto;
 }
 
-/* -------------------- INPUTS -------------------- */
+/* ---------- INPUTS ---------- */
 input, select {
   width: 100%;
-  padding: 8px;
-  margin: 4px 0 10px 0;
+  padding: 7px 8px;
+  margin: 3px 0 9px 0;
   border-radius: 6px;
-  border: 1px solid #444;
-  background: #1a1a1a;
+  border: 1px solid var(--border);
+  background: #1b1d22;
   color: var(--text);
+  font-size: 13px;
+  box-sizing: border-box;
+}
+.light input,
+.light select {
+  background: #ffffff;
 }
 
-/* -------------------- BUTTONS -------------------- */
+input::placeholder {
+  color: var(--muted);
+}
+
+/* ---------- BUTTONS ---------- */
 button {
   width: 100%;
-  padding: 12px;
+  padding: 11px;
   background: var(--accent);
   border: none;
   border-radius: 6px;
   color: #000;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   margin-top: 10px;
+  font-size: 14px;
 }
 button:hover { background: #6bb4ff; }
 
@@ -84,30 +101,36 @@ button:hover { background: #6bb4ff; }
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  width: auto;
+  font-size: 13px;
 }
 .secondary:hover { background: var(--accent); color: #000; }
 
-/* -------------------- TABLE -------------------- */
+/* ---------- TABLE ---------- */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px;
+  margin-top: 10px;
+  font-size: 13px;
 }
 th, td {
-  border: 1px solid #333;
-  padding: 8px;
+  border: 1px solid var(--border);
+  padding: 6px 4px;
   text-align: center;
 }
-th { background: #1a1a1a; }
+th {
+  background: var(--bg-card);
+  font-weight: 600;
+}
 
-/* -------------------- SECTIONS -------------------- */
+/* ---------- SECTIONS ---------- */
 .section {
   background: var(--bg-section);
   border: 1px solid var(--border);
   padding: 10px;
   border-radius: 10px;
   margin: 10px auto;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 8px rgba(0,0,0,0.35);
 }
 
 .grid-2 {
@@ -125,43 +148,49 @@ th { background: #1a1a1a; }
 }
 
 .header-block { text-align: center; }
-.subtitle { color: var(--accent); margin-top: -6px; margin-bottom: 12px; }
+.subtitle {
+  color: var(--muted);
+  margin-top: -4px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
 
 .card {
   background: var(--bg-card);
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #333;
+  border: 1px solid var(--border);
 }
-.big-number { font-size: 24px; font-weight: bold; color: var(--accent); }
-.note { font-size: 12px; opacity: 0.7; }
+.big-number { font-size: 22px; font-weight: 700; color: var(--accent); }
+.note { font-size: 11px; color: var(--muted); }
 
-/* -------------------- HEADER BUTTONS -------------------- */
+/* ---------- HEADER BUTTONS ---------- */
 .header-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 6px;
 }
 
-/* -------------------- THEME BUTTON -------------------- */
+/* ---------- THEME BUTTON ---------- */
 .theme-toggle {
   position: fixed;
-  top: 18px;
-  right: 18px;
+  top: 14px;
+  right: 14px;
   z-index: 999;
 }
 .theme-toggle button {
   background: var(--bg-section);
   color: var(--text);
   border: 1px solid var(--border);
-  padding: 10px 14px;
+  padding: 8px 11px;
   border-radius: 50%;
-  font-size: 18px;
+  font-size: 17px;
   cursor: pointer;
+  width: auto;
 }
 
-/* -------------------- GUIDE PANEL -------------------- */
+/* ---------- GUIDE PANEL ---------- */
 .guide-panel {
   position: fixed;
   top: 0;
@@ -170,16 +199,17 @@ th { background: #1a1a1a; }
   height: 100%;
   background: var(--bg-section);
   border-left: 1px solid var(--border);
-  padding: 20px;
+  padding: 18px;
   transition: right 0.3s ease;
   z-index: 9999;
   overflow-y: auto;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.5);
 }
 .guide-panel.open { right: 0; }
-.guide-content h2 { margin-top: 0; }
-.guide-content p { margin-bottom: 12px; line-height: 1.4; }
+.guide-content h2 { margin-top: 0; font-size: 18px; }
+.guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
 
-/* -------------------- GARANTIES ALIGNÉES -------------------- */
+/* ---------- GARANTIES ---------- */
 .garanties-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -190,12 +220,29 @@ th { background: #1a1a1a; }
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+/* badge % B2 */
+.badge-pourcent {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* checkbox */
+.garanties-grid input[type="checkbox"] {
+  width: auto;
+  margin: 0;
 }
 
 </style>
 </head>
-
 <body>
 
 <!-- THEME BUTTON -->
@@ -207,14 +254,14 @@ th { background: #1a1a1a; }
 <div id="guidePanel" class="guide-panel">
   <div class="guide-content">
     <h2>Guide ImmoAnalyse</h2>
-    <p>Le guide enrichi sera ajouté ensuite.</p>
+    <p>Le guide enrichi (critères, seuils, alertes 🟢🟠🔴) sera intégré ici.</p>
     <button class="secondary" onclick="closeGuide()">Fermer</button>
   </div>
 </div>
 
 <div class="container">
 
-<!-- MODULE 1 -->
+<!-- MODULE 1 : HEADER / PORTFEUILLE -->
 <div class="section header-block">
   <h1>ImmoAnalyse v6</h1>
 
@@ -240,7 +287,7 @@ th { background: #1a1a1a; }
   </div>
 </div>
 
-<!-- MODULE 2 -->
+<!-- MODULE 2 : NOUVEL AUDIT -->
 <div class="section">
   <h2>Nouvel audit</h2>
 
@@ -276,19 +323,39 @@ th { background: #1a1a1a; }
   </div>
 </div>
 
-<!-- MODULE 3 -->
+<!-- MODULE 3 : GARANTIES & COUVERTURES -->
 <div class="section">
   <h2>Sûretés & Couvertures (%)</h2>
 
   <div class="garanties-grid">
-    <label><input type="checkbox" id="fiducie"> Fiducie‑Sûreté (20%)</label>
-    <label><input type="checkbox" id="nantissement"> Nantissement (20%)</label>
-    <label><input type="checkbox" id="g1d"> Garantie 1ère demande (25%)</label>
-    <label><input type="checkbox" id="hyp1"> Hypothèque 1er rang (25%)</label>
-    <label><input type="checkbox" id="caution"> Caution (10%)</label>
+    <label>
+      <input type="checkbox" id="fiducie">
+      <span>Fiducie‑Sûreté</span>
+      <span class="badge-pourcent">20%</span>
+    </label>
+    <label>
+      <input type="checkbox" id="g1d">
+      <span>Garantie 1ère demande</span>
+      <span class="badge-pourcent">25%</span>
+    </label>
+    <label>
+      <input type="checkbox" id="caution">
+      <span>Caution</span>
+      <span class="badge-pourcent">10%</span>
+    </label>
+    <label>
+      <input type="checkbox" id="nantissement">
+      <span>Nantissement</span>
+      <span class="badge-pourcent">20%</span>
+    </label>
+    <label>
+      <input type="checkbox" id="hyp1">
+      <span>Hypothèque 1er rang</span>
+      <span class="badge-pourcent">25%</span>
+    </label>
   </div>
 
-  <div class="grid-3">
+  <div class="grid-3" style="margin-top:8px;">
     <div>
       <label>LTA (%)</label>
       <input id="lta" type="number" placeholder="Ex : 95">
@@ -303,10 +370,10 @@ th { background: #1a1a1a; }
     </div>
   </div>
 
-  <button class="primary" onclick="runEngine()">AUDITER & SAUVEGARDER</button>
+  <button onclick="runEngine()">AUDITER & SAUVEGARDER</button>
 </div>
 
-<!-- MODULE 4 -->
+<!-- MODULE 4 : TABLEAU PROJETS -->
 <div class="section">
   <h2>Projets audités</h2>
 
@@ -323,16 +390,7 @@ th { background: #1a1a1a; }
 
 </div> <!-- FIN CONTAINER -->
 
-<!-- ENGINE SCRIPTS -->
-<script src="engine/engine.js"></script>
-<script src="engine/scoring.js"></script>
-<script src="engine/ratios.js"></script>
-<script src="engine/garanties.js"></script>
-<script src="engine/diagnostic.js"></script>
-<script src="engine/crossAnalysis.js"></script>
-<script src="engine/ticket.js"></script>
-<script src="engine/types.js"></script>
-
+<!-- SERVICE WORKER -->
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
@@ -389,6 +447,118 @@ function exportCSV() {
   a.download = "projets_audites.csv";
   a.click();
 }
+</script>
+
+<!-- MODULE SCRIPT : WRAPPER POUR runLPBEngine -->
+<script type="module">
+import { runLPBEngine } from './engine/engine.js';
+
+function readNumber(id) {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  const v = parseFloat(el.value.replace(',', '.'));
+  return isNaN(v) ? null : v;
+}
+
+function readCheckbox(id) {
+  const el = document.getElementById(id);
+  return el ? !!el.checked : false;
+}
+
+function formatTickets(ticketIA) {
+  if (!ticketIA || !ticketIA.plage) return "-";
+  const { min, max } = ticketIA.plage;
+  if (min == null && max == null) return "-";
+  if (min == null) return `0–${max} €`;
+  if (max == null) return `${min} €+`;
+  return `${min}–${max} €`;
+}
+
+function deriveRisqueLabel(score, meta) {
+  if (!meta || !meta.securiteGlobale) {
+    if (score >= 80) return "PREMIUM";
+    if (score >= 60) return "SAFE";
+    if (score >= 40) return "TENDU";
+    return "CRITIQUE";
+  }
+  const s = meta.securiteGlobale;
+  if (s === "forte") return "PREMIUM";
+  if (s === "moyenne") return "SAFE";
+  if (s === "faible") return "TENDU";
+  return "CRITIQUE";
+}
+
+window.runEngine = function() {
+  const type = document.getElementById("projectType").value || "MDB";
+  const nomProjet = (document.getElementById("nomProjet").value || "").trim() || "Projet sans nom";
+
+  const valeurs = {
+    LTV: readNumber("ltv"),
+    LTA: readNumber("lta"),
+    LTC: readNumber("ltc"),
+    marge: readNumber("marge"),
+    precomm: readNumber("precomm"),
+    liquidite: readNumber("liq"),
+    mise: readNumber("mise")
+  };
+
+  const garanties = {
+    fiducie: readCheckbox("fiducie"),
+    nantissement: readCheckbox("nantissement"),
+    g1d: readCheckbox("g1d"),
+    hyp1: readCheckbox("hyp1"),
+    caution: readCheckbox("caution")
+  };
+
+  const input = {
+    type,
+    besoin: null,
+    valeurs,
+    garanties
+  };
+
+  const result = runLPBEngine(input);
+  const { ratios, score, diagnostic, ticketIA, meta } = result;
+
+  const ltvNet = ratios && ratios.LTV_net != null ? `${ratios.LTV_net.toFixed(1)}%` : (valeurs.LTV != null ? `${valeurs.LTV.toFixed(1)}%` : "-");
+  const risque = deriveRisqueLabel(score, meta);
+  const tickets = formatTickets(ticketIA);
+
+  const tableBody = document.getElementById("tableProjets");
+  const tr = document.createElement("tr");
+
+  const tdProjet = document.createElement("td");
+  tdProjet.textContent = `${nomProjet} (${type})`;
+
+  const tdLtv = document.createElement("td");
+  tdLtv.textContent = ltvNet;
+
+  const tdRisque = document.createElement("td");
+  tdRisque.textContent = risque;
+
+  const tdTickets = document.createElement("td");
+  tdTickets.textContent = tickets;
+
+  tr.appendChild(tdProjet);
+  tr.appendChild(tdLtv);
+  tr.appendChild(tdRisque);
+  tr.appendChild(tdTickets);
+  tableBody.appendChild(tr);
+
+  // Mise à jour simple du score portefeuille (moyenne des scores)
+  const rows = tableBody.querySelectorAll("tr");
+  let totalScore = 0;
+  rows.forEach(() => { totalScore += score; });
+  const avgScore = rows.length ? (totalScore / rows.length) : 0;
+  document.getElementById("scorePortefeuille").textContent = `${avgScore.toFixed(0)}/100`;
+
+  // Total investi : on utilise la mise comme proxy
+  let totalMise = 0;
+  rows.forEach(() => {
+    if (valeurs.mise != null) totalMise += valeurs.mise;
+  });
+  document.getElementById("totalInvesti").textContent = `${totalMise.toLocaleString("fr-FR")} €`;
+};
 </script>
 
 </body>
