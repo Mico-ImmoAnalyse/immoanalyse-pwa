@@ -218,6 +218,18 @@ th {
 .guide-panel.open { right: 0; }
 .guide-content h2 { margin-top: 0; font-size: 18px; }
 .guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
+/* Correction structure interne du Guide */
+.guide-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-content {
+  flex: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 /* ---------- GARANTIES ---------- */
 .garanties-grid {
@@ -889,5 +901,6 @@ window.runEngine = function() {
 
 </body>
 </html>
+
 
 
