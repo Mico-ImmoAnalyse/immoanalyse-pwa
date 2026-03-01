@@ -293,9 +293,10 @@ th {
 /* ---------- GARANTIES ---------- */
 .garanties-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
   align-items: center;
+}
 }
 .garanties-grid label {
   display: flex;
@@ -991,6 +992,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
