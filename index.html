@@ -253,9 +253,325 @@ th {
 <!-- GUIDE PANEL -->
 <div id="guidePanel" class="guide-panel">
   <div class="guide-content">
-    <h2>Guide ImmoAnalyse</h2>
-    <p>Le guide enrichi (critères, seuils, alertes 🟢🟠🔴) sera intégré ici.</p>
-    <button class="secondary" onclick="closeGuide()">Fermer</button>
+   <style>
+/* ----- Onglets ----- */
+.guide-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.guide-tab {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  user-select: none;
+}
+
+.guide-tab.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+/* ----- Contenu des onglets ----- */
+.guide-section {
+  display: none;
+  animation: fadeIn 0.25s ease;
+}
+
+.guide-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ----- Accordéons ----- */
+.accordion {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.accordion-header {
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header:hover {
+  background: var(--bg-section);
+}
+
+.accordion-content {
+  display: none;
+  padding: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.accordion.open .accordion-content {
+  display: block;
+}
+
+.accordion-arrow {
+  font-size: 12px;
+  opacity: 0.7;
+}
+</style>
+
+<h2>Guide ImmoAnalyse</h2>
+
+<!-- ONGLET NAVIGATION -->
+<div class="guide-tabs">
+  <div class="guide-tab active" data-tab="crit">Critères</div>
+  <div class="guide-tab" data-tab="alertes">Alertes</div>
+  <div class="guide-tab" data-tab="exemples">Exemples</div>
+  <div class="guide-tab" data-tab="opt">Optimisation</div>
+  <div class="guide-tab" data-tab="lecture">Lecture rapide</div>
+  <div class="guide-tab" data-tab="faq">FAQ</div>
+</div>
+
+<!-- ONGLET 1 : CRITÈRES -->
+<div class="guide-section active" id="crit">
+
+  <div class="accordion">
+    <div class="accordion-header">LTV — Loan To Value 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      <b>Définition :</b> Dette / Valeur du bien.<br><br>
+      🟢 < 60% — Très sécurisé<br>
+      🟠 60–85% — Zone de vigilance<br>
+      🔴 > 85% — Risque élevé<br><br>
+      Un LTV élevé fragilise la capacité de remboursement en cas de revente.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">LTA — Loan To Assets 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      <b>Définition :</b> Dette / Actifs totaux.<br><br>
+      🟢 < 70% — Structure solide<br>
+      🟠 70–85% — Endettement à surveiller<br>
+      🔴 > 85% — Structure fragile<br><br>
+      Mesure la solidité financière globale du projet.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">LTC — Loan To Cost 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      <b>Définition :</b> Dette / Coût total du projet.<br><br>
+      🟢 < 70% — Excellent<br>
+      🟠 70–85% — Acceptable<br>
+      🔴 > 85% — Risque de dépassement<br><br>
+      Un LTC élevé indique un projet trop dépendant de la dette.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Marge (MDB) 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      🟢 > 20% — Très bon<br>
+      🟠 10–20% — Correct<br>
+      🔴 < 10% — Risque de perte<br><br>
+      La marge est le coussin de sécurité du marchand de biens.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Pré‑commercialisation 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      🟢 > 50% — Très sécurisé<br>
+      🟠 30–50% — À surveiller<br>
+      🔴 < 30% — Risque commercial<br><br>
+      Plus la pré‑commercialisation est élevée, plus le risque d’invendus diminue.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Liquidité (1–10) 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      🟢 8–10 — Marché très liquide<br>
+      🟠 5–7 — Liquide<br>
+      🔴 1–4 — Revente difficile<br><br>
+      La liquidité conditionne la capacité à sortir rapidement du projet.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Garanties & Sûretés 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      <b>Pondérations :</b><br>
+      Fiducie‑Sûreté : 20%<br>
+      Nantissement : 20%<br>
+      Garantie 1ère demande : 25%<br>
+      Hypothèque 1er rang : 25%<br>
+      Caution : 10%<br><br>
+      🟢 Garanties fortes : Hypothèque, G1D, Fiducie<br>
+      🟠 Garanties moyennes : Nantissement, Caution<br>
+      🔴 Aucune garantie : risque structurel élevé
+    </div>
+  </div>
+
+</div>
+
+<!-- ONGLET 2 : ALERTES -->
+<div class="guide-section" id="alertes">
+  <p>Le moteur détecte automatiquement les incohérences et risques :</p>
+
+  <div class="accordion">
+    <div class="accordion-header">Alertes financières <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      - LTV trop élevé<br>
+      - LTA incohérent<br>
+      - LTC > 85%<br>
+      - Marge insuffisante<br>
+      - Mise trop faible<br>
+      - Absence de garanties fortes
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Alertes commerciales <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      - Pré‑commercialisation trop faible<br>
+      - Liquidité insuffisante<br>
+      - Risque de stock invendu
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Alertes structurelles <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      - Endettement global trop élevé<br>
+      - Absence de garanties<br>
+      - Ratio incohérent avec le type de projet
+    </div>
+  </div>
+</div>
+
+<!-- ONGLET 3 : EXEMPLES -->
+<div class="guide-section" id="exemples">
+
+  <div class="accordion">
+    <div class="accordion-header">Exemple MDB <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      LTV = 88% 🔴<br>
+      Marge = 12% 🟠<br>
+      Liquidité = 6 🟠<br>
+      Garanties = Caution 🔴<br><br>
+      → Statut : TENDU<br>
+      → Ticket IA : 0–250 €<br>
+      → Reco : réduire la dette + ajouter une garantie forte.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Exemple LDT <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      LTV = 72% 🟠<br>
+      Liquidité = 8 🟢<br>
+      Pré‑Comm = 55% 🟢<br>
+      Charges élevées 🔴<br><br>
+      → Statut : SAFE<br>
+      → Ticket IA : 250–500 €<br>
+      → Reco : optimiser les charges + sécuriser la saison basse.
+    </div>
+  </div>
+
+</div>
+
+<!-- ONGLET 4 : OPTIMISATION -->
+<div class="guide-section" id="opt">
+
+  <div class="accordion">
+    <div class="accordion-header">Optimiser un projet MDB <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      - viser une marge > 15%<br>
+      - réduire le LTV sous 75%<br>
+      - sécuriser une garantie forte<br>
+      - buffer travaux 10–15%<br>
+      - cohérence prix/m²
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Optimiser un projet LDT <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      - analyser le taux d’occupation réel<br>
+      - simuler la saison basse<br>
+      - vérifier les restrictions locales<br>
+      - optimiser les charges récurrentes<br>
+      - cibler les zones touristiques liquides
+    </div>
+  </div>
+
+</div>
+
+<!-- ONGLET 5 : LECTURE RAPIDE -->
+<div class="guide-section" id="lecture">
+  <p><b>Lecture d’un projet en 10 secondes :</b></p>
+  - LTV : si > 85% → danger immédiat<br>
+  - Garanties : au moins 1 forte<br>
+  - Marge (MDB) : < 10% = risque<br>
+  - Liquidité : < 5 = marché difficile<br>
+  - Statut IA : PREMIUM / SAFE / TENDU / CRITIQUE<br>
+  - Ticket IA : cohérent avec ton profil 0–1000 €
+</div>
+
+<!-- ONGLET 6 : FAQ -->
+<div class="guide-section" id="faq">
+
+  <div class="accordion">
+    <div class="accordion-header">Pourquoi un projet peut être SAFE mais avec un ticket faible ? <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      Parce que le moteur combine score + alertes + garanties.  
+      Un projet peut être globalement bon mais manquer de sûretés.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header">Pourquoi le LTV net diffère du LTV brut ? <span class="accordion-arrow">▼</span></div>
+    <div class="accordion-content">
+      Le LTV net intègre les garanties fortes, ce qui réduit le risque réel.
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ----- Gestion des onglets ----- */
+document.querySelectorAll(".guide-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
+
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+
+/* ----- Accordéons ----- */
+document.querySelectorAll(".accordion-header").forEach(header => {
+  header.addEventListener("click", () => {
+    const acc = header.parentElement;
+    acc.classList.toggle("open");
+  });
+});
+</script>
+
   </div>
 </div>
 
@@ -563,3 +879,4 @@ window.runEngine = function() {
 
 </body>
 </html>
+
