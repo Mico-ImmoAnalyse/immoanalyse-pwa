@@ -4,13 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ImmoAnalyse PWA</title>
+<title>ImmoAnalyse v6</title>
 
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <link rel="manifest" href="manifest.webmanifest">
 
 <style>
+
 /* -------------------- BASE -------------------- */
 body {
   margin: 0;
@@ -24,6 +25,14 @@ h1 { text-align: center; margin: 10px 0 6px 0; color: var(--accent); }
 h2 { text-align: center; margin: 8px 0 6px 0; color: var(--accent); }
 h3 { margin: 6px 0 4px 0; color: var(--accent); }
 
+/* -------------------- CONTAINER (COMPACT) -------------------- */
+.container {
+  width: 92%;
+  max-width: 480px; /* largeur compacte comme l'ancienne version */
+  margin: auto;
+}
+
+/* -------------------- INPUTS -------------------- */
 input, select {
   width: 100%;
   padding: 8px;
@@ -34,6 +43,7 @@ input, select {
   color: #e0e0e0;
 }
 
+/* -------------------- BUTTONS -------------------- */
 button {
   width: 100%;
   padding: 12px;
@@ -46,6 +56,16 @@ button {
   margin-top: 10px;
 }
 button:hover { background: #6bb4ff; }
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.secondary:hover { background: var(--accent); color: #000; }
 
 /* -------------------- TABLE -------------------- */
 table {
@@ -90,7 +110,6 @@ body {
   padding: 10px;
   border-radius: 10px;
   margin: 10px auto;
-  transition: background 0.3s ease, border 0.3s ease;
 }
 
 .grid-2 {
@@ -126,15 +145,6 @@ body {
   gap: 10px;
   margin-bottom: 6px;
 }
-.secondary {
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.secondary:hover { background: var(--accent); color: #000; }
 
 /* -------------------- THEME BUTTON -------------------- */
 .theme-toggle {
@@ -170,6 +180,7 @@ body {
 .guide-panel.open { right: 0; }
 .guide-content h2 { margin-top: 0; }
 .guide-content p { margin-bottom: 12px; line-height: 1.4; }
+
 </style>
 </head>
 
@@ -184,10 +195,12 @@ body {
 <div id="guidePanel" class="guide-panel">
   <div class="guide-content">
     <h2>Guide ImmoAnalyse</h2>
-    <p>Le guide sera enrichi à l’étape suivante.</p>
+    <p>Le guide enrichi sera ajouté à l’étape suivante.</p>
     <button class="secondary" onclick="closeGuide()">Fermer</button>
   </div>
 </div>
+
+<div class="container">
 
 <!-- MODULE 1 -->
 <div class="section header-block">
@@ -295,6 +308,8 @@ body {
     <tbody id="tableProjets"></tbody>
   </table>
 </div>
+
+</div> <!-- FIN CONTAINER -->
 
 <!-- ENGINE SCRIPTS -->
 <script src="engine/engine.js"></script>
