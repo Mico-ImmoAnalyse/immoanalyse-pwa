@@ -195,15 +195,19 @@ th {
   position: fixed;
   top: 0;
   right: -380px;
-  width: 360px;
-  height: 100vh; /* corrige le problème */
-  overflow-y: auto; /* scroll interne */
+  width: 360px; /* largeur nominale */
+  height: 100vh;
+  overflow-y: auto;
   background: var(--bg-section);
   border-left: 1px solid var(--border);
   padding: 18px;
   transition: right 0.3s ease;
   z-index: 9999;
   box-shadow: -4px 0 12px rgba(0,0,0,0.5);
+
+  /* structure interne */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Scrollbar premium */
@@ -216,21 +220,17 @@ th {
 }
 
 .guide-panel.open { right: 0; }
-.guide-content h2 { margin-top: 0; font-size: 18px; }
-.guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
-/* Correction structure interne du Guide */
-.guide-panel {
-  display: flex;
-  flex-direction: column;
-}
 
 .guide-content {
   flex: 1;
   min-height: 100%;
-  width: 100%; /* largeur nominale */
+  width: 100%; /* largeur interne correcte */
   display: flex;
   flex-direction: column;
 }
+
+.guide-content h2 { margin-top: 0; font-size: 18px; }
+.guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
 
 /* ---------- GARANTIES ---------- */
 .garanties-grid {
@@ -902,6 +902,7 @@ window.runEngine = function() {
 
 </body>
 </html>
+
 
 
 
