@@ -12,23 +12,43 @@
 
 <style>
 
+/* -------------------- MODE SOMBRE AMÉLIORÉ -------------------- */
+:root {
+  --bg: #0b0b0b;
+  --bg-section: #141414;
+  --bg-card: #1c1c1c;
+  --text: #e6e6e6;
+  --accent: #4da3ff;
+  --border: #2a2a2a;
+}
+
+.light {
+  --bg: #f5f5f5;
+  --bg-section: #ffffff;
+  --bg-card: #f0f0f0;
+  --text: #222;
+  --accent: #0077cc;
+  --border: #ccc;
+}
+
 /* -------------------- BASE -------------------- */
 body {
   margin: 0;
   padding: 0;
-  background: #0d0d0d;
-  color: #e0e0e0;
+  background: var(--bg);
+  color: var(--text);
   font-family: Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 h1 { text-align: center; margin: 10px 0 6px 0; color: var(--accent); }
 h2 { text-align: center; margin: 8px 0 6px 0; color: var(--accent); }
 h3 { margin: 6px 0 4px 0; color: var(--accent); }
 
-/* -------------------- CONTAINER (COMPACT) -------------------- */
+/* -------------------- CONTAINER (ÉLARGI) -------------------- */
 .container {
-  width: 92%;
-  max-width: 480px; /* largeur compacte comme l'ancienne version */
+  width: 94%;
+  max-width: 560px;
   margin: auto;
 }
 
@@ -38,16 +58,16 @@ input, select {
   padding: 8px;
   margin: 4px 0 10px 0;
   border-radius: 6px;
-  border: 1px solid #333;
+  border: 1px solid #444;
   background: #1a1a1a;
-  color: #e0e0e0;
+  color: var(--text);
 }
 
 /* -------------------- BUTTONS -------------------- */
 button {
   width: 100%;
   padding: 12px;
-  background: #4da3ff;
+  background: var(--accent);
   border: none;
   border-radius: 6px;
   color: #000;
@@ -80,29 +100,6 @@ th, td {
 }
 th { background: #1a1a1a; }
 
-/* -------------------- THEMES -------------------- */
-:root {
-  --bg: #0d0d0d;
-  --bg-section: #111;
-  --text: #e0e0e0;
-  --accent: #4da3ff;
-  --border: #222;
-}
-
-.light {
-  --bg: #f5f5f5;
-  --bg-section: #ffffff;
-  --text: #222;
-  --accent: #0077cc;
-  --border: #ddd;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
 /* -------------------- SECTIONS -------------------- */
 .section {
   background: var(--bg-section);
@@ -110,6 +107,7 @@ body {
   padding: 10px;
   border-radius: 10px;
   margin: 10px auto;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
 }
 
 .grid-2 {
@@ -130,7 +128,7 @@ body {
 .subtitle { color: var(--accent); margin-top: -6px; margin-bottom: 12px; }
 
 .card {
-  background: #1a1a1a;
+  background: var(--bg-card);
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #333;
@@ -181,6 +179,20 @@ body {
 .guide-content h2 { margin-top: 0; }
 .guide-content p { margin-bottom: 12px; line-height: 1.4; }
 
+/* -------------------- GARANTIES ALIGNÉES -------------------- */
+.garanties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  align-items: center;
+}
+.garanties-grid label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
 </style>
 </head>
 
@@ -195,7 +207,7 @@ body {
 <div id="guidePanel" class="guide-panel">
   <div class="guide-content">
     <h2>Guide ImmoAnalyse</h2>
-    <p>Le guide enrichi sera ajouté à l’étape suivante.</p>
+    <p>Le guide enrichi sera ajouté ensuite.</p>
     <button class="secondary" onclick="closeGuide()">Fermer</button>
   </div>
 </div>
@@ -268,7 +280,7 @@ body {
 <div class="section">
   <h2>Sûretés & Couvertures (%)</h2>
 
-  <div class="grid-2">
+  <div class="garanties-grid">
     <label><input type="checkbox" id="fiducie"> Fiducie‑Sûreté (20%)</label>
     <label><input type="checkbox" id="nantissement"> Nantissement (20%)</label>
     <label><input type="checkbox" id="g1d"> Garantie 1ère demande (25%)</label>
