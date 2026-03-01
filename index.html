@@ -125,35 +125,54 @@ th {
   border-radius: 10px;
   margin: 10px auto;
   box-shadow: 0 0 8px rgba(0,0,0,0.35);
+  width: 100%;
+  max-width: 600px; /* largeur corrigée */
 }
+
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
 }
+
 .grid-3 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* corrigé */
+  gap: 10px;
 }
+
 @media (max-width: 800px) {
-  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
 }
+
 .header-block { text-align: center; }
+
 .subtitle {
   color: var(--muted);
   margin-top: -4px;
   margin-bottom: 10px;
   font-size: 12px;
 }
+
 .card {
   background: var(--bg-card);
   padding: 8px;
   border-radius: 8px;
   border: 1px solid var(--border);
 }
-.big-number { font-size: 22px; font-weight: 700; color: var(--accent); }
-.note { font-size: 11px; color: var(--muted); }
+
+.big-number {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.note {
+  font-size: 11px;
+  color: var(--muted);
+}
 
 /* ---------- HEADER BUTTONS ---------- */
 .header-buttons {
@@ -170,6 +189,7 @@ th {
   right: 14px;
   z-index: 999;
 }
+
 .theme-toggle button {
   background: var(--bg-section);
   color: var(--text);
@@ -186,7 +206,7 @@ th {
   position: fixed;
   top: 0;
   right: -380px;
-  width: 360px; /* largeur nominale */
+  width: 360px;
   height: 100vh;
   overflow-y: auto;
   background: var(--bg-section);
@@ -198,14 +218,16 @@ th {
   display: flex;
   flex-direction: column;
 }
-/* Scrollbar premium */
+
 .guide-panel::-webkit-scrollbar {
   width: 6px;
 }
+
 .guide-panel::-webkit-scrollbar-thumb {
   background: var(--accent);
   border-radius: 10px;
 }
+
 .guide-panel.open { right: 0; }
 
 .guide-content {
@@ -215,6 +237,7 @@ th {
   display: flex;
   flex-direction: column;
 }
+
 .guide-content h2 { margin-top: 0; font-size: 18px; }
 .guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
 
@@ -227,6 +250,7 @@ th {
   justify-content: space-between;
   margin-bottom: 12px;
 }
+
 .guide-tab {
   padding: 6px 12px;
   border-radius: 6px;
@@ -238,6 +262,7 @@ th {
   user-select: none;
   text-align: center;
 }
+
 .guide-tab.active {
   background: var(--accent);
   color: #000;
@@ -249,9 +274,11 @@ th {
   display: none;
   animation: fadeIn 0.25s ease;
 }
+
 .guide-section.active {
   display: block;
 }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
@@ -264,6 +291,7 @@ th {
   border-radius: 6px;
   margin-bottom: 8px;
 }
+
 .accordion-header {
   padding: 8px;
   cursor: pointer;
@@ -272,9 +300,11 @@ th {
   justify-content: space-between;
   align-items: center;
 }
+
 .accordion-header:hover {
   background: var(--bg-section);
 }
+
 .accordion-content {
   display: none;
   padding: 8px;
@@ -282,9 +312,11 @@ th {
   color: var(--muted);
   border-top: 1px solid var(--border);
 }
+
 .accordion.open .accordion-content {
   display: block;
 }
+
 .accordion-arrow {
   font-size: 12px;
   opacity: 0.7;
@@ -297,14 +329,14 @@ th {
   gap: 10px;
   align-items: center;
 }
-}
+
 .garanties-grid label {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
   font-size: 13px;
 }
-/* badge % B2 */
+
 .badge-pourcent {
   display: inline-flex;
   align-items: center;
@@ -315,11 +347,12 @@ th {
   font-size: 11px;
   color: var(--muted);
 }
-/* checkbox */
+
 .garanties-grid input[type="checkbox"] {
   width: auto;
   margin: 0;
 }
+
 </style>
 </head>
 <body>
@@ -992,6 +1025,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
