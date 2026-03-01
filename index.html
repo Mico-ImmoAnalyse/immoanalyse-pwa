@@ -917,7 +917,90 @@ function deleteProject(index) {
   renderProjects();
 }
 
-// --- Exposé global : runEngine ---
+/* ============================================================
+   MODULE COHERENCE LDT
+   (à placer AVANT runEngine)
+============================================================ */
+function coherenceLDT(ldt, garanties) {
+  let score = 100;
+  let alerts = [];
+
+  // 1) Capacité totale de remboursement
+  let freq = ldt.frequence;
+  let cycles = 0;
+
+  switch (freq) {
+    case "mensuel": cycles = ldt.duree; break;
+    case "trimestriel": cycles = Math.floor(ldt.duree / 3); break;
+    case "semestriel": cycles = Math.floor(ldt.duree / 6); break;
+    case "annuel": cycles = Math.floor(ldt.duree / 12); break;
+    case "in_fine": cycles = 1; break;
+  }
+
+  let capaciteTotale = ldt.remboursement * cycles;
+
+  if (capaciteTotale < ldt.montant) {
+    score -= 30;
+    alerts.push("Capacité totale de remboursement insuffisante.");
+  }
+
+  // 2) Durée du financement
+  if (ldt.duree > 24) {
+    score -= 20;
+    alerts.push("Durée longue : risque structurel accru.");
+  }
+  if (ldt.duree > 36) {
+    score -= 10;
+    alerts.push("Durée très longue : risque élevé.");
+  }
+
+  // 3) Taux proposé
+  if (ldt.taux > 10) {
+    score -= 15;
+    alerts.push("Taux élevé : risque financier important.");
+  }
+  if (ldt.taux > 12) {
+    score -= 10;
+    alerts.push("Taux très élevé : risque financier critique.");
+  }
+
+  // 4) Fréquence de remboursement
+  if (ldt.frequence === "in_fine") {
+    score -= 25;
+    alerts.push("Remboursement in fine : risque de défaut en fin de période.");
+  }
+
+  // 5) Garanties (correction des clés)
+  let garantiesFortes =
+    (garanties.g1d || 0) +      // GPDN
+    (garanties.fiducie || 0) +
+    (garanties.hyp1 || 0);
+
+  if (garantiesFortes < 30) {
+    score -= 20;
+    alerts.push("Garanties faibles pour une ligne de trésorerie.");
+  }
+
+  // 6) Risque structurel global
+  if (ldt.duree > 24 && ldt.taux > 10) {
+    score -= 10;
+    alerts.push("Durée longue + taux élevé : risque structurel combiné.");
+  }
+
+  if (score < 0) score = 0;
+
+  let niveau = "SAFE";
+  if (score < 80) niveau = "MOYEN";
+  if (score < 60) niveau = "TENDU";
+  if (score < 40) niveau = "CRITIQUE";
+
+  return { score, niveau, alerts, capaciteTotale };
+}
+
+
+/* ============================================================
+   EXPOSÉ GLOBAL : runEngine
+============================================================ */
 window.runEngine = function() {
   const type = document.getElementById("projectType").value || "MDB";
   const nomProjet = (document.getElementById("nomProjet").value || "").trim() || "Projet sans nom";
@@ -933,28 +1016,28 @@ window.runEngine = function() {
   };
 
   const ldt = {
-  montant: readNumber("ldt_montant"),
-  duree: readNumber("ldt_duree"),
-  taux: readNumber("ldt_taux"),
-  remboursement: readNumber("ldt_remboursement"),
-  frequence: document.getElementById("ldt_frequence").value
-};
+    montant: readNumber("ldt_montant"),
+    duree: readNumber("ldt_duree"),
+    taux: readNumber("ldt_taux"),
+    remboursement: readNumber("ldt_remboursement"),
+    frequence: document.getElementById("ldt_frequence").value
+  };
 
   const garanties = {
     fiducie: readCheckbox("fiducie"),
     nantissement: readCheckbox("nantissement"),
-    g1d: readCheckbox("g1d"),
-    hyp1: readCheckbox("hyp1"),
+    g1d: readCheckbox("g1d"),     // GPDN
+    hyp1: readCheckbox("hyp1"),   // Hypothèque 1er rang
     caution: readCheckbox("caution")
   };
 
- const input = {
-  type,
-  besoin: null,
-  valeurs,
-  garanties,
-  ldt
-};
+  const input = {
+    type,
+    besoin: null,
+    valeurs,
+    garanties,
+    ldt
+  };
 
   const result = runLPBEngine(input);
   const { ratios, score, diagnostic, ticketIA, meta } = result;
@@ -976,9 +1059,81 @@ window.runEngine = function() {
     score: typeof score === "number" ? score : null,
     mise: typeof valeurs.mise === "number" ? valeurs.mise : 0
   });
+
   saveProjects(projects);
   renderProjects();
 };
+
+
+  // 1) Capacité totale de remboursement
+  let freq = ldt.frequence;
+  let cycles = 0;
+
+  switch (freq) {
+    case "mensuel": cycles = ldt.duree; break;
+    case "trimestriel": cycles = Math.floor(ldt.duree / 3); break;
+    case "semestriel": cycles = Math.floor(ldt.duree / 6); break;
+    case "annuel": cycles = Math.floor(ldt.duree / 12); break;
+    case "in_fine": cycles = 1; break;
+  }
+
+  let capaciteTotale = ldt.remboursement * cycles;
+
+  if (capaciteTotale < ldt.montant) {
+    score -= 30;
+    alerts.push("Capacité totale de remboursement insuffisante.");
+  }
+
+  // 2) Durée du financement
+  if (ldt.duree > 24) {
+    score -= 20;
+    alerts.push("Durée longue : risque structurel accru.");
+  }
+  if (ldt.duree > 36) {
+    score -= 10;
+    alerts.push("Durée très longue : risque élevé.");
+  }
+
+  // 3) Taux proposé
+  if (ldt.taux > 10) {
+    score -= 15;
+    alerts.push("Taux élevé : risque financier important.");
+  }
+  if (ldt.taux > 12) {
+    score -= 10;
+    alerts.push("Taux très élevé : risque financier critique.");
+  }
+
+  // 4) Fréquence de remboursement
+  if (ldt.frequence === "in_fine") {
+    score -= 25;
+    alerts.push("Remboursement in fine : risque de défaut en fin de période.");
+  }
+
+  // 5) Garanties
+  let garantiesFortes = (garanties.gpdn || 0) + (garanties.fiducie || 0) + (garanties.hypotheque || 0);
+  if (garantiesFortes < 30) {
+    score -= 20;
+    alerts.push("Garanties faibles pour une ligne de trésorerie.");
+  }
+
+  // 6) Risque structurel global
+  if (ldt.duree > 24 && ldt.taux > 10) {
+    score -= 10;
+    alerts.push("Durée longue + taux élevé : risque structurel combiné.");
+  }
+
+  // 7) Score minimum
+  if (score < 0) score = 0;
+
+  // 8) Niveau de risque
+  let niveau = "SAFE";
+  if (score < 80) niveau = "MOYEN";
+  if (score < 60) niveau = "TENDU";
+  if (score < 40) niveau = "CRITIQUE";
+
+  return { score, niveau, alerts, capaciteTotale };
+}
 
 // Rendu initial au chargement
 document.addEventListener("DOMContentLoaded", () => {
@@ -988,6 +1143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
