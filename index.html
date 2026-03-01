@@ -196,15 +196,25 @@ th {
   top: 0;
   right: -380px;
   width: 360px;
-  height: 100%;
+  height: 100vh; /* corrige le problème */
+  overflow-y: auto; /* scroll interne */
   background: var(--bg-section);
   border-left: 1px solid var(--border);
   padding: 18px;
   transition: right 0.3s ease;
   z-index: 9999;
-  overflow-y: auto;
   box-shadow: -4px 0 12px rgba(0,0,0,0.5);
 }
+
+/* Scrollbar premium */
+.guide-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.guide-panel::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
 .guide-panel.open { right: 0; }
 .guide-content h2 { margin-top: 0; font-size: 18px; }
 .guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
@@ -879,4 +889,5 @@ window.runEngine = function() {
 
 </body>
 </html>
+
 
