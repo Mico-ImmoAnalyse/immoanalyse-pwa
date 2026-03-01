@@ -603,6 +603,28 @@ th {
     </div>
   </div>
 
+  <!-- MODULE LDT : LIGNE DE TRÉSORERIE -->
+<div class="section" id="sectionLDT" style="display:none;">
+  <h2>Ligne de trésorerie (LDT)</h2>
+
+  <label>Montant recherché (€)</label>
+  <input id="ldt_montant" type="number" placeholder="Ex : 1535000">
+
+  <label>Durée (mois)</label>
+  <input id="ldt_duree" type="number" placeholder="Ex : 36">
+
+  <label>Taux (%)</label>
+  <input id="ldt_taux" type="number" placeholder="Ex : 12">
+
+  <label>Capacité de remboursement (€/semestre)</label>
+  <input id="ldt_capacite" type="number" placeholder="Ex : 270000">
+
+  <p class="note">
+    Ces données permettent d’évaluer la capacité réelle de remboursement, 
+    le risque structurel et le ticket IA prudent.
+  </p>
+</div>
+
   <!-- MODULE 3 : GARANTIES & COUVERTURES -->
   <div class="section">
     <h2>Sûretés & Couvertures (%)</h2>
@@ -697,6 +719,19 @@ toggleBtn.addEventListener("click", () => {
   const newTheme = document.body.classList.contains("light") ? "dark" : "light";
   localStorage.setItem("theme", newTheme);
   applyTheme(newTheme);
+});
+</script>
+
+  <script>
+document.getElementById("projectType").addEventListener("change", () => {
+  const type = document.getElementById("projectType").value;
+  const sectionLDT = document.getElementById("sectionLDT");
+
+  if (type === "LDT") {
+    sectionLDT.style.display = "block";
+  } else {
+    sectionLDT.style.display = "none";
+  }
 });
 </script>
 
@@ -932,3 +967,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
