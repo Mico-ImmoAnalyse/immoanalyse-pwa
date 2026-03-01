@@ -37,13 +37,6 @@ h3 {
   color: var(--accent);
 }
 
-    .container {
-      width: 92%;
-      max-width: 900px;
-      margin: auto;
-      padding-bottom: 40px;
-    }
-
     input, select {
       width: 100%;
       padding: 10px;
@@ -68,12 +61,6 @@ h3 {
 
     button:hover {
       background: #6bb4ff;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
     }
 
     @media (max-width: 800px) {
@@ -235,53 +222,7 @@ body {
 }
   </style>
 </head>
-<div id="guide" class="section">
-  <h2>Guide</h2>
-  <p>Ce module explique comment analyser vos projets immobiliers selon les critères MDB ou LDT.</p>
-  <p>Il détaille les ratios LTV, LTA, LTC, la marge, la pré-commercialisation, la liquidité et les garanties.</p>
-</div>
 
-<script>
-  const toggleBtn = document.getElementById("toggleTheme");
-
-  function applyTheme(theme) {
-    if (theme === "light") {
-      document.body.classList.add("light");
-      toggleBtn.textContent = "🌞";
-    } else {
-      document.body.classList.remove("light");
-      toggleBtn.textContent = "🌙";
-    }
-  }
-
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  applyTheme(savedTheme);
-
-  toggleBtn.addEventListener("click", () => {
-    const newTheme = document.body.classList.contains("light") ? "dark" : "light";
-    localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-  });
-</script>
-<script>
-function exportCSV() {
-  let rows = [["Projet", "LTV NET", "Risque", "Tickets"]];
-
-  document.querySelectorAll("#tableProjets tr").forEach(tr => {
-    let cells = [...tr.children].map(td => td.innerText);
-    if (cells.length) rows.push(cells);
-  });
-
-  let csv = rows.map(r => r.join(";")).join("\n");
-  let blob = new Blob([csv], { type: "text/csv" });
-  let url = URL.createObjectURL(blob);
-
-  let a = document.createElement("a");
-  a.href = url;
-  a.download = "projets_audites.csv";
-  a.click();
-}
-</script>
 <body>
 <!-- Sélecteur de thème -->
 <div class="theme-toggle">
@@ -402,6 +343,13 @@ function exportCSV() {
   </table>
 </div>
 
+  <!-- MODULE 5 — Guide -->
+<div id="guide" class="section">
+  <h2>Guide</h2>
+  <p>Ce module explique comment analyser vos projets immobiliers selon les critères MDB ou LDT.</p>
+  <p>Il détaille les ratios LTV, LTA, LTC, la marge, la pré-commercialisation, la liquidité et les garanties.</p>
+</div>
+
   <!-- Scripts -->
   <script src="engine/engine.js"></script>
   <script src="engine/scoring.js"></script>
@@ -419,9 +367,49 @@ function exportCSV() {
       navigator.serviceWorker.register("service-worker.js");
     }
   </script>
+<script>
+  const toggleBtn = document.getElementById("toggleTheme");
+
+  function applyTheme(theme) {
+    if (theme === "light") {
+      document.body.classList.add("light");
+      toggleBtn.textContent = "🌞";
+    } else {
+      document.body.classList.remove("light");
+      toggleBtn.textContent = "🌙";
+    }
+  }
+
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(savedTheme);
+
+  toggleBtn.addEventListener("click", () => {
+    const newTheme = document.body.classList.contains("light") ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    applyTheme(newTheme);
+  });
+</script>
+
+<script>
+  function exportCSV() {
+    let rows = [["Projet", "LTV NET", "Risque", "Tickets"]];
+    document.querySelectorAll("#tableProjets tr").forEach(tr => {
+      let cells = [...tr.children].map(td => td.innerText);
+      if (cells.length) rows.push(cells);
+    });
+    let csv = rows.map(r => r.join(";")).join("\n");
+    let blob = new Blob([csv], { type: "text/csv" });
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "projets_audites.csv";
+    a.click();
+  }
+</script>
 
 </body>
 </html>
+
 
 
 
