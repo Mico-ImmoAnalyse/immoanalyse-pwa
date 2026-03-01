@@ -920,6 +920,13 @@ window.runEngine = function() {
     mise: readNumber("mise")
   };
 
+  const ldt = {
+  montant: readNumber("ldt_montant"),
+  duree: readNumber("ldt_duree"),
+  taux: readNumber("ldt_taux"),
+  capacite: readNumber("ldt_capacite")
+};
+
   const garanties = {
     fiducie: readCheckbox("fiducie"),
     nantissement: readCheckbox("nantissement"),
@@ -928,12 +935,13 @@ window.runEngine = function() {
     caution: readCheckbox("caution")
   };
 
-  const input = {
-    type,
-    besoin: null,
-    valeurs,
-    garanties
-  };
+ const input = {
+  type,
+  besoin: null,
+  valeurs,
+  garanties,
+  ldt
+};
 
   const result = runLPBEngine(input);
   const { ratios, score, diagnostic, ticketIA, meta } = result;
@@ -967,4 +975,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
