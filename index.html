@@ -333,6 +333,8 @@ th {
   <div class="guide-content">
     <h2>Guide ImmoAnalyse</h2>
 
+    <button class="secondary" onclick="closeGuide()" style="margin-bottom:10px; width:auto;">Fermer</button>
+
     <!-- ONGLET NAVIGATION -->
     <div class="guide-tabs">
       <div class="guide-tab active" data-tab="crit">Critères</div>
@@ -765,6 +767,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  <script>
+document.addEventListener("click", (e) => {
+  const panel = document.getElementById("guidePanel");
+  if (!panel.classList.contains("open")) return;
+
+  const isInside = panel.contains(e.target);
+  const isButton = e.target.closest(".secondary") || e.target.id === "toggleTheme";
+
+  if (!isInside && !isButton) {
+    closeGuide();
+  }
+});
+</script>
+
   // Accordéons
   document.querySelectorAll(".accordion-header").forEach(header => {
     header.addEventListener("click", () => {
@@ -986,6 +1002,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
