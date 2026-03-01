@@ -1,22 +1,22 @@
-const CACHE_NAME = "immoanalyse-v1";
+const CACHE_NAME = "immoanalyse-v2";
+
 const STATIC_ASSETS = [
-  "/",
-  "/index.html",
-  "/offline.html",
-  "/manifest.webmanifest",
+  "index.html",
+  "offline.html",
+  "manifest.webmanifest",
 
-  "/engine/engine.js",
-  "/engine/scoring.js",
-  "/engine/ratios.js",
-  "/engine/garanties.js",
-  "/engine/diagnostic.js",
-  "/engine/crossAnalysis.js",
-  "/engine/ticket.js",
-  "/engine/types.js",
+  "engine/engine.js",
+  "engine/scoring.js",
+  "engine/ratios.js",
+  "engine/garanties.js",
+  "engine/diagnostic.js",
+  "engine/crossAnalysis.js",
+  "engine/ticket.js",
+  "engine/types.js",
 
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/maskable-512.png"
+  "icons/icon-192.png",
+  "icons/icon-512.png",
+  "icons/maskable-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -41,6 +41,6 @@ self.addEventListener("fetch", event => {
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         return response;
       })
-      .catch(() => caches.match(event.request).then(r => r || caches.match("/offline.html")))
+      .catch(() => caches.match(event.request).then(r => r || caches.match("offline.html")))
   );
 });
