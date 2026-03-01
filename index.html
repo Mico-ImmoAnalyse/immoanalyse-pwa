@@ -94,72 +94,259 @@
     th {
       background: #1a1a1a;
     }
+:root {
+  --bg: #0d0d0d;
+  --bg-section: #111;
+  --text: #e0e0e0;
+  --accent: #4da3ff;
+  --border: #222;
+}
+
+.light {
+  --bg: #f5f5f5;
+  --bg-section: #ffffff;
+  --text: #222;
+  --accent: #0077cc;
+  --border: #ddd;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.section {
+  background: var(--bg-section);
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: 10px;
+  margin: 20px auto;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 800px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.header-block {
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--accent);
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #1a1a1a;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.big-number {
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.note {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.primary {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.primary:hover {
+  background: #6bb4ff;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 999;
+}
+
+.theme-toggle button {
+  background: var(--bg-section);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle button:hover {
+  background: var(--accent);
+  color: #000;
+}    
   </style>
 </head>
 
+<script>
+  const toggleBtn = document.getElementById("toggleTheme");
+
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light");
+    toggleBtn.textContent = "🌞";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+
+    const isLight = document.body.classList.contains("light");
+    toggleBtn.textContent = isLight ? "🌞" : "🌙";
+
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+  });
+</script>
+
 <body>
+<!-- Sélecteur de thème -->
+<div class="theme-toggle">
+  <button id="toggleTheme" aria-label="Changer de thème">🌙</button>
+</div>
 
-  <h1>ImmoAnalyse PWA</h1>
-  <div class="container">
+<!-- MODULE 1 — Portefeuille / Moteur IA -->
+<div class="section header-block">
+  <h1>ImmoAnalyse v6</h1>
+  <p class="subtitle">Moteur IA – LTV / LTA / LTC / Marge / Précom / Liquidité / Garanties</p>
 
-    <!-- Sélecteur MDB / LDT -->
-    <div class="section">
-      <h2>Type de projet</h2>
-      <select id="projectType">
-        <option value="MDB">MDB – Marchand de biens</option>
-        <option value="LDT">LDT – Location de tourisme</option>
-      </select>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Score moyen du portefeuille</h3>
+      <p id="scorePortefeuille" class="big-number">0/100</p>
+      <p class="note">Aucun projet</p>
     </div>
 
-    <!-- Formulaire MDB -->
-    <div id="formMDB" class="section">
-      <h2>Paramètres MDB</h2>
-      <input id="prixAchat" type="number" placeholder="Prix d'achat (€)">
-      <input id="travaux" type="number" placeholder="Travaux (€)">
-      <input id="frais" type="number" placeholder="Frais (€)">
-      <input id="prixRevente" type="number" placeholder="Prix de revente (€)">
+    <div class="card">
+      <h3>Total investi</h3>
+      <p id="totalInvesti" class="big-number">0 €</p>
+      <p class="note">Capital engagé sur les dossiers audités</p>
     </div>
-
-    <!-- Formulaire LDT -->
-    <div id="formLDT" class="section" style="display:none;">
-      <h2>Paramètres LDT</h2>
-      <input id="prixAchatLDT" type="number" placeholder="Prix d'achat (€)">
-      <input id="travauxLDT" type="number" placeholder="Travaux (€)">
-      <input id="loyer" type="number" placeholder="Loyer mensuel estimé (€)">
-      <input id="charges" type="number" placeholder="Charges mensuelles (€)">
-    </div>
-
-    <!-- Garanties -->
-    <div class="section">
-      <h2>Garanties</h2>
-      <div class="grid">
-        <label><input type="checkbox" id="g1"> Garantie 1</label>
-        <label><input type="checkbox" id="g2"> Garantie 2</label>
-        <label><input type="checkbox" id="g3"> Garantie 3</label>
-        <label><input type="checkbox" id="g4"> Garantie 4</label>
-      </div>
-    </div>
-
-    <!-- Bouton -->
-    <button onclick="runEngine()">Analyser</button>
-
-    <!-- Résultats -->
-    <div id="results" class="section" style="display:none;">
-      <h2>Résultats</h2>
-      <table>
-        <tr><th>Critère</th><th>Valeur</th></tr>
-        <tr><td>Score</td><td id="score"></td></tr>
-        <tr><td>Statut</td><td id="status"></td></tr>
-      </table>
-    </div>
-
-    <!-- Guide -->
-    <div class="section">
-      <h2>Guide</h2>
-      <p>Ce module analyse automatiquement vos projets immobiliers selon les critères MDB ou LDT.</p>
-    </div>
-
   </div>
+
+  <div class="info-block">
+    <h3>Moteur IA</h3>
+    <p>Scoring automatique, statuts PREMIUM / SAFE / TENDU / CRITIQUE, bridage des tickets selon score.</p>
+  </div>
+</div>
+
+<!-- MODULE 2 — Nouvel audit + MDB/LDT -->
+<div class="section">
+  <h2>Nouvel audit</h2>
+
+  <label>Type de projet</label>
+  <select id="projectType">
+    <option value="MDB">MDB – Marchand de biens</option>
+    <option value="LDT">LDT – Location de tourisme</option>
+  </select>
+
+  <label>Projet</label>
+  <input id="nomProjet" type="text" placeholder="Nom du dossier">
+
+  <div class="grid-2">
+    <div>
+      <label>LTV (%)</label>
+      <input id="ltv" type="number" placeholder="Ex : 70">
+    </div>
+
+    <div>
+      <label>Marge (%)</label>
+      <input id="marge" type="number" placeholder="Ex : 15">
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <label>Pré-Comm (%)</label>
+      <input id="precomm" type="number" placeholder="Ex : 50">
+    </div>
+
+    <div>
+      <label>Liquidité (1–10)</label>
+      <input id="liq" type="number" placeholder="Ex : 7">
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 3 — Sûretés & Couvertures (%) -->
+<div class="section">
+  <h2>Sûretés & Couvertures (%)</h2>
+
+  <div class="grid-2">
+    <label><input type="checkbox" id="fiducie"> Fiducie‑Sûreté (20%)</label>
+    <label><input type="checkbox" id="nantissement"> Nantissement (20%)</label>
+    <label><input type="checkbox" id="g1d"> Garantie 1ère demande (25%)</label>
+    <label><input type="checkbox" id="hyp1"> Hypothèque 1er rang (25%)</label>
+    <label><input type="checkbox" id="caution"> Caution (10%)</label>
+  </div>
+
+  <div class="grid-3">
+    <div>
+      <label>LTA (%)</label>
+      <input id="lta" type="number" placeholder="Ex : 95">
+    </div>
+
+    <div>
+      <label>LTC (%)</label>
+      <input id="ltc" type="number" placeholder="Ex : 88">
+    </div>
+
+    <div>
+      <label>Mise (€)</label>
+      <input id="mise" type="number" placeholder="Ex : 500">
+    </div>
+  </div>
+
+  <button class="primary" onclick="runEngine()">AUDITER & SAUVEGARDER</button>
+</div>
+
+<!-- MODULE 4 — Projets audités -->
+<div class="section">
+  <h2>Projets audités</h2>
+
+  <table>
+    <tr>
+      <th>PROJET</th>
+      <th>LTV NET</th>
+      <th>RISQUE</th>
+      <th>TICKETS</th>
+    </tr>
+    <tbody id="tableProjets"></tbody>
+  </table>
+</div>
 
   <!-- Scripts -->
   <script src="engine/engine.js"></script>
@@ -171,23 +358,7 @@
   <script src="engine/ticket.js"></script>
   <script src="engine/types.js"></script>
 
-  <script>
-    const typeSelect = document.getElementById("projectType");
-    const formMDB = document.getElementById("formMDB");
-    const formLDT = document.getElementById("formLDT");
-
-    typeSelect.addEventListener("change", () => {
-      formMDB.style.display = typeSelect.value === "MDB" ? "block" : "none";
-      formLDT.style.display = typeSelect.value === "LDT" ? "block" : "none";
-    });
-
-    function runEngine() {
-      const result = computeAnalysis();
-      document.getElementById("score").textContent = result.score;
-      document.getElementById("status").textContent = result.status;
-      document.getElementById("results").style.display = "block";
-    }
-  </script>
+ 
 
   <script>
     if ("serviceWorker" in navigator) {
@@ -197,4 +368,5 @@
 
 </body>
 </html>
+
 
