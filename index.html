@@ -831,9 +831,14 @@ function exportCSV() {
 
 <!-- MODULE SCRIPT : LPB + localStorage + suppression -->
 <script type="module">
+
 import { runLPBEngine } from './engine/engine.js';
 
 const STORAGE_KEY = "immoanalyse_projets_v6";
+
+/* ============================================================
+   Utilitaires
+============================================================ */
 
 function readNumber(id) {
   const el = document.getElementById(id);
@@ -841,6 +846,7 @@ function readNumber(id) {
   const v = parseFloat(String(el.value).replace(',', '.'));
   return isNaN(v) ? null : v;
 }
+
 function readCheckbox(id) {
   const el = document.getElementById(id);
   return el ? !!el.checked : false;
@@ -869,7 +875,10 @@ function deriveRisqueLabel(score, meta) {
   return "CRITIQUE";
 }
 
-// --- Gestion du stockage local ---
+/* ============================================================
+   Stockage local
+============================================================ */
+
 function loadProjects() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -880,18 +889,28 @@ function loadProjects() {
     return [];
   }
 }
+
 function saveProjects(projects) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
 }
-  const RISK_COLORS = {
+
+/* ============================================================
+   Couleurs des badges selon le risque
+============================================================ */
+
+const RISK_COLORS = {
   "PREMIUM": "#4da3ff",   // bleu accent
   "SAFE": "#4caf50",      // vert
   "TENDU": "#ff9800",     // orange
   "CRITIQUE": "#f44336"   // rouge
 };
 
-// --- Rendu du tableau + recalcul portefeuille ---
+/* ============================================================
+   Rendu du tableau + recalcul portefeuille
+============================================================ */
+
 function renderProjects() {
+
   const projects = loadProjects();
   const tableBody = document.getElementById("tableProjets");
   tableBody.innerHTML = "";
@@ -900,49 +919,57 @@ function renderProjects() {
   let totalMise = 0;
 
   projects.forEach((p, index) => {
+
     const tr = document.createElement("tr");
 
+    // PROJET
     const tdProjet = document.createElement("td");
     tdProjet.textContent = `${p.nom} (${p.type})`;
 
+    // LTV NET
     const tdLtv = document.createElement("td");
     tdLtv.textContent = p.ltvNet ?? "-";
 
+    // RISQUE
     const tdRisque = document.createElement("td");
     tdRisque.textContent = p.risque ?? "-";
 
+    // TICKETS + MISE stylisée
     const tdTickets = document.createElement("td");
-tdTickets.innerHTML = `
-  <div style="font-weight:600; color:var(--accent);">
-    ${p.tickets ?? "-"}
-  </div>
+    const color = RISK_COLORS[p.risque] || "var(--muted)";
 
-  <div style="
-    margin-top:4px;
-    display:inline-flex;
-    align-items:center;
-    padding:2px 8px;
-    border-radius:999px;
-    background:var(--badge-bg);
-    border:1px solid var(--badge-border);
-    font-size:11px;
-    color:var(--muted);
-  ">
-    Mise : ${p.mise?.toLocaleString("fr-FR") ?? 0} €
-  </div>
-`;
+    tdTickets.innerHTML = `
+      <div style="font-weight:600; color:${color};">
+        ${p.tickets ?? "-"}
+      </div>
 
+      <div style="
+        margin-top:4px;
+        display:inline-flex;
+        align-items:center;
+        padding:2px 8px;
+        border-radius:999px;
+        background:var(--badge-bg);
+        border:1px solid var(--badge-border);
+        font-size:11px;
+        color:${color};
+        font-weight:500;
+      ">
+        Mise : ${p.mise?.toLocaleString("fr-FR") ?? 0} €
+      </div>
+    `;
+
+    // ACTIONS (suppression)
     const tdActions = document.createElement("td");
     const btnDel = document.createElement("button");
     btnDel.textContent = "🗑️";
     btnDel.style.width = "auto";
     btnDel.style.padding = "4px 8px";
     btnDel.style.fontSize = "13px";
-    btnDel.addEventListener("click", () => {
-      deleteProject(index);
-    });
+    btnDel.addEventListener("click", () => deleteProject(index));
     tdActions.appendChild(btnDel);
 
+    // Ajout des cellules
     tr.appendChild(tdProjet);
     tr.appendChild(tdLtv);
     tr.appendChild(tdRisque);
@@ -951,14 +978,20 @@ tdTickets.innerHTML = `
 
     tableBody.appendChild(tr);
 
+    // Calcul portefeuille
     if (typeof p.score === "number") totalScore += p.score;
     if (typeof p.mise === "number") totalMise += p.mise;
   });
 
+  // Score moyen
   const avgScore = projects.length ? (totalScore / projects.length) : 0;
   document.getElementById("scorePortefeuille").textContent = `${avgScore.toFixed(0)}/100`;
-  document.getElementById("totalInvesti").textContent = `${totalMise.toLocaleString("fr-FR")} €`;
 
+  // Total investi
+  document.getElementById("totalInvesti").textContent =
+    `${totalMise.toLocaleString("fr-FR")} €`;
+
+  // Note sous le score
   const noteEl = document.querySelector(".card .note");
   if (projects.length === 0 && noteEl) {
     noteEl.textContent = "Aucun projet";
@@ -966,6 +999,10 @@ tdTickets.innerHTML = `
     noteEl.textContent = `${projects.length} projet(s) audité(s)`;
   }
 }
+
+/* ============================================================
+   Suppression projet
+============================================================ */
 
 function deleteProject(index) {
   const projects = loadProjects();
@@ -976,9 +1013,11 @@ function deleteProject(index) {
 }
 
 /* ============================================================
-   EXPOSÉ GLOBAL : runEngine
+   runEngine — moteur principal d’audit
 ============================================================ */
+
 window.runEngine = function() {
+
   const type = document.getElementById("projectType").value || "MDB";
   const nomProjet = (document.getElementById("nomProjet").value || "").trim() || "Projet sans nom";
 
@@ -1003,18 +1042,12 @@ window.runEngine = function() {
   const garanties = {
     fiducie: readCheckbox("fiducie"),
     nantissement: readCheckbox("nantissement"),
-    g1d: readCheckbox("g1d"),     // GPDN
-    hyp1: readCheckbox("hyp1"),   // Hypothèque 1er rang
+    g1d: readCheckbox("g1d"),
+    hyp1: readCheckbox("hyp1"),
     caution: readCheckbox("caution")
   };
 
-  const input = {
-    type,
-    besoin: null,
-    valeurs,
-    garanties,
-    ldt
-  };
+  const input = { type, besoin: null, valeurs, garanties, ldt };
 
   const result = runLPBEngine(input);
   const { ratios, score, diagnostic, ticketIA, meta } = result;
@@ -1041,14 +1074,19 @@ window.runEngine = function() {
   renderProjects();
 };
 
-// Rendu initial au chargement
+/* ============================================================
+   Rendu initial
+============================================================ */
+
 document.addEventListener("DOMContentLoaded", () => {
   renderProjects();
 });
+
 </script>
 
 </body>
 </html>
+
 
 
 
