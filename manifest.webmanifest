@@ -1,11 +1,10 @@
 {
-  "name": "ImmoAnalyse",
+  "name": "ImmoAnalyse PWA",
   "short_name": "ImmoAnalyse",
-  "description": "Analyseur immobilier IA v3.4.1 (LTV, LTA, LTC, marge, pré-com, liquidité, garantie).",
-  "start_url": "./index.html",
+  "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#020617",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -16,6 +15,12 @@
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
