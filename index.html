@@ -907,8 +907,21 @@ function renderProjects() {
 
     const tdTickets = document.createElement("td");
 tdTickets.innerHTML = `
-  <div>${p.tickets ?? "-"}</div>
-  <div style="font-size:11px; color:var(--muted); margin-top:2px;">
+  <div style="font-weight:600; color:var(--accent);">
+    ${p.tickets ?? "-"}
+  </div>
+
+  <div style="
+    margin-top:4px;
+    display:inline-flex;
+    align-items:center;
+    padding:2px 8px;
+    border-radius:999px;
+    background:var(--badge-bg);
+    border:1px solid var(--badge-border);
+    font-size:11px;
+    color:var(--muted);
+  ">
     Mise : ${p.mise?.toLocaleString("fr-FR") ?? 0} €
   </div>
 `;
@@ -1030,6 +1043,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
