@@ -906,7 +906,12 @@ function renderProjects() {
     tdRisque.textContent = p.risque ?? "-";
 
     const tdTickets = document.createElement("td");
-    tdTickets.textContent = p.tickets ?? "-";
+tdTickets.innerHTML = `
+  <div>${p.tickets ?? "-"}</div>
+  <div style="font-size:11px; color:var(--muted); margin-top:2px;">
+    Mise : ${p.mise?.toLocaleString("fr-FR") ?? 0} €
+  </div>
+`;
 
     const tdActions = document.createElement("td");
     const btnDel = document.createElement("button");
@@ -1025,6 +1030,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
