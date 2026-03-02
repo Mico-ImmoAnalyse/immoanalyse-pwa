@@ -1263,7 +1263,7 @@ window.runEngine = function() {
 
   scoreFinal = Math.max(0, Math.min(100, scoreFinal));
 
-  /* ============================================================
+    /* ============================================================
      LTV net dynamique
   ============================================================= */
 
@@ -1317,7 +1317,8 @@ window.runEngine = function() {
 
   saveProjects(projects);
   renderProjects();
-};
+}; // ← FERMETURE DE runEngine() OBLIGATOIRE
+
 
 /* ============================================================
    Rendu initial
@@ -1326,6 +1327,7 @@ window.runEngine = function() {
 document.addEventListener("DOMContentLoaded", () => {
   renderProjects();
 });
+
 
 /* ============================================================
    Activation/désactivation des champs garanties
@@ -1350,6 +1352,7 @@ bindGuaranteeToggle("caution", "caution_eur");
 
 </body>
 </html>
+
 
 
 
