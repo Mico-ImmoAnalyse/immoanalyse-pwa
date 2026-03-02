@@ -1189,7 +1189,8 @@ window.runEngine = function () {
 
   saveProjects(projects);
   renderProjects();
-};
+} // ← fermeture correcte de runEngine()
+
 
 /* ============================================================
    Activation des champs garanties + rendu initial
@@ -1214,9 +1215,9 @@ document.addEventListener("DOMContentLoaded", () => {
   bindGuaranteeToggle("caution", "caution_eur");
 });
 </script>
-
 </body>
 </html>
+
 
 
 
