@@ -1057,6 +1057,81 @@ function deleteProject(index) {
   renderProjects();
 }
 
+  /* ============================================================
+   Pondération dynamique des garanties
+============================================================ */
+
+function computeGarantiesDynamiques(garanties, montantProjet) {
+
+  const poids = {
+    fiducie: 1.00,       // très forte
+    g1d: 1.00,           // très forte
+    hyp1: 1.00,          // très forte
+    nantissement: 0.60,  // moyenne
+    caution: 0.30        // faible
+  };
+
+  let total = 0;
+  let details = {};
+  let alertes = [];
+
+  function capCouverture(v) {
+    if (v == null) return 0;
+    if (v > 150) {
+      alertes.push("Couverture >150% : vérifier la cohérence.");
+      return 150;
+    }
+    return Math.max(0, v);
+  }
+
+  // Fiducie
+  if (garanties.fiducie.active) {
+    const pct = capCouverture(garanties.fiducie.pct);
+    const pond = poids.fiducie * (pct / 100);
+    total += pond;
+    details.fiducie = pond;
+  }
+
+  // G1D
+  if (garanties.g1d.active) {
+    const pct = capCouverture(garanties.g1d.pct);
+    const pond = poids.g1d * (pct / 100);
+    total += pond;
+    details.g1d = pond;
+  }
+
+  // Hypothèque
+  if (garanties.hyp1.active) {
+    const pct = capCouverture(garanties.hyp1.pct);
+    const pond = poids.hyp1 * (pct / 100);
+    total += pond;
+    details.hyp1 = pond;
+  }
+
+  // Nantissement
+  if (garanties.nantissement.active) {
+    const pct = capCouverture(garanties.nantissement.pct);
+    const pond = poids.nantissement * (pct / 100);
+    total += pond;
+    details.nantissement = pond;
+  }
+
+  // Caution personnelle
+  if (garanties.caution.active && montantProjet > 0) {
+    const pct = (garanties.caution.eur || 0) / montantProjet * 100;
+    const pctEff = capCouverture(pct);
+    const pond = poids.caution * (pctEff / 100);
+    total += pond;
+    details.caution = pond;
+  }
+
+  return {
+    total,      // pondération totale
+    details,    // pondération par garantie
+    alertes     // alertes éventuelles
+  };
+}
+
 /* ============================================================
    runEngine — moteur principal d’audit
 ============================================================ */
@@ -1076,6 +1151,8 @@ window.runEngine = function() {
     mise: readNumber("mise")
   };
 
+  const montantProjet = valeurs.LTV ? 100 : 100; // placeholder si besoin
+
   const ldt = {
     montant: readNumber("ldt_montant"),
     duree: readNumber("ldt_duree"),
@@ -1084,34 +1161,60 @@ window.runEngine = function() {
     frequence: document.getElementById("ldt_frequence").value
   };
 
-  const garanties = {
-    fiducie: readCheckbox("fiducie"),
-    nantissement: readCheckbox("nantissement"),
-    g1d: readCheckbox("g1d"),
-    hyp1: readCheckbox("hyp1"),
-    caution: readCheckbox("caution")
-  };
+ const garanties = {
+  fiducie: {
+    active: readCheckbox("fiducie"),
+    pct: readNumber("fiducie_pct")
+  },
+  g1d: {
+    active: readCheckbox("g1d"),
+    pct: readNumber("g1d_pct")
+  },
+  hyp1: {
+    active: readCheckbox("hyp1"),
+    pct: readNumber("hyp1_pct")
+  },
+  nantissement: {
+    active: readCheckbox("nantissement"),
+    pct: readNumber("nantissement_pct")
+  },
+  caution: {
+    active: readCheckbox("caution"),
+    eur: readNumber("caution_eur")
+  }
+};
 
+  const garantiesDyn = computeGarantiesDynamiques(garanties, valeurs.mise || 0);
   const input = { type, besoin: null, valeurs, garanties, ldt };
 
   const result = runLPBEngine(input);
   const { ratios, score, diagnostic, ticketIA, meta } = result;
+  
+let scoreFinal = score - (garantiesDyn.total < 0.3 ? 10 : 0); 
+let ltvBrut = valeurs.LTV ?? null;
+let ltvNetCalc = ltvBrut;
 
-  const ltvNet = ratios && ratios.LTV_net != null
-    ? `${ratios.LTV_net.toFixed(1)}%`
-    : (valeurs.LTV != null ? `${valeurs.LTV.toFixed(1)}%` : "-");
+if (ltvBrut != null) {
+  ltvNetCalc = Math.max(0, ltvBrut - garantiesDyn.total * 100);
+}
+
+const ltvNet = ltvNetCalc != null ? `${ltvNetCalc.toFixed(1)}%` : "-";
 
   const risque = deriveRisqueLabel(score, meta);
   const tickets = formatTickets(ticketIA);
 
   const projects = loadProjects();
+  if (garantiesDyn.alertes.length > 0) {
+  console.warn("Alertes garanties :", garantiesDyn.alertes);
+}
+
   projects.push({
     nom: nomProjet,
     type,
     ltvNet,
     risque,
     tickets,
-    score: typeof score === "number" ? score : null,
+    score: typeof scoreFinal === "number" ? scoreFinal : null,
     mise: typeof valeurs.mise === "number" ? valeurs.mise : 0
   });
 
@@ -1146,6 +1249,7 @@ bindGuaranteeToggle("caution", "caution_eur");
 
 </body>
 </html>
+
 
 
 
