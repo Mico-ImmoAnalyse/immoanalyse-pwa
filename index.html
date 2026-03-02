@@ -1184,28 +1184,126 @@ window.runEngine = function() {
   }
 };
 
-  const garantiesDyn = computeGarantiesDynamiques(garanties, valeurs.mise || 0);
-  const input = { type, besoin: null, valeurs, garanties, ldt };
+  /* ============================================================
+   Pondération dynamique + moteur LPB v6
+============================================================ */
+
+window.runEngine = function() {
+
+  const type = document.getElementById("projectType").value || "MDB";
+  const nomProjet = (document.getElementById("nomProjet").value || "").trim() || "Projet sans nom";
+
+  const valeurs = {
+    LTV: readNumber("ltv"),
+    LTA: readNumber("lta"),
+    LTC: readNumber("ltc"),
+    marge: readNumber("marge"),
+    precomm: readNumber("precomm"),
+    liquidite: readNumber("liq"),
+    mise: readNumber("mise")
+  };
+
+  /* ============================================================
+     Détermination du montant du projet
+     (indispensable pour convertir la caution en %)
+  ============================================================= */
+
+  let montantProjet = 0;
+
+  if (type === "MDB") {
+    // Pour MDB : LTV = Dette / Valeur → Valeur = Dette / (LTV/100)
+    if (valeurs.LTV && valeurs.mise) {
+      montantProjet = valeurs.mise / (valeurs.LTV / 100);
+    }
+  }
+
+  if (type === "LDT") {
+    // Pour LDT : montant = montant recherché
+    montantProjet = readNumber("ldt_montant") || 0;
+  }
+
+  /* ============================================================
+     Lecture des garanties dynamiques
+  ============================================================= */
+
+  const garanties = {
+    fiducie: { active: readCheckbox("fiducie"), pct: readNumber("fiducie_pct") },
+    g1d: { active: readCheckbox("g1d"), pct: readNumber("g1d_pct") },
+    hyp1: { active: readCheckbox("hyp1"), pct: readNumber("hyp1_pct") },
+    nantissement: { active: readCheckbox("nantissement"), pct: readNumber("nantissement_pct") },
+    caution: { active: readCheckbox("caution"), eur: readNumber("caution_eur") }
+  };
+
+  const garantiesDyn = computeGarantiesDynamiques(garanties, montantProjet);
+
+  /* ============================================================
+     Appel moteur LPB (ratios, score brut, diagnostic)
+  ============================================================= */
+
+  const input = { 
+    type, 
+    besoin: null, 
+    valeurs, 
+    garanties, 
+    garantiesDyn,   // 🔥 on transmet enfin les pondérations dynamiques
+    ldt 
+  };
+
   const result = runLPBEngine(input);
   const { ratios, score, diagnostic, ticketIA, meta } = result;
-  
-let scoreFinal = score - (garantiesDyn.total < 0.3 ? 10 : 0); 
-let ltvBrut = valeurs.LTV ?? null;
-let ltvNetCalc = ltvBrut;
 
-if (ltvBrut != null) {
-  ltvNetCalc = Math.max(0, ltvBrut - garantiesDyn.total * 100);
-}
+  /* ============================================================
+     Score final (intégration garanties dynamiques)
+  ============================================================= */
 
-const ltvNet = ltvNetCalc != null ? `${ltvNetCalc.toFixed(1)}%` : "-";
+  let scoreFinal = score;
 
-  const risque = deriveRisqueLabel(score, meta);
+  if (garantiesDyn.total < 0.3) scoreFinal -= 10;
+  if (garantiesDyn.total > 1.5) scoreFinal += 5; // bonus sur-couverture
+
+  scoreFinal = Math.max(0, Math.min(100, scoreFinal));
+
+  /* ============================================================
+     LTV net dynamique
+  ============================================================= */
+
+  let ltvBrut = valeurs.LTV ?? null;
+  let ltvNetCalc = ltvBrut;
+
+  if (ltvBrut != null) {
+    ltvNetCalc = Math.max(0, ltvBrut - garantiesDyn.total * 100);
+  }
+
+  const ltvNet = ltvNetCalc != null ? `${ltvNetCalc.toFixed(1)}%` : "-";
+
+  /* ============================================================
+     Risque final basé sur scoreFinal
+  ============================================================= */
+
+  let risque = "CRITIQUE";
+  if (scoreFinal >= 80) risque = "PREMIUM";
+  else if (scoreFinal >= 60) risque = "SAFE";
+  else if (scoreFinal >= 40) risque = "TENDU";
+
+  /* ============================================================
+     Tickets IA
+  ============================================================= */
+
   const tickets = formatTickets(ticketIA);
 
-  const projects = loadProjects();
+  /* ============================================================
+     Alertes garanties (console)
+  ============================================================= */
+
   if (garantiesDyn.alertes.length > 0) {
-  console.warn("Alertes garanties :", garantiesDyn.alertes);
-}
+    console.warn("Alertes garanties :", garantiesDyn.alertes);
+  }
+
+  /* ============================================================
+     Sauvegarde projet
+  ============================================================= */
+
+  const projects = loadProjects();
 
   projects.push({
     nom: nomProjet,
@@ -1213,7 +1311,7 @@ const ltvNet = ltvNetCalc != null ? `${ltvNetCalc.toFixed(1)}%` : "-";
     ltvNet,
     risque,
     tickets,
-    score: typeof scoreFinal === "number" ? scoreFinal : null,
+    score: scoreFinal,
     mise: typeof valeurs.mise === "number" ? valeurs.mise : 0
   });
 
@@ -1229,7 +1327,11 @@ document.addEventListener("DOMContentLoaded", () => {
   renderProjects();
 });
 
-  function bindGuaranteeToggle(idCheck, idField) {
+/* ============================================================
+   Activation/désactivation des champs garanties
+============================================================ */
+
+function bindGuaranteeToggle(idCheck, idField) {
   const check = document.getElementById(idCheck);
   const field = document.getElementById(idField);
   check.addEventListener("change", () => {
@@ -1248,6 +1350,7 @@ bindGuaranteeToggle("caution", "caution_eur");
 
 </body>
 </html>
+
 
 
 
