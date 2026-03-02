@@ -1186,7 +1186,6 @@ window.runEngine = function() {
 
   const garantiesDyn = computeGarantiesDynamiques(garanties, valeurs.mise || 0);
   const input = { type, besoin: null, valeurs, garanties, ldt };
-
   const result = runLPBEngine(input);
   const { ratios, score, diagnostic, ticketIA, meta } = result;
   
@@ -1249,6 +1248,7 @@ bindGuaranteeToggle("caution", "caution_eur");
 
 </body>
 </html>
+
 
 
 
