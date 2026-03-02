@@ -957,8 +957,51 @@ checkSurGarantie("hyp1_pct", "alert_hyp1");
 checkSurGarantie("nantissement_pct", "alert_nantissement");
 </script>
 
+  <script>
+// Active/désactive les champs selon la case cochée
+function bindGuaranteeToggle(idCheck, idField) {
+  const check = document.getElementById(idCheck);
+  const field = document.getElementById(idField);
+
+  check.addEventListener("change", () => {
+    field.disabled = !check.checked;
+    if (!check.checked) {
+      field.value = "";
+      const alert = field.parentElement.querySelector(".alert-yellow");
+      if (alert) alert.style.display = "none";
+    }
+  });
+}
+
+// Affiche l’alerte si > 100%
+function bindSurGarantie(idField, idAlert) {
+  const field = document.getElementById(idField);
+  const alert = document.getElementById(idAlert);
+
+  field.addEventListener("input", () => {
+    const v = parseFloat(field.value);
+    if (!isNaN(v) && v > 100) alert.style.display = "block";
+    else alert.style.display = "none";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindGuaranteeToggle("fiducie", "fiducie_pct");
+  bindGuaranteeToggle("g1d", "g1d_pct");
+  bindGuaranteeToggle("hyp1", "hyp1_pct");
+  bindGuaranteeToggle("nantissement", "nantissement_pct");
+  bindGuaranteeToggle("caution", "caution_eur");
+
+  bindSurGarantie("fiducie_pct", "alert_fiducie");
+  bindSurGarantie("g1d_pct", "alert_g1d");
+  bindSurGarantie("hyp1_pct", "alert_hyp1");
+  bindSurGarantie("nantissement_pct", "alert_nantissement");
+});
+</script>
+
 </body>
 </html>
+
 
 
 
