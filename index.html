@@ -22,7 +22,9 @@
       --safe: #00c853;
       --tendu: #ff9800;
       --critique: #ff5252;
+      --alert-yellow: #ffcc00;
     }
+
     .light {
       --bg: #f5f6f8;
       --bg-section: #ffffff;
@@ -33,7 +35,9 @@
       --border: #d0d3dc;
       --badge-bg: #e4e6ee;
       --badge-border: #b5b8c3;
+      --alert-yellow: #d4a300;
     }
+
     body {
       margin: 0;
       padding: 0;
@@ -42,6 +46,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       transition: background 0.25s ease, color 0.25s ease;
     }
+
     h1 { text-align: center; margin: 10px 0 6px 0; color: var(--accent); font-size: 22px; }
     h2 { margin: 8px 0 6px 0; color: var(--accent); font-size: 18px; }
     h3 { margin: 6px 0 4px 0; color: var(--accent); font-size: 15px; }
@@ -64,10 +69,12 @@
       font-size: 13px;
       box-sizing: border-box;
     }
+
     .light input,
     .light select {
       background: #ffffff;
     }
+
     input::placeholder {
       color: var(--muted);
     }
@@ -84,6 +91,7 @@
       margin-top: 10px;
       font-size: 14px;
     }
+
     button:hover { background: #6bb4ff; }
 
     .secondary {
@@ -96,6 +104,7 @@
       width: auto;
       font-size: 13px;
     }
+
     .secondary:hover { background: var(--accent); color: #000; }
 
     table {
@@ -104,11 +113,13 @@
       margin-top: 10px;
       font-size: 13px;
     }
+
     th, td {
       border: 1px solid var(--border);
       padding: 6px 4px;
       text-align: center;
     }
+
     th {
       background: var(--bg-card);
       font-weight: 600;
@@ -122,16 +133,19 @@
       margin: 10px auto;
       box-shadow: 0 0 8px rgba(0,0,0,0.35);
     }
+
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6px;
     }
+
     .grid-3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 6px;
     }
+
     @media (max-width: 800px) {
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
     }
@@ -143,12 +157,14 @@
       margin-bottom: 10px;
       font-size: 12px;
     }
+
     .card {
       background: var(--bg-card);
       padding: 8px;
       border-radius: 8px;
       border: 1px solid var(--border);
     }
+
     .big-number { font-size: 22px; font-weight: 700; color: var(--accent); }
     .note { font-size: 11px; color: var(--muted); }
 
@@ -165,6 +181,7 @@
       right: 14px;
       z-index: 999;
     }
+
     .theme-toggle button {
       background: var(--bg-section);
       color: var(--text);
@@ -176,118 +193,12 @@
       width: auto;
     }
 
-    .guide-panel {
-      position: fixed;
-      top: 0;
-      right: -380px;
-      width: 360px;
-      height: 100vh;
-      overflow-y: auto;
-      background: var(--bg-section);
-      border-left: 1px solid var(--border);
-      padding: 10px 12px;
-      transition: right 0.3s ease;
-      z-index: 9999;
-      box-shadow: -4px 0 12px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-    }
-    .guide-panel.open { right: 0; }
-    .guide-content {
-      flex: 1;
-      min-height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    .guide-content h2 { margin-top: 0; font-size: 18px; }
-    .guide-content p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
-    .guide-panel::-webkit-scrollbar { width: 6px; }
-    .guide-panel::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 10px;
-    }
-
-    .guide-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-    .guide-tab {
-      padding: 6px 12px;
-      border-radius: 6px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      font-size: 13px;
-      color: var(--text);
-      user-select: none;
-    }
-    .guide-tab.active {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
-    }
-    .guide-section {
-      display: none;
-      animation: fadeIn 0.25s ease;
-    }
-    .guide-section.active { display: block; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .accordion {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-    .accordion-header {
-      padding: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .accordion-header:hover { background: var(--bg-section); }
-    .accordion-content {
-      display: none;
-      padding: 8px;
-      font-size: 13px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-    .accordion.open .accordion-content { display: block; }
-    .accordion-arrow { font-size: 12px; opacity: 0.7; }
-
-    .garanties-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      align-items: center;
-    }
-    .garanties-grid label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-    }
-    .garanties-grid input[type="checkbox"] {
-      width: auto;
-      margin: 0;
-    }
-    .badge-pourcent {
-      display: inline-flex;
-      align-items: center;
-      padding: 1px 6px;
-      border-radius: 999px;
-      background: var(--badge-bg);
-      border: 1px solid var(--badge-border);
+    .alert-yellow {
+      color: var(--alert-yellow);
       font-size: 11px;
-      color: var(--muted);
+      margin-top: -6px;
+      margin-bottom: 4px;
+      display: none;
     }
 
     .risque-premium { color: var(--premium); font-weight: 600; }
@@ -300,23 +211,39 @@
       flex-direction: column;
       gap: 2px;
     }
+
     .tickets-main { font-weight: 600; }
     .tickets-mise { font-size: 11px; color: var(--muted); }
+
+    .badge-pourcent {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      font-size: 11px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
+
+  <!-- BOUTON THEME -->
   <div class="theme-toggle">
     <button id="toggleTheme">🌙</button>
   </div>
 
-  <!-- GUIDE PANEL -->
+  <!-- PANNEAU GUIDE -->
   <div id="guidePanel" class="guide-panel">
     <div class="guide-content">
+
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
         <h2>Guide ImmoAnalyse</h2>
         <button class="secondary" onclick="closeGuide()">Fermer</button>
       </div>
 
+      <!-- Onglets -->
       <div class="guide-tabs">
         <div class="guide-tab active" data-tab="crit">Critères</div>
         <div class="guide-tab" data-tab="garanties">Garanties</div>
@@ -327,9 +254,10 @@
         <div class="guide-tab" data-tab="faq">FAQ</div>
       </div>
 
+      <!-- SECTION : CRITERES -->
       <div class="guide-section active" id="crit">
         <div class="accordion">
-          <div class="accordion-header">LTV — Loan To Value 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">LTV — Loan To Value <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             <b>Définition :</b> Dette / Valeur du bien.<br><br>
             🟢 &lt; 60% — Très sécurisé<br>
@@ -338,8 +266,9 @@
             Un LTV élevé fragilise la capacité de remboursement en cas de revente.
           </div>
         </div>
+
         <div class="accordion">
-          <div class="accordion-header">LTA — Loan To Assets 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">LTA — Loan To Assets <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             <b>Définition :</b> Dette / Actifs totaux.<br><br>
             🟢 &lt; 70% — Structure solide<br>
@@ -348,8 +277,9 @@
             Mesure la solidité financière globale du projet.
           </div>
         </div>
+
         <div class="accordion">
-          <div class="accordion-header">LTC — Loan To Cost 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">LTC — Loan To Cost <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             <b>Définition :</b> Dette / Coût total du projet.<br><br>
             🟢 &lt; 70% — Excellent<br>
@@ -358,8 +288,9 @@
             Un LTC élevé indique un projet trop dépendant de la dette.
           </div>
         </div>
+
         <div class="accordion">
-          <div class="accordion-header">Marge (MDB) 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">Marge (MDB) <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             🟢 &gt; 20% — Très bon<br>
             🟠 10–20% — Correct<br>
@@ -367,8 +298,9 @@
             La marge est le coussin de sécurité du marchand de biens.
           </div>
         </div>
+
         <div class="accordion">
-          <div class="accordion-header">Pré‑commercialisation 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">Pré‑commercialisation <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             🟢 &gt; 50% — Très sécurisé<br>
             🟠 30–50% — À surveiller<br>
@@ -376,8 +308,9 @@
             Plus la pré‑commercialisation est élevée, plus le risque d’invendus diminue.
           </div>
         </div>
+
         <div class="accordion">
-          <div class="accordion-header">Liquidité (1–10) 🟢🟠🔴 <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">Liquidité (1–10) <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             🟢 8–10 — Marché très liquide<br>
             🟠 5–7 — Liquide<br>
@@ -387,35 +320,41 @@
         </div>
       </div>
 
+      <!-- SECTION : GARANTIES -->
       <div class="guide-section" id="garanties">
         <div class="accordion">
-          <div class="accordion-header">Pondération dynamique des garanties <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">Pondération dynamique LPB v6 <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
-            <b>Principe :</b><br>
-            La pondération n’est plus fixe. Elle dépend de :<br>
+            La pondération dépend de :<br>
             – la nature de la garantie (poids de base)<br>
-            – le taux de couverture (%)<br>
+            – la couverture (%)<br>
             – la caution personnelle (convertie en %)<br><br>
+
             Exemple :<br>
-            Hypothèque (poids 1.0) × couverture 80% → 80<br>
-            Nantissement (poids 0.6) × couverture 50% → 30<br>
-            Caution personnelle → convertie en % puis × 0.4<br><br>
-            La pondération finale est intégrée dans : LTV net, score global, sécurité globale, ticket IA.
+            Hypothèque (1.0) × 80% → 80<br>
+            Nantissement (0.6) × 50% → 30<br>
+            Caution → convertie en % × 0.4<br><br>
+
+            Pondération finale = min(pondération brute, 100).<br>
+            Une couverture &gt; 100% déclenche une alerte jaune.
           </div>
         </div>
+
         <div class="accordion">
-          <div class="accordion-header">Garanties fortes / moyennes / faibles <span class="accordion-arrow">▼</span></div>
+          <div class="accordion-header">Typologie des garanties <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
-            🟢 Garanties très fortes : Fiducie, G1D, Hypothèque 1er rang<br>
-            🟠 Garanties moyennes : Nantissement<br>
-            🔴 Garanties faibles : Caution personnelle<br><br>
-            Une couverture &gt; 100% déclenche une alerte, mais peut être acceptée si elle reflète une sur‑garantie.
+            🟢 Très fortes : Fiducie, G1D, Hypothèque 1er rang<br>
+            🟠 Moyennes : Nantissement<br>
+            🔴 Faibles : Caution personnelle<br><br>
+            Une sur‑garantie (&gt; 100%) est autorisée mais plafonnée dans la pondération.
           </div>
         </div>
       </div>
 
+      <!-- SECTION : ALERTES -->
       <div class="guide-section" id="alertes">
-        <p>Le moteur détecte automatiquement les incohérences et risques :</p>
+        <p>Le moteur détecte automatiquement les incohérences :</p>
+
         <div class="accordion">
           <div class="accordion-header">Alertes financières <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
@@ -427,6 +366,7 @@
             – Couverture de garanties incohérente (&gt; 100% ou insuffisante)
           </div>
         </div>
+
         <div class="accordion">
           <div class="accordion-header">Alertes commerciales <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
@@ -435,6 +375,7 @@
             – Risque de stock invendu
           </div>
         </div>
+
         <div class="accordion">
           <div class="accordion-header">Alertes structurelles <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
@@ -445,6 +386,7 @@
         </div>
       </div>
 
+      <!-- SECTION : EXEMPLES -->
       <div class="guide-section" id="exemples">
         <div class="accordion">
           <div class="accordion-header">Exemple MDB <span class="accordion-arrow">▼</span></div>
@@ -458,6 +400,7 @@
             → Reco : réduire la dette + ajouter une garantie forte + augmenter la mise.
           </div>
         </div>
+
         <div class="accordion">
           <div class="accordion-header">Exemple LDT <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
@@ -472,17 +415,19 @@
         </div>
       </div>
 
+      <!-- SECTION : OPTIMISATION -->
       <div class="guide-section" id="opt">
         <div class="accordion">
           <div class="accordion-header">Optimiser un projet MDB <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
             – viser une marge &gt; 15%<br>
             – réduire le LTV sous 75%<br>
-            – sécuriser une garantie forte (Hypothèque / G1D / Fiducie)<br>
+            – sécuriser une garantie forte<br>
             – buffer travaux 10–15%<br>
             – cohérence prix/m²
           </div>
         </div>
+
         <div class="accordion">
           <div class="accordion-header">Optimiser un projet LDT <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
@@ -495,6 +440,7 @@
         </div>
       </div>
 
+      <!-- SECTION : LECTURE RAPIDE -->
       <div class="guide-section" id="lecture">
         <p><b>Lecture d’un projet en 10 secondes :</b></p>
         – LTV : si &gt; 85% → danger immédiat<br>
@@ -506,6 +452,7 @@
         – Mise : cohérente avec le ticket IA proposé
       </div>
 
+      <!-- SECTION : FAQ -->
       <div class="guide-section" id="faq">
         <div class="accordion">
           <div class="accordion-header">Pourquoi un projet peut être SAFE mais avec un ticket faible ? <span class="accordion-arrow">▼</span></div>
@@ -514,6 +461,7 @@
             Un projet peut être globalement bon mais manquer de sûretés ou de mise suffisante.
           </div>
         </div>
+
         <div class="accordion">
           <div class="accordion-header">Pourquoi le LTV net diffère du LTV brut ? <span class="accordion-arrow">▼</span></div>
           <div class="accordion-content">
@@ -522,23 +470,31 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
+  <!-- CONTENU PRINCIPAL -->
   <div class="container">
+
+    <!-- HEADER -->
     <div class="section header-block">
       <h1>ImmoAnalyse v6</h1>
+
       <div class="header-buttons">
         <button class="secondary" onclick="openGuide()">Guide</button>
         <button class="secondary" onclick="exportCSV()">Export CSV</button>
       </div>
+
       <p class="subtitle">Moteur IA – LTV / LTA / LTC / Marge / Précom / Liquidité / Garanties</p>
+
       <div class="grid-2">
         <div class="card">
           <h3>Score moyen du portefeuille</h3>
           <p id="scorePortefeuille" class="big-number">0/100</p>
           <p class="note">Aucun projet</p>
         </div>
+
         <div class="card">
           <h3>Total investi</h3>
           <p id="totalInvesti" class="big-number">0 €</p>
@@ -547,9 +503,10 @@
       </div>
     </div>
 
-    <!-- NOUVEL AUDIT (COMMUN MDB / LDT) -->
+    <!-- NOUVEL AUDIT -->
     <div class="section">
       <h2>Nouvel audit</h2>
+
       <label>Type de projet</label>
       <select id="projectType">
         <option value="MDB">MDB – Marchand de biens</option>
@@ -585,6 +542,7 @@
     <!-- MODULE LDT -->
     <div class="section" id="sectionLDT" style="display:none;">
       <h2>Ligne de trésorerie (LDT)</h2>
+
       <div class="grid-2">
         <div>
           <label>Montant recherché (€)</label>
@@ -595,16 +553,26 @@
           <input id="ldt_duree" type="number" placeholder="Ex : 36">
         </div>
       </div>
+
       <div class="grid-2">
         <div>
           <label>Taux (%)</label>
           <input id="ldt_taux" type="number" placeholder="Ex : 12">
         </div>
         <div>
-          <label>Capacité de remboursement (€/semestre)</label>
+          <label>Capacité de remboursement</label>
           <input id="ldt_capacite" type="number" placeholder="Ex : 270000">
         </div>
       </div>
+
+      <label>Fréquence</label>
+      <select id="ldt_frequence">
+        <option value="mensuel">Mensuel</option>
+        <option value="semestriel">Semestriel</option>
+        <option value="annuel">Annuel</option>
+        <option value="in_fine">In‑fine</option>
+      </select>
+
       <p class="note">
         Ces données permettent d’évaluer la capacité réelle de remboursement, le risque structurel et le ticket IA prudent.
       </p>
@@ -615,314 +583,198 @@
       <h2>Sûretés & Couvertures</h2>
 
       <h3>Garanties très fortes</h3>
-      <div class="garanties-grid">
+      <div class="grid-2">
         <label>
           <input type="checkbox" id="fiducie">
-          <span>Fiducie‑Sûreté</span>
-          <span class="badge-pourcent">20%</span>
+          Fiducie‑Sûreté <span class="badge-pourcent">100%</span>
         </label>
-        <input id="fiducie_pct" type="number" placeholder="Couverture (%)" disabled>
+        <div>
+          <input id="fiducie_pct" type="number" placeholder="Couverture (%)" disabled>
+          <p class="alert-yellow" id="alert_fiducie">⚠ Sur‑garantie détectée (couverture > 100 %)</p>
+        </div>
 
         <label>
           <input type="checkbox" id="g1d">
-          <span>Garantie 1ère demande</span>
-          <span class="badge-pourcent">25%</span>
+          Garantie 1ère demande <span class="badge-pourcent">100%</span>
         </label>
-        <input id="g1d_pct" type="number" placeholder="Couverture (%)" disabled>
+        <div>
+          <input id="g1d_pct" type="number" placeholder="Couverture (%)" disabled>
+          <p class="alert-yellow" id="alert_g1d">⚠ Sur‑garantie détectée (couverture > 100 %)</p>
+        </div>
 
         <label>
           <input type="checkbox" id="hyp1">
-          <span>Hypothèque 1er rang</span>
-          <span class="badge-pourcent">25%</span>
+          Hypothèque 1er rang <span class="badge-pourcent">100%</span>
         </label>
-        <input id="hyp1_pct" type="number" placeholder="Couverture (%)" disabled>
+        <div>
+          <input id="hyp1_pct" type="number" placeholder="Couverture (%)" disabled>
+          <p class="alert-yellow" id="alert_hyp1">⚠ Sur‑garantie détectée (couverture > 100 %)</p>
+        </div>
       </div>
 
       <h3>Garanties moyennes</h3>
-      <div class="garanties-grid">
+      <div class="grid-2">
         <label>
           <input type="checkbox" id="nantissement">
-          <span>Nantissement</span>
-          <span class="badge-pourcent">20%</span>
-        </label>
-        <input id="nantissement_pct" type="number" placeholder="Couverture (%)" disabled>
-      </div>
+<script>
+// -------------------------------
+// THEME CLAIR / SOMBRE
+// -------------------------------
+const toggleBtn = document.getElementById("toggleTheme");
 
-      <h3>Garanties faibles</h3>
-      <div class="garanties-grid">
-        <label>
-          <input type="checkbox" id="caution">
-          <span>Caution personnelle</span>
-          <span class="badge-pourcent">10%</span>
-        </label>
-        <input id="caution_eur" type="number" placeholder="Montant (€)" disabled>
-      </div>
+function applyTheme(theme) {
+  if (theme === "light") {
+    document.body.classList.add("light");
+    toggleBtn.textContent = "🌞";
+  } else {
+    document.body.classList.remove("light");
+    toggleBtn.textContent = "🌙";
+  }
+}
 
-      <div class="grid-3" style="margin-top:10px;">
-        <div>
-          <label>LTA (%)</label>
-          <input id="lta" type="number" placeholder="Ex : 95">
-        </div>
-        <div>
-          <label>LTC (%)</label>
-          <input id="ltc" type="number" placeholder="Ex : 88">
-        </div>
-        <div>
-          <label>Mise (€)</label>
-          <input id="mise" type="number" placeholder="Ex : 500">
-        </div>
-      </div>
+const savedTheme = localStorage.getItem("theme") || "dark";
+applyTheme(savedTheme);
 
-      <button onclick="runEngine()">AUDITER & SAUVEGARDER</button>
-    </div>
+toggleBtn.addEventListener("click", () => {
+  const newTheme = document.body.classList.contains("light") ? "dark" : "light";
+  localStorage.setItem("theme", newTheme);
+  applyTheme(newTheme);
+});
 
-    <!-- TABLEAU PROJETS -->
-    <div class="section">
-      <h2>Projets audités</h2>
-      <table>
-        <tr>
-          <th>PROJET</th>
-          <th>LTV NET</th>
-          <th>RISQUE</th>
-          <th>TICKETS & MISE</th>
-        </tr>
-        <tbody id="tableProjets"></tbody>
-      </table>
-    </div>
-  </div>
 
-  <script>
-    // THEME
-    const toggleBtn = document.getElementById("toggleTheme");
-    function applyTheme(theme) {
-      if (theme === "light") {
-        document.body.classList.add("light");
-        toggleBtn.textContent = "🌞";
-      } else {
-        document.body.classList.remove("light");
-        toggleBtn.textContent = "🌙";
-      }
+// -------------------------------
+// GUIDE : OUVERTURE / FERMETURE
+// -------------------------------
+function openGuide() {
+  document.getElementById("guidePanel").classList.add("open");
+}
+
+function closeGuide() {
+  document.getElementById("guidePanel").classList.remove("open");
+}
+
+
+// -------------------------------
+// GUIDE : ONGLET ACTIF
+// -------------------------------
+document.querySelectorAll(".guide-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
+
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+
+
+// -------------------------------
+// GUIDE : ACCORDIONS
+// -------------------------------
+document.querySelectorAll(".accordion-header").forEach(header => {
+  header.addEventListener("click", () => {
+    header.parentElement.classList.toggle("open");
+  });
+});
+
+
+// -------------------------------
+// GARANTIES : ACTIVATION DES CHAMPS
+// -------------------------------
+function bindGuaranteeToggle(idCheck, idField) {
+  const check = document.getElementById(idCheck);
+  const field = document.getElementById(idField);
+
+  if (!check || !field) return;
+
+  check.addEventListener("change", () => {
+    field.disabled = !check.checked;
+    if (!check.checked) {
+      field.value = "";
+      const alert = field.parentElement.querySelector(".alert-yellow");
+      if (alert) alert.style.display = "none";
     }
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    applyTheme(savedTheme);
-    toggleBtn.addEventListener("click", () => {
-      const newTheme = document.body.classList.contains("light") ? "dark" : "light";
-      localStorage.setItem("theme", newTheme);
-      applyTheme(newTheme);
-    });
+  });
+}
 
-    // GUIDE
-    function openGuide() {
-      document.getElementById("guidePanel").classList.add("open");
+document.addEventListener("DOMContentLoaded", () => {
+  bindGuaranteeToggle("fiducie", "fiducie_pct");
+  bindGuaranteeToggle("g1d", "g1d_pct");
+  bindGuaranteeToggle("hyp1", "hyp1_pct");
+  bindGuaranteeToggle("nantissement", "nantissement_pct");
+  bindGuaranteeToggle("caution", "caution_eur");
+});
+
+
+// -------------------------------
+// SUR-GARANTIE : ALERTE JAUNE
+// -------------------------------
+function checkSurGarantie(idField, idAlert) {
+  const field = document.getElementById(idField);
+  const alert = document.getElementById(idAlert);
+
+  if (!field || !alert) return;
+
+  field.addEventListener("input", () => {
+    const v = parseFloat(field.value);
+    if (!isNaN(v) && v > 100) {
+      alert.style.display = "block";
+    } else {
+      alert.style.display = "none";
     }
-    function closeGuide() {
-      document.getElementById("guidePanel").classList.remove("open");
-    }
-    document.querySelectorAll(".guide-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
-        document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.tab).classList.add("active");
-      });
-    });
-    document.querySelectorAll(".accordion-header").forEach(header => {
-      header.addEventListener("click", () => {
-        header.parentElement.classList.toggle("open");
-      });
-    });
+  });
+}
 
-    // GARANTIES : activation champs
-    function bindGuaranteeToggle(idCheck, idField) {
-      const check = document.getElementById(idCheck);
-      const field = document.getElementById(idField);
-      if (!check || !field) return;
-      check.addEventListener("change", () => {
-        field.disabled = !check.checked;
-        if (!check.checked) field.value = "";
-      });
-    }
-    document.addEventListener("DOMContentLoaded", () => {
-      bindGuaranteeToggle("fiducie", "fiducie_pct");
-      bindGuaranteeToggle("g1d", "g1d_pct");
-      bindGuaranteeToggle("hyp1", "hyp1_pct");
-      bindGuaranteeToggle("nantissement", "nantissement_pct");
-      bindGuaranteeToggle("caution", "caution_eur");
-    });
+checkSurGarantie("fiducie_pct", "alert_fiducie");
+checkSurGarantie("g1d_pct", "alert_g1d");
+checkSurGarantie("hyp1_pct", "alert_hyp1");
+checkSurGarantie("nantissement_pct", "alert_nantissement");
 
-    // TYPE PROJET : MDB / LDT
-    document.getElementById("projectType").addEventListener("change", () => {
-      const type = document.getElementById("projectType").value;
-      const sectionLDT = document.getElementById("sectionLDT");
-      sectionLDT.style.display = (type === "LDT") ? "block" : "none";
-    });
 
-    // EXPORT CSV
-    function exportCSV() {
-      let rows = [["Projet", "LTV NET", "Risque", "Tickets", "Mise"]];
-      document.querySelectorAll("#tableProjets tr").forEach(tr => {
-        const projet = tr.querySelector("td:nth-child(1)")?.innerText || "";
-        const ltv = tr.querySelector("td:nth-child(2)")?.innerText || "";
-        const risque = tr.querySelector("td:nth-child(3)")?.innerText || "";
-        const ticketsCell = tr.querySelector("td:nth-child(4)");
-        let tickets = "";
-        let mise = "";
-        if (ticketsCell) {
-          const main = ticketsCell.querySelector(".tickets-main");
-          const miseSpan = ticketsCell.querySelector(".tickets-mise");
-          tickets = main ? main.innerText : "";
-          mise = miseSpan ? miseSpan.innerText.replace("Mise : ", "") : "";
-        }
-        if (projet) rows.push([projet, ltv, risque, tickets, mise]);
-      });
-      let csv = rows.map(r => r.join(";")).join("\n");
-      let blob = new Blob([csv], { type: "text/csv" });
-      let url = URL.createObjectURL(blob);
-      let a = document.createElement("a");
-      a.href = url;
-      a.download = "projets_audites.csv";
-      a.click();
-    }
-  </script>
+// -------------------------------
+// TYPE DE PROJET : MDB / LDT
+// -------------------------------
+document.getElementById("projectType").addEventListener("change", () => {
+  const type = document.getElementById("projectType").value;
+  const sectionLDT = document.getElementById("sectionLDT");
 
-  <script type="module">
-    import { runLPBEngine } from "./engine/engine.js";
+  sectionLDT.style.display = (type === "LDT") ? "block" : "none";
+});
 
-    function readNumber(id) {
-      const el = document.getElementById(id);
-      if (!el) return null;
-      const v = parseFloat((el.value || "").replace(",", "."));
-      return isNaN(v) ? null : v;
-    }
-    function readCheckbox(id) {
-      const el = document.getElementById(id);
-      return el ? !!el.checked : false;
+
+// -------------------------------
+// EXPORT CSV
+// -------------------------------
+function exportCSV() {
+  let rows = [["Projet", "LTV NET", "Risque", "Tickets", "Mise"]];
+
+  document.querySelectorAll("#tableProjets tr").forEach(tr => {
+    const projet = tr.querySelector("td:nth-child(1)")?.innerText || "";
+    const ltv = tr.querySelector("td:nth-child(2)")?.innerText || "";
+    const risque = tr.querySelector("td:nth-child(3)")?.innerText || "";
+
+    const ticketsCell = tr.querySelector("td:nth-child(4)");
+    let tickets = "";
+    let mise = "";
+
+    if (ticketsCell) {
+      const main = ticketsCell.querySelector(".tickets-main");
+      const miseSpan = ticketsCell.querySelector(".tickets-mise");
+
+      tickets = main ? main.innerText : "";
+      mise = miseSpan ? miseSpan.innerText.replace("Mise : ", "") : "";
     }
 
-    function formatTickets(ticketIA) {
-      if (!ticketIA || !ticketIA.plage) return "-";
-      const { min, max } = ticketIA.plage;
-      if (min == null && max == null) return "-";
-      if (min == null) return `0–${max} €`;
-      if (max == null) return `${min} €+`;
-      return `${min}–${max} €`;
-    }
+    if (projet) rows.push([projet, ltv, risque, tickets, mise]);
+  });
 
-    function deriveRisqueLabel(score, meta) {
-      if (meta && meta.securiteGlobale) {
-        const s = meta.securiteGlobale;
-        if (s === "forte") return "PREMIUM";
-        if (s === "moyenne") return "SAFE";
-        if (s === "faible") return "TENDU";
-        return "CRITIQUE";
-      }
-      if (score >= 80) return "PREMIUM";
-      if (score >= 60) return "SAFE";
-      if (score >= 40) return "TENDU";
-      return "CRITIQUE";
-    }
+  let csv = rows.map(r => r.join(";")).join("\n");
+  let blob = new Blob([csv], { type: "text/csv" });
+  let url = URL.createObjectURL(blob);
 
-    window.runEngine = function() {
-      const type = document.getElementById("projectType").value || "MDB";
-      const nomProjet = (document.getElementById("nomProjet").value || "").trim() || "Projet sans nom";
-
-      const valeurs = {
-        LTV: readNumber("ltv"),
-        LTA: readNumber("lta"),
-        LTC: readNumber("ltc"),
-        marge: readNumber("marge"),
-        precomm: readNumber("precomm"),
-        liquidite: readNumber("liq"),
-        mise: readNumber("mise")
-      };
-
-      const garanties = {
-        fiducie: readCheckbox("fiducie"),
-        fiducie_pct: readNumber("fiducie_pct"),
-        g1d: readCheckbox("g1d"),
-        g1d_pct: readNumber("g1d_pct"),
-        hyp1: readCheckbox("hyp1"),
-        hyp1_pct: readNumber("hyp1_pct"),
-        nantissement: readCheckbox("nantissement"),
-        nantissement_pct: readNumber("nantissement_pct"),
-        caution: readCheckbox("caution"),
-        caution_eur: readNumber("caution_eur")
-      };
-
-      const ldt = {
-        montant: readNumber("ldt_montant"),
-        duree: readNumber("ldt_duree"),
-        taux: readNumber("ldt_taux"),
-        capacite: readNumber("ldt_capacite")
-      };
-
-      const input = {
-        type,
-        besoin: null,
-        valeurs,
-        garanties,
-        ldt
-      };
-
-      const result = runLPBEngine(input);
-      const { ratios, score, diagnostic, ticketIA, meta } = result;
-
-      const ltvNet = (ratios && ratios.LTV_net != null)
-        ? `${ratios.LTV_net.toFixed(1)}%`
-        : (valeurs.LTV != null ? `${valeurs.LTV.toFixed(1)}%` : "-");
-
-      const risque = deriveRisqueLabel(score, meta);
-      const tickets = formatTickets(ticketIA);
-      const mise = valeurs.mise != null ? `${valeurs.mise.toLocaleString("fr-FR")} €` : "-";
-
-      const tableBody = document.getElementById("tableProjets");
-      const tr = document.createElement("tr");
-
-      const tdProjet = document.createElement("td");
-      tdProjet.textContent = `${nomProjet} (${type})`;
-
-      const tdLtv = document.createElement("td");
-      tdLtv.textContent = ltvNet;
-
-      const tdRisque = document.createElement("td");
-      tdRisque.textContent = risque;
-      tdRisque.classList.add(
-        risque === "PREMIUM" ? "risque-premium" :
-        risque === "SAFE" ? "risque-safe" :
-        risque === "TENDU" ? "risque-tendu" : "risque-critique"
-      );
-
-      const tdTickets = document.createElement("td");
-      tdTickets.classList.add("tickets-cell");
-      const spanTickets = document.createElement("span");
-      spanTickets.classList.add("tickets-main");
-      spanTickets.textContent = tickets;
-      const spanMise = document.createElement("span");
-      spanMise.classList.add("tickets-mise");
-      spanMise.textContent = `Mise : ${mise}`;
-      tdTickets.appendChild(spanTickets);
-      tdTickets.appendChild(spanMise);
-
-      tr.appendChild(tdProjet);
-      tr.appendChild(tdLtv);
-      tr.appendChild(tdRisque);
-      tr.appendChild(tdTickets);
-      tableBody.appendChild(tr);
-
-      // Score portefeuille (moyenne simple des scores)
-      const rows = tableBody.querySelectorAll("tr");
-      let totalScore = 0;
-      rows.forEach(() => { totalScore += score; });
-      const avgScore = rows.length ? (totalScore / rows.length) : 0;
-      document.getElementById("scorePortefeuille").textContent = `${avgScore.toFixed(0)}/100`;
-
-      // Total investi : somme des mises
-      let totalMise = 0;
-      rows.forEach(() => {
-        if (valeurs.mise != null) totalMise += valeurs.mise;
-      });
-      document.getElementById("totalInvesti").textContent = `${totalMise.toLocaleString("fr-FR")} €`;
-    };
-  </script>
-</body>
-</html>
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "projets_audites.csv";
+  a.click();
+}
+</script>
