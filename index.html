@@ -353,6 +353,22 @@ th {
   margin: 0;
 }
 
+  /* === CSS minimal pour les nouvelles garanties === */
+.garanties-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.garanties-grid input[type="number"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
 </style>
 </head>
 <body>
@@ -673,35 +689,64 @@ th {
 
   <!-- MODULE 3 : GARANTIES & COUVERTURES -->
   <div class="section">
-    <h2>Sûretés & Couvertures (%)</h2>
+   <h2>Sûretés & Couvertures</h2>
 
-    <div class="garanties-grid">
-      <label>
-        <input type="checkbox" id="fiducie">
-        <span>FiducieSûreté</span>
-        <span class="badge-pourcent">20%</span>
-      </label>
-      <label>
-        <input type="checkbox" id="g1d">
-        <span>Garantie 1ère demande</span>
-        <span class="badge-pourcent">25%</span>
-      </label>
-      <label>
-        <input type="checkbox" id="caution">
-        <span>Caution</span>
-        <span class="badge-pourcent">10%</span>
-      </label>
-      <label>
-        <input type="checkbox" id="nantissement">
-        <span>Nantissement</span>
-        <span class="badge-pourcent">20%</span>
-      </label>
-      <label>
-        <input type="checkbox" id="hyp1">
-        <span>Hypothèque 1er rang</span>
-        <span class="badge-pourcent">25%</span>
-      </label>
-    </div>
+<!-- 🟦 Garanties très fortes -->
+<div class="garantie-section-title" style="color:#4da3ff; font-weight:600; margin-bottom:6px;">
+  🟦 Garanties très fortes
+</div>
+
+<div class="garanties-grid">
+
+  <label>
+    <input type="checkbox" id="fiducie">
+    <span>Fiducie-sûreté</span>
+    <input type="number" id="fiducie_pct" placeholder="Couverture (%)" disabled>
+  </label>
+
+  <label>
+    <input type="checkbox" id="g1d">
+    <span>Garantie 1ère demande</span>
+    <input type="number" id="g1d_pct" placeholder="Couverture (%)" disabled>
+  </label>
+
+  <label>
+    <input type="checkbox" id="hyp1">
+    <span>Hypothèque 1er rang</span>
+    <input type="number" id="hyp1_pct" placeholder="Couverture (%)" disabled>
+  </label>
+
+</div>
+
+<!-- 🟩 Garanties moyennes -->
+<div class="garantie-section-title" style="color:#4caf50; font-weight:600; margin:12px 0 6px;">
+  🟩 Garanties moyennes
+</div>
+
+<div class="garanties-grid">
+
+  <label>
+    <input type="checkbox" id="nantissement">
+    <span>Nantissement</span>
+    <input type="number" id="nantissement_pct" placeholder="Couverture (%)" disabled>
+  </label>
+
+</div>
+
+<!-- 🟧 Garanties faibles -->
+<div class="garantie-section-title" style="color:#ff9800; font-weight:600; margin:12px 0 6px;">
+  🟧 Garanties faibles
+</div>
+
+<div class="garanties-grid">
+
+  <label>
+    <input type="checkbox" id="caution">
+    <span>Caution personnelle</span>
+    <input type="number" id="caution_eur" placeholder="Montant (€)" disabled>
+  </label>
+
+</div>
 
     <div class="grid-3" style="margin-top:8px;">
       <div>
@@ -1081,6 +1126,21 @@ window.runEngine = function() {
 document.addEventListener("DOMContentLoaded", () => {
   renderProjects();
 });
+
+  function bindGuaranteeToggle(idCheck, idField) {
+  const check = document.getElementById(idCheck);
+  const field = document.getElementById(idField);
+  check.addEventListener("change", () => {
+    field.disabled = !check.checked;
+    if (!check.checked) field.value = "";
+  });
+}
+
+bindGuaranteeToggle("fiducie", "fiducie_pct");
+bindGuaranteeToggle("g1d", "g1d_pct");
+bindGuaranteeToggle("hyp1", "hyp1_pct");
+bindGuaranteeToggle("nantissement", "nantissement_pct");
+bindGuaranteeToggle("caution", "caution_eur");
 
 </script>
 
