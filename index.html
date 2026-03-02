@@ -577,7 +577,7 @@ document.querySelectorAll(".accordion-header").forEach(header => {
   <label>Type de projet</label>
   <select id="projectType">
     <option value="MDB">MDB – Marchand de biens</option>
-    <option value="LDT">LDT – Location de tourisme</option>
+    <option value="LDT">LDT – Ligne de trésorerie</option>
   </select>
 
   <label>Projet</label>
@@ -645,34 +645,65 @@ document.querySelectorAll(".accordion-header").forEach(header => {
   </select>
 </div>
 
-<!-- MODULE 4 : GARANTIES -->
+<!-- MODULE 4 : GARANTIES (VERSION CONFORME LPB v6) -->
 <div class="section">
-  <h2>Sûretés & Couvertures (%)</h2>
+  <h2>Sûretés & Couvertures</h2>
 
-  <div class="garanties-grid">
-    <label><input type="checkbox" id="fiducie"> Fiducie‑Sûreté <span class="badge-pourcent">20%</span></label>
-    <label><input type="checkbox" id="g1d"> Garantie 1ère demande <span class="badge-pourcent">25%</span></label>
-    <label><input type="checkbox" id="caution"> Caution <span class="badge-pourcent">10%</span></label>
-    <label><input type="checkbox" id="nantissement"> Nantissement <span class="badge-pourcent">20%</span></label>
-    <label><input type="checkbox" id="hyp1"> Hypothèque 1er rang <span class="badge-pourcent">25%</span></label>
+  <h3>Garanties très fortes</h3>
+  <div class="grid-2">
+    <label>
+      <input type="checkbox" id="fiducie">
+      Fiducie‑Sûreté <span class="badge-pourcent">100%</span>
+    </label>
+    <div>
+      <input id="fiducie_pct" type="number" placeholder="Couverture (%)" disabled>
+      <p class="alert-yellow" id="alert_fiducie">⚠ Surgarantie détectée (>100%)</p>
+    </div>
+
+    <label>
+      <input type="checkbox" id="g1d">
+      Garantie 1ère demande <span class="badge-pourcent">100%</span>
+    </label>
+    <div>
+      <input id="g1d_pct" type="number" placeholder="Couverture (%)" disabled>
+      <p class="alert-yellow" id="alert_g1d">⚠ Surgarantie détectée (>100%)</p>
+    </div>
+
+    <label>
+      <input type="checkbox" id="hyp1">
+      Hypothèque 1er rang <span class="badge-pourcent">100%</span>
+    </label>
+    <div>
+      <input id="hyp1_pct" type="number" placeholder="Couverture (%)" disabled>
+      <p class="alert-yellow" id="alert_hyp1">⚠ Surgarantie détectée (>100%)</p>
+    </div>
   </div>
 
-  <div class="grid-3" style="margin-top:8px;">
+  <h3>Garanties moyennes</h3>
+  <div class="grid-2">
+    <label>
+      <input type="checkbox" id="nantissement">
+      Nantissement <span class="badge-pourcent">60%</span>
+    </label>
     <div>
-      <label>LTA (%)</label>
-      <input id="lta" type="number" placeholder="Ex : 95">
-    </div>
-
-    <div>
-      <label>LTC (%)</label>
-      <input id="ltc" type="number" placeholder="Ex : 88">
-    </div>
-
-    <div>
-      <label>Mise (€)</label>
-      <input id="mise" type="number" placeholder="Ex : 500">
+      <input id="nantissement_pct" type="number" placeholder="Couverture (%)" disabled>
+      <p class="alert-yellow" id="alert_nantissement">⚠ Surgarantie détectée (>100%)</p>
     </div>
   </div>
+
+  <h3>Caution personnelle</h3>
+  <div class="grid-2">
+    <label>
+      <input type="checkbox" id="caution">
+      Caution personnelle <span class="badge-pourcent">40%</span>
+    </label>
+    <div>
+      <input id="caution_eur" type="number" placeholder="Montant (€)" disabled>
+    </div>
+  </div>
+
+  <h3>Mise (capital engagé)</h3>
+  <input id="mise" type="number" placeholder="Ex : 500">
 
   <button onclick="runEngine()">AUDITER & SAUVEGARDER</button>
 </div>
@@ -879,6 +910,59 @@ function supprimerProjet(btn) {
     return;
   }
 }
+</script>
+
+<!-- MODULE LDT : affichage dynamique -->
+<script>
+document.getElementById("projectType").addEventListener("change", () => {
+  const type = document.getElementById("projectType").value;
+  const sectionLDT = document.getElementById("sectionLDT");
+  sectionLDT.style.display = (type === "LDT") ? "block" : "none";
+});
+</script>
+
+<!-- MODULE GARANTIES : activation + surgarantie -->
+<script>
+// Activation/désactivation des champs
+function bindGuaranteeToggle(idCheck, idField) {
+  const check = document.getElementById(idCheck);
+  const field = document.getElementById(idField);
+  if (!check || !field) return;
+
+  check.addEventListener("change", () => {
+    field.disabled = !check.checked;
+    if (!check.checked) {
+      field.value = "";
+      const alert = field.parentElement.querySelector(".alert-yellow");
+      if (alert) alert.style.display = "none";
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindGuaranteeToggle("fiducie", "fiducie_pct");
+  bindGuaranteeToggle("g1d", "g1d_pct");
+  bindGuaranteeToggle("hyp1", "hyp1_pct");
+  bindGuaranteeToggle("nantissement", "nantissement_pct");
+  bindGuaranteeToggle("caution", "caution_eur");
+});
+
+// Alerte surgarantie
+function checkSurGarantie(idField, idAlert) {
+  const field = document.getElementById(idField);
+  const alert = document.getElementById(idAlert);
+  if (!field || !alert) return;
+
+  field.addEventListener("input", () => {
+    const v = parseFloat(field.value);
+    alert.style.display = (!isNaN(v) && v > 100) ? "block" : "none";
+  });
+}
+
+checkSurGarantie("fiducie_pct", "alert_fiducie");
+checkSurGarantie("g1d_pct", "alert_g1d");
+checkSurGarantie("hyp1_pct", "alert_hyp1");
+checkSurGarantie("nantissement_pct", "alert_nantissement");
 </script>
 
 </body>
