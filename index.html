@@ -953,7 +953,7 @@ function checkSurGarantie(idField, idAlert) {
 
 </script>
 
-  <script>
+<script>
 // Active/désactive les champs selon la case cochée
 function bindGuaranteeToggle(idCheck, idField) {
   const check = document.getElementById(idCheck);
@@ -976,8 +976,11 @@ function bindSurGarantie(idField, idAlert) {
 
   field.addEventListener("input", () => {
     const v = parseFloat(field.value);
-    if (!isNaN(v) && v > 100) alert.style.display = "block";
-    else alert.style.display = "none";
+    if (!isNaN(v) && v > 100) {
+      alert.style.display = "block";
+    } else {
+      alert.style.display = "none";
+    }
   });
 }
 
@@ -995,8 +998,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+
 </body>
 </html>
+
 
 
 
