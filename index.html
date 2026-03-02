@@ -915,45 +915,6 @@ document.getElementById("projectType").addEventListener("change", () => {
 
 <!-- MODULE GARANTIES : activation + surgarantie -->
 <script>
-// Activation/désactivation des champs
-function bindGuaranteeToggle(idCheck, idField) {
-  const check = document.getElementById(idCheck);
-  const field = document.getElementById(idField);
-  if (!check || !field) return;
-
-  check.addEventListener("change", () => {
-    field.disabled = !check.checked;
-    if (!check.checked) {
-      field.value = "";
-      const alert = field.parentElement.querySelector(".alert-yellow");
-      if (alert) alert.style.display = "none";
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  bindGuaranteeToggle("fiducie", "fiducie_pct");
-  bindGuaranteeToggle("g1d", "g1d_pct");
-  bindGuaranteeToggle("hyp1", "hyp1_pct");
-  bindGuaranteeToggle("nantissement", "nantissement_pct");
-  bindGuaranteeToggle("caution", "caution_eur");
-});
-
-// Alerte surgarantie
-function checkSurGarantie(idField, idAlert) {
-  const field = document.getElementById(idField);
-  const alert = document.getElementById(idAlert);
-  if (!field || !alert) return;
-
-  field.addEventListener("input", () => {
-    const v = parseFloat(field.value);
-    alert.style.display = (!isNaN(v) && v > 100) ? "block" : "none";
-  });
-}
-
-</script>
-
-<script>
 // Active/désactive les champs selon la case cochée
 function bindGuaranteeToggle(idCheck, idField) {
   const check = document.getElementById(idCheck);
@@ -976,11 +937,8 @@ function bindSurGarantie(idField, idAlert) {
 
   field.addEventListener("input", () => {
     const v = parseFloat(field.value);
-    if (!isNaN(v) && v > 100) {
-      alert.style.display = "block";
-    } else {
-      alert.style.display = "none";
-    }
+    if (!isNaN(v) && v > 100) alert.style.display = "block";
+    else alert.style.display = "none";
   });
 }
 
@@ -998,9 +956,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-
 </body>
 </html>
+
 
 
 
