@@ -249,28 +249,33 @@ th {
 
 /* ---------- GARANTIES ---------- */
 .garanties-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  align-items: center;
-}
-.garanties-grid label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    align-items: center;
 }
 
-/* badge % B2 */
+.garanties-grid label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.garanties-grid input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
 .badge-pourcent {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: var(--badge-bg);
-  border: 1px solid var(--badge-border);
-  font-size: 11px;
-  color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    font-size: 11px;
+    color: var(--muted);
 }
 
 /* checkbox */
@@ -679,52 +684,72 @@ document.querySelectorAll(".accordion-header").forEach(header => {
 
 <!-- MODULE 3 : GARANTIES & COUVERTURES -->
 <div class="section">
-  <h2>Sûretés & Couvertures (%)</h2>
+    <h2>Sûretés & Couvertures</h2>
 
-  <div class="garanties-grid">
-    <label>
-      <input type="checkbox" id="fiducie">
-      <span>Fiducie‑Sûreté</span>
-      <span class="badge-pourcent">20%</span>
-    </label>
-    <label>
-      <input type="checkbox" id="g1d">
-      <span>Garantie 1ère demande</span>
-      <span class="badge-pourcent">25%</span>
-    </label>
-    <label>
-      <input type="checkbox" id="caution">
-      <span>Caution</span>
-      <span class="badge-pourcent">10%</span>
-    </label>
-    <label>
-      <input type="checkbox" id="nantissement">
-      <span>Nantissement</span>
-      <span class="badge-pourcent">20%</span>
-    </label>
-    <label>
-      <input type="checkbox" id="hyp1">
-      <span>Hypothèque 1er rang</span>
-      <span class="badge-pourcent">25%</span>
-    </label>
-  </div>
+    <!-- BLOC 1 : GARANTIES TRÈS FORTES -->
+    <h3>Garanties très fortes</h3>
+    <div class="garanties-grid">
+        <label>
+            <input type="checkbox" id="fiducie">
+            <span>Fiducie‑Sûreté</span>
+            <span class="badge-pourcent">20%</span>
+        </label>
+        <input id="fiducie_pct" type="number" placeholder="Couverture (%)" disabled>
 
-  <div class="grid-3" style="margin-top:8px;">
-    <div>
-      <label>LTA (%)</label>
-      <input id="lta" type="number" placeholder="Ex : 95">
-    </div>
-    <div>
-      <label>LTC (%)</label>
-      <input id="ltc" type="number" placeholder="Ex : 88">
-    </div>
-    <div>
-      <label>Mise (€)</label>
-      <input id="mise" type="number" placeholder="Ex : 500">
-    </div>
-  </div>
+        <label>
+            <input type="checkbox" id="g1d">
+            <span>Garantie 1ère demande</span>
+            <span class="badge-pourcent">25%</span>
+        </label>
+        <input id="g1d_pct" type="number" placeholder="Couverture (%)" disabled>
 
-  <button onclick="runEngine()">AUDITER & SAUVEGARDER</button>
+        <label>
+            <input type="checkbox" id="hyp1">
+            <span>Hypothèque 1er rang</span>
+            <span class="badge-pourcent">25%</span>
+        </label>
+        <input id="hyp1_pct" type="number" placeholder="Couverture (%)" disabled>
+    </div>
+
+    <!-- BLOC 2 : GARANTIES MOYENNES -->
+    <h3>Garanties moyennes</h3>
+    <div class="garanties-grid">
+        <label>
+            <input type="checkbox" id="nantissement">
+            <span>Nantissement</span>
+            <span class="badge-pourcent">20%</span>
+        </label>
+        <input id="nantissement_pct" type="number" placeholder="Couverture (%)" disabled>
+    </div>
+
+    <!-- BLOC 3 : GARANTIES FAIBLES -->
+    <h3>Garanties faibles</h3>
+    <div class="garanties-grid">
+        <label>
+            <input type="checkbox" id="caution">
+            <span>Caution personnelle</span>
+            <span class="badge-pourcent">10%</span>
+        </label>
+        <input id="caution_eur" type="number" placeholder="Montant (€)" disabled>
+    </div>
+
+    <!-- CHAMPS COMPLÉMENTAIRES -->
+    <div class="grid-3" style="margin-top:10px;">
+        <div>
+            <label>LTA (%)</label>
+            <input id="lta" type="number" placeholder="Ex : 95">
+        </div>
+        <div>
+            <label>LTC (%)</label>
+            <input id="ltc" type="number" placeholder="Ex : 88">
+        </div>
+        <div>
+            <label>Mise (€)</label>
+            <input id="mise" type="number" placeholder="Ex : 500">
+        </div>
+    </div>
+
+    <button onclick="runEngine()">AUDITER & SAUVEGARDER</button>
 </div>
 
 <!-- MODULE 4 : TABLEAU PROJETS -->
@@ -913,10 +938,28 @@ window.runEngine = function() {
   });
   document.getElementById("totalInvesti").textContent = `${totalMise.toLocaleString("fr-FR")} €`;
 };
-</script>
 
+  function bindGuaranteeToggle(idCheck, idField) {
+    const check = document.getElementById(idCheck);
+    const field = document.getElementById(idField);
+
+    check.addEventListener("change", () => {
+        field.disabled = !check.checked;
+        if (!check.checked) field.value = "";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    bindGuaranteeToggle("fiducie", "fiducie_pct");
+    bindGuaranteeToggle("g1d", "g1d_pct");
+    bindGuaranteeToggle("hyp1", "hyp1_pct");
+    bindGuaranteeToggle("nantissement", "nantissement_pct");
+    bindGuaranteeToggle("caution", "caution_eur");
+});
+</script>
 </body>
 </html>
+
 
 
 
