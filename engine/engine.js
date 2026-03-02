@@ -1,237 +1,181 @@
-/* ============================================================
-   ENGINE LPB v6 — Moteur unifié MDB + LDT
-   Pondération dynamique complète pour les deux types
-============================================================ */
+// ======================================================
+//  MOTEUR IA LPB v6 — Pondération dynamique + LTV net
+// ======================================================
 
 export function runLPBEngine(input) {
-  const { type = "MDB", valeurs = {}, garanties = {}, garantiesDyn = {}, ldt = {} } = input;
+  const { type, valeurs, garanties, ldt } = input;
 
-  // Ratios MDB (LTV, LTA, LTC)
-  const ratios = computeRatios(type, valeurs, ldt);
+  // -------------------------------
+  // 1) LECTURE DES VALEURS
+  // -------------------------------
+  const LTV = valeurs.LTV ?? 0;
+  const LTA = valeurs.LTA ?? 0;
+  const LTC = valeurs.LTC ?? 0;
+  const marge = valeurs.marge ?? 0;
+  const precomm = valeurs.precomm ?? 0;
+  const liquidite = valeurs.liquidite ?? 0;
+  const mise = valeurs.mise ?? 0;
 
-  // Cohérence + stress LDT
-  let coherence = null;
-  let stress = null;
-
-  if (type === "LDT") {
-    coherence = coherenceLDT(ldt, garantiesDyn);
-    stress = stressTestLDT(ldt, garantiesDyn);
-  }
-
-  // Score global unifié
-  const score = computeScore(valeurs, coherence, stress, type, garantiesDyn);
-
-  // Sécurité globale
-  const securiteGlobale = computeSecuriteGlobale(score);
-
-  // Ticket IA unifié
-  const ticketIA = computeTicketIA(score, coherence, stress, type, garantiesDyn);
-
-  // Diagnostic unifié
-  const diagnostic = buildDiagnostic(type, valeurs, ratios, garantiesDyn, { securiteGlobale }, coherence, stress);
-
-  const meta = {
-    securiteGlobale,
-    coherenceLDT: coherence,
-    stressLDT: stress,
-    garantiesDyn
+  // -------------------------------
+  // 2) POIDS LPB v6 DES GARANTIES
+  // -------------------------------
+  const poids = {
+    fiducie: 1.0,
+    g1d: 1.0,
+    hyp1: 1.0,
+    nantissement: 0.6,
+    caution: 0.4
   };
 
-  return { ratios, score, diagnostic, ticketIA, meta };
-}
+  // -------------------------------
+  // 3) CALCUL PONDÉRATION DYNAMIQUE
+  // -------------------------------
+  function pondGarantie(active, couverture, poidsBase) {
+    if (!active || couverture == null || isNaN(couverture)) return 0;
 
-/* ============================================================
-   Ratios MDB + LDT
-============================================================ */
-
-function computeRatios(type, v, ldt) {
-  const ratios = {};
-
-  if (v.LTV != null) ratios.LTV = v.LTV;
-  if (v.LTA != null) ratios.LTA = v.LTA;
-  if (v.LTC != null) ratios.LTC = v.LTC;
-
-  if (type === "LDT" && ldt.montant > 0 && ldt.remboursement > 0) {
-    ratios.coverDebt = (ldt.remboursement / ldt.montant) * 100;
+    const brute = poidsBase * couverture;
+    return Math.min(brute, 100); // plafonnement LPB v6
   }
 
-  return ratios;
-}
+  // Fiducie
+  const p_fiducie = pondGarantie(garanties.fiducie, garanties.fiducie_pct, poids.fiducie);
 
-/* ============================================================
-   Cohérence LDT — version dynamique
-============================================================ */
+  // G1D
+  const p_g1d = pondGarantie(garanties.g1d, garanties.g1d_pct, poids.g1d);
 
-function coherenceLDT(ldt, garantiesDyn) {
-  let score = 100;
-  let alerts = [];
+  // Hypothèque
+  const p_hyp1 = pondGarantie(garanties.hyp1, garanties.hyp1_pct, poids.hyp1);
 
-  let cycles = 0;
-  switch (ldt.frequence) {
-    case "mensuel": cycles = ldt.duree; break;
-    case "trimestriel": cycles = Math.floor(ldt.duree / 3); break;
-    case "semestriel": cycles = Math.floor(ldt.duree / 6); break;
-    case "annuel": cycles = Math.floor(ldt.duree / 12); break;
-    case "in_fine": cycles = 1; break;
+  // Nantissement
+  const p_nant = pondGarantie(garanties.nantissement, garanties.nantissement_pct, poids.nantissement);
+
+  // Caution → conversion en %
+  let p_caution = 0;
+  if (garanties.caution && garanties.caution_eur != null && garanties.caution_eur > 0) {
+    const montantProjet = ldt?.montant ?? 100000; // fallback minimal
+    const cautionPct = (garanties.caution_eur / montantProjet) * 100;
+    const brute = cautionPct * poids.caution;
+    p_caution = Math.min(brute, 100);
   }
 
-  const capaciteTotale = (ldt.remboursement || 0) * cycles;
+  // Pondération totale
+  const pondTotale = Math.min(
+    p_fiducie + p_g1d + p_hyp1 + p_nant + p_caution,
+    100
+  );
 
-  if (capaciteTotale < (ldt.montant || 0)) {
-    score -= 30;
-    alerts.push("Capacité totale de remboursement insuffisante.");
-  }
+  // -------------------------------
+  // 4) LTV NET LPB v6
+  // -------------------------------
+  const LTV_net = LTV * (1 - pondTotale / 100);
 
-  if (ldt.duree > 24) score -= 20;
-  if (ldt.duree > 36) score -= 10;
+  // -------------------------------
+  // 5) SCORE GLOBAL LPB v6
+  // -------------------------------
+  let score = 0;
 
-  if (ldt.taux > 10) score -= 15;
-  if (ldt.taux > 12) score -= 10;
+  // LTV net
+  if (LTV_net < 60) score += 25;
+  else if (LTV_net < 75) score += 18;
+  else if (LTV_net < 85) score += 10;
+  else score += 2;
 
-  if (ldt.frequence === "in_fine") {
-    score -= 25;
-    alerts.push("Remboursement in fine : risque de défaut en fin de période.");
-  }
+  // LTA
+  if (LTA < 70) score += 15;
+  else if (LTA < 85) score += 10;
+  else score += 3;
 
-  // Pondération dynamique
-  const g = garantiesDyn.total;
+  // LTC
+  if (LTC < 70) score += 15;
+  else if (LTC < 85) score += 10;
+  else score += 3;
 
-  if (g >= 1.0) score += 10;
-  else if (g >= 0.6) score += 5;
-  else if (g < 0.3 && g > 0) score -= 5;
-  else if (g === 0) score -= 15;
-
-  score = Math.max(0, score);
-
-  let niveau = "SAFE";
-  if (score < 80) niveau = "MOYEN";
-  if (score < 60) niveau = "TENDU";
-  if (score < 40) niveau = "CRITIQUE";
-
-  return { score, niveau, alerts, capaciteTotale };
-}
-
-/* ============================================================
-   Stress test LDT — version dynamique
-============================================================ */
-
-function stressTestLDT(ldt, garantiesDyn) {
-  let cycles = 0;
-  switch (ldt.frequence) {
-    case "mensuel": cycles = ldt.duree; break;
-    case "trimestriel": cycles = Math.floor(ldt.duree / 3); break;
-    case "semestriel": cycles = Math.floor(ldt.duree / 6); break;
-    case "annuel": cycles = Math.floor(ldt.duree / 12); break;
-    case "in_fine": cycles = 1; break;
-  }
-
-  const capaciteBase = (ldt.remboursement || 0) * cycles;
-  const capaciteStress = capaciteBase * 0.8;
-
-  let deficitStress = capaciteStress < (ldt.montant || 0);
-
-  // Bonus garanties fortes
-  if (garantiesDyn.total >= 1.0) {
-    deficitStress = false;
-  }
-
-  const retard = ldt.duree > 30;
-
-  return { capaciteBase, capaciteStress, deficitStress, retard };
-}
-
-/* ============================================================
-   Score global unifié MDB + LDT
-============================================================ */
-
-function computeScore(valeurs, coherence, stress, type, garantiesDyn) {
-  let score = 100;
-
+  // Marge (MDB uniquement)
   if (type === "MDB") {
-    if (valeurs.LTV > 85) score -= 20;
-    if (valeurs.LTC > 85) score -= 20;
-    if (valeurs.marge < 10) score -= 20;
-    if (valeurs.precomm < 30) score -= 10;
-    if (valeurs.liquidite < 5) score -= 10;
+    if (marge > 20) score += 15;
+    else if (marge > 10) score += 10;
+    else score += 3;
   }
 
-  if (type === "LDT" && coherence) {
-    score -= (100 - coherence.score) * 0.6;
-    if (stress.deficitStress) score -= 20;
-    if (stress.retard) score -= 10;
+  // Pré‑commercialisation
+  if (precomm > 50) score += 10;
+  else if (precomm > 30) score += 6;
+  else score += 2;
+
+  // Liquidité
+  if (liquidite >= 8) score += 10;
+  else if (liquidite >= 5) score += 6;
+  else score += 2;
+
+  // Garanties
+  if (pondTotale >= 80) score += 10;
+  else if (pondTotale >= 40) score += 6;
+  else score += 2;
+
+  // Mise
+  if (mise >= 500) score += 10;
+  else if (mise >= 250) score += 6;
+  else score += 2;
+
+  if (score > 100) score = 100;
+
+  // -------------------------------
+  // 6) SÉCURITÉ GLOBALE
+  // -------------------------------
+  let securiteGlobale = "critique";
+
+  if (score >= 80) securiteGlobale = "forte";
+  else if (score >= 60) securiteGlobale = "moyenne";
+  else if (score >= 40) securiteGlobale = "faible";
+  else securiteGlobale = "critique";
+
+  // -------------------------------
+  // 7) TICKET IA LPB v6
+  // -------------------------------
+  function ticket(min, max) {
+    return { plage: { min, max } };
   }
 
-  // Pondération dynamique
-  const g = garantiesDyn.total;
+  let ticketIA;
 
-  if (g >= 1.0) score += 10;
-  else if (g >= 0.6) score += 5;
-  else if (g < 0.3 && g > 0) score -= 5;
-  else if (g === 0) score -= 15;
-
-  return Math.max(0, Math.min(100, score));
-}
-
-/* ============================================================
-   Sécurité globale
-============================================================ */
-
-function computeSecuriteGlobale(score) {
-  if (score >= 80) return "forte";
-  if (score >= 60) return "moyenne";
-  if (score >= 40) return "faible";
-  return "critique";
-}
-
-/* ============================================================
-   Ticket IA unifié MDB + LDT
-============================================================ */
-
-function computeTicketIA(score, coherence, stress, type, garantiesDyn) {
-  let min = 0;
-  let max = 1000;
-
-  if (score < 40) max = 250;
-  else if (score < 60) max = 500;
-  else if (score < 80) max = 750;
-
-  if (type === "LDT" && coherence) {
-    if (coherence.niveau === "TENDU") max = Math.min(max, 300);
-    if (coherence.niveau === "CRITIQUE") max = Math.min(max, 150);
-    if (stress.deficitStress) max = Math.min(max, 200);
-    if (stress.retard) max = Math.min(max, 300);
+  if (securiteGlobale === "forte") {
+    ticketIA = ticket(500, 1000);
+  } else if (securiteGlobale === "moyenne") {
+    ticketIA = ticket(250, 500);
+  } else if (securiteGlobale === "faible") {
+    ticketIA = ticket(100, 250);
+  } else {
+    ticketIA = ticket(0, 100);
   }
 
-  // Pondération dynamique
-  const g = garantiesDyn.total;
+  // -------------------------------
+  // 8) DIAGNOSTIC
+  // -------------------------------
+  const diagnostic = [];
 
-  if (g >= 1.0) max += 100;
-  else if (g < 0.3) max -= 150;
+  if (LTV > 85) diagnostic.push("LTV élevé");
+  if (LTC > 85) diagnostic.push("LTC élevé");
+  if (marge < 10 && type === "MDB") diagnostic.push("Marge insuffisante");
+  if (precomm < 30) diagnostic.push("Pré‑commercialisation faible");
+  if (liquidite < 5) diagnostic.push("Liquidité faible");
+  if (pondTotale < 20) diagnostic.push("Garanties insuffisantes");
 
-  return { plage: { min, max: Math.max(0, Math.min(1000, max)) } };
-}
-
-/* ============================================================
-   Diagnostic unifié MDB + LDT
-============================================================ */
-
-function buildDiagnostic(type, valeurs, ratios, garantiesDyn, meta, coherence, stress) {
-  const lignes = [];
-
-  lignes.push(`Sécurité globale : ${meta.securiteGlobale.toUpperCase()}.`);
-
-  if (type === "LDT") {
-    lignes.push(`Score cohérence : ${coherence.score}/100`);
-    lignes.push(`Capacité totale : ${coherence.capaciteTotale.toLocaleString("fr-FR")} €`);
-    if (stress.deficitStress) lignes.push("Stress test : déficit en scénario -20%.");
-    if (stress.retard) lignes.push("Stress test : risque de retard 6 mois.");
-  }
-
-  if (garantiesDyn.total === 0) lignes.push("Aucune garantie réelle : risque structurel élevé.");
-  else if (garantiesDyn.total < 0.3) lignes.push("Garanties faibles : renforcer les sûretés.");
-  else if (garantiesDyn.total >= 0.6) lignes.push("Structure de garanties satisfaisante.");
-
-  if (garantiesDyn.alertes.length > 0) lignes.push(...garantiesDyn.alertes);
-
-  return lignes;
+  // -------------------------------
+  // 9) RETOUR MOTEUR IA
+  // -------------------------------
+  return {
+    ratios: {
+      LTV,
+      LTV_net,
+      LTA,
+      LTC
+    },
+    score,
+    diagnostic,
+    ticketIA,
+    meta: {
+      pondTotale,
+      securiteGlobale
+    }
+  };
 }
