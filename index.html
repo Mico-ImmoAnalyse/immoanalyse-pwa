@@ -937,8 +937,13 @@ function bindSurGarantie(idField, idAlert) {
 
   field.addEventListener("input", () => {
     const v = parseFloat(field.value);
-    if (!isNaN(v) && v > 100) alert.style.display = "block";
-    else alert.style.display = "none";
+    console.log("bindSurGarantie actif :", idField, v); // DEBUG TEMPORAIRE
+
+    if (!isNaN(v) && v > 100) {
+      alert.style.display = "block";
+    } else {
+      alert.style.display = "none";
+    }
   });
 }
 
@@ -958,6 +963,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
