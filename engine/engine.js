@@ -4,36 +4,6 @@
 ============================================================ */// engine/engine.js
 // Patch complet prêt à coller – version exploitant les pondérations dynamiques de garanties
 
-export function runLPBEngine(input) {
-  const { type = "MDB", valeurs = {}, garanties = {}, ldt = {} } = input;
-
-  // 1. Ratios de base
-  const ratios = computeRatios(type, valeurs, ldt);
-
-  // 2. Pondération dynamique des garanties (même logique que dans l’index)
-  const garantiesDyn = computeGarantiesDynamiques(garanties, valeurs.mise || 0);
-
-  // 3. Score “brut” hors garanties
-  const scoreBase = computeScoreBase(type, valeurs, ratios);
-
-  // 4. Bonus / malus liés aux garanties dynamiques
-  const bonusGaranties = computeBonusGaranties(garantiesDyn.total);
-
-  // 5. Score final moteur (avant éventuel ajustement dans l’UI)
-  const score = clamp(scoreBase + bonusGaranties, 0, 100);
-
-  // 6. Métadonnées de sécurité globale (intègre garantiesDyn)
-  const meta = buildMeta(type, valeurs, ratios, garantiesDyn, score);
-
-  // 7. Ticket IA (plage 0–1000 €) ajusté par garantiesDyn
-  const ticketIA = computeTicketIA(score, meta, valeurs.mise || 0, garantiesDyn.total);
-
-  // 8. Diagnostic textuel (résumé pédagogique)
-  const diagnostic = buildDiagnostic(type, valeurs, ratios, garantiesDyn, meta);
-
-  return { ratios, score, diagnostic, ticketIA, meta };
-}
-
 /* ============================================================
    Ratios de base
 ============================================================ */
@@ -600,4 +570,5 @@ export function runLPBEngine(input) {
 
   return { ratios, score, diagnostic, ticketIA, meta };
 }
+
 
