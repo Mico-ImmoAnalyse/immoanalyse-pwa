@@ -616,6 +616,49 @@
       <div class="grid-2">
         <label>
           <input type="checkbox" id="nantissement">
+  Nantissement <span class="badge-pourcent">60%</span>
+</label>
+
+<div>
+  <input id="nantissement_pct" type="number" placeholder="Couverture (%)" disabled>
+  <p class="alert-yellow" id="alert_nantissement">⚠ Sur‑garantie détectée (couverture > 100 %)</p>
+</div>
+</div>
+
+<h3>Caution personnelle</h3>
+<div class="grid-2">
+  <label>
+    <input type="checkbox" id="caution">
+    Caution personnelle <span class="badge-pourcent">40%</span>
+  </label>
+  <div>
+    <input id="caution_eur" type="number" placeholder="Montant (€)" disabled>
+  </div>
+</div>
+
+<h3>Mise (capital engagé)</h3>
+<input id="mise" type="number" placeholder="Ex : 500">
+
+<button onclick="auditerProjet()">Auditer & Sauvegarder</button>
+</div>
+
+<!-- TABLEAU DES PROJETS AUDITÉS -->
+<div class="section">
+  <h2>Projets audités</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Projet</th>
+        <th>LTV net</th>
+        <th>Risque</th>
+        <th>Ticket IA</th>
+      </tr>
+    </thead>
+    <tbody id="tableProjets"></tbody>
+  </table>
+</div>
+
 <script>
 // -------------------------------
 // THEME CLAIR / SOMBRE
@@ -777,6 +820,102 @@ function exportCSV() {
   a.download = "projets_audites.csv";
   a.click();
 }
+<script type="module">
+import { runLPBEngine } from "./engine/engine.js";
+
+function auditerProjet() {
+
+  const type = document.getElementById("projectType").value;
+
+  const input = {
+    type,
+    valeurs: {
+      LTV: parseFloat(document.getElementById("ltv").value) || 0,
+      LTA: 0,
+      LTC: 0,
+      marge: parseFloat(document.getElementById("marge").value) || 0,
+      precomm: parseFloat(document.getElementById("precomm").value) || 0,
+      liquidite: parseFloat(document.getElementById("liq").value) || 0,
+      mise: parseFloat(document.getElementById("mise").value) || 0
+    },
+    garanties: {
+      fiducie: document.getElementById("fiducie").checked,
+      fiducie_pct: parseFloat(document.getElementById("fiducie_pct").value) || 0,
+
+      g1d: document.getElementById("g1d").checked,
+      g1d_pct: parseFloat(document.getElementById("g1d_pct").value) || 0,
+
+      hyp1: document.getElementById("hyp1").checked,
+      hyp1_pct: parseFloat(document.getElementById("hyp1_pct").value) || 0,
+
+      nantissement: document.getElementById("nantissement").checked,
+      nantissement_pct: parseFloat(document.getElementById("nantissement_pct").value) || 0,
+
+      caution: document.getElementById("caution").checked,
+      caution_eur: parseFloat(document.getElementById("caution_eur").value) || 0
+    },
+    ldt: {
+      montant: parseFloat(document.getElementById("ldt_montant").value) || 0,
+      duree: parseFloat(document.getElementById("ldt_duree").value) || 0,
+      taux: parseFloat(document.getElementById("ldt_taux").value) || 0,
+      capacite: parseFloat(document.getElementById("ldt_capacite").value) || 0,
+      frequence: document.getElementById("ldt_frequence").value
+    }
+  };
+
+  const result = runLPBEngine(input);
+
+  const nom = document.getElementById("nomProjet").value || "Projet";
+
+  const tr = document.createElement("tr");
+
+  const risqueClass = {
+    forte: "risque-premium",
+    moyenne: "risque-safe",
+    faible: "risque-tendu",
+    critique: "risque-critique"
+  }[result.meta.securiteGlobale];
+
+  tr.innerHTML = `
+    <td>${nom}</td>
+    <td>${result.ratios.LTV_net.toFixed(1)}%</td>
+    <td class="${risqueClass}">${result.meta.securiteGlobale.toUpperCase()}</td>
+    <td class="tickets-cell">
+      <span class="tickets-main">${result.ticketIA.plage.min}–${result.ticketIA.plage.max} €</span>
+      <span class="tickets-mise">Mise : ${input.valeurs.mise} €</span>
+    </td>
+  `;
+
+  document.getElementById("tableProjets").appendChild(tr);
+
+  mettreAJourPortefeuille();
+}
+
+function mettreAJourPortefeuille() {
+  const lignes = document.querySelectorAll("#tableProjets tr");
+  if (lignes.length === 0) return;
+
+  let totalScore = 0;
+  let totalMise = 0;
+
+  lignes.forEach(tr => {
+    const ticketText = tr.querySelector(".tickets-main").innerText;
+    const miseText = tr.querySelector(".tickets-mise").innerText.replace("Mise : ", "").replace(" €", "");
+
+    const min = parseInt(ticketText.split("–")[0]);
+    const max = parseInt(ticketText.split("–")[1]);
+
+    totalScore += (min + max) / 2;
+    totalMise += parseFloat(miseText);
+  });
+
+  const scoreMoyen = Math.round(totalScore / lignes.length);
+
+  document.getElementById("scorePortefeuille").innerText = scoreMoyen + "/100";
+  document.getElementById("totalInvesti").innerText = totalMise + " €";
+}
 </script>
+
 </body>
 </html>
+
