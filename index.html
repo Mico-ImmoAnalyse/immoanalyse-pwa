@@ -682,6 +682,7 @@ th {
         <th>LTV net</th>
         <th>Risque</th>
         <th>Ticket IA</th>
+        <th>Supprimer</th>
       </tr>
     </thead>
     <tbody id="tableProjets"></tbody>
@@ -839,6 +840,13 @@ function exportCSV() {
   a.download = "projets_audites.csv";
   a.click();
 }
+
+function supprimerProjet(btn) {
+  const row = btn.closest("tr");
+  row.remove();
+  mettreAJourPortefeuille();
+}
+  
 </script>
 
 <!-- ========================= -->
@@ -902,14 +910,17 @@ function auditerProjet() {
   }[result.meta.securiteGlobale];
 
   tr.innerHTML = `
-    <td>${nom}</td>
-    <td>${result.ratios.LTV_net.toFixed(1)}%</td>
-    <td class="${risqueClass}">${result.meta.securiteGlobale.toUpperCase()}</td>
-    <td class="tickets-cell">
-      <span class="tickets-main">${result.ticketIA.plage.min}–${result.ticketIA.plage.max} €</span>
-      <span class="tickets-mise">Mise : ${input.valeurs.mise} €</span>
-    </td>
-  `;
+  <td>${nom}</td>
+  <td>${result.ratios.LTV_net.toFixed(1)}%</td>
+  <td class="${risqueClass}">${result.meta.securiteGlobale.toUpperCase()}</td>
+  <td class="tickets-cell">
+    <span class="tickets-main">${result.ticketIA.plage.min}–${result.ticketIA.plage.max} €</span>
+    <span class="tickets-mise">Mise : ${input.valeurs.mise} €</span>
+  </td>
+  <td>
+    <button class="secondary" onclick="supprimerProjet(this)">🗑️</button>
+  </td>
+`;
 
   document.getElementById("tableProjets").appendChild(tr);
 
@@ -947,6 +958,7 @@ window.auditerProjet = auditerProjet;
 
 </body>
 </html>
+
 
 
 
