@@ -645,58 +645,50 @@ document.querySelectorAll(".accordion-header").forEach(header => {
   </select>
 </div>
 
-<!-- MODULE 4 : GARANTIES (VERSION CONFORME LPB v6) -->
+<!-- MODULE 4 : GARANTIES (VERSION PARFAITE) -->
 <div class="section">
   <h2>Sûretés & Couvertures</h2>
 
   <h3>Garanties très fortes</h3>
-  <div class="grid-2">
-    <label>
-      <input type="checkbox" id="fiducie">
-      Fiducie‑Sûreté <span class="badge-pourcent">100%</span>
-    </label>
+
+  <div class="garantie-row">
+    <label><input type="checkbox" id="fiducie"> Fiducie‑Sûreté <span class="badge-pourcent">100%</span></label>
     <div>
-      <input id="fiducie_pct" type="number" placeholder="Couverture (%)" disabled>
+      <input id="fiducie_pct" type="number" placeholder="%" disabled>
       <p class="alert-yellow" id="alert_fiducie">⚠ Surgarantie détectée (>100%)</p>
     </div>
+  </div>
 
-    <label>
-      <input type="checkbox" id="g1d">
-      Garantie 1ère demande <span class="badge-pourcent">100%</span>
-    </label>
+  <div class="garantie-row">
+    <label><input type="checkbox" id="g1d"> Garantie 1ère demande <span class="badge-pourcent">100%</span></label>
     <div>
-      <input id="g1d_pct" type="number" placeholder="Couverture (%)" disabled>
+      <input id="g1d_pct" type="number" placeholder="%" disabled>
       <p class="alert-yellow" id="alert_g1d">⚠ Surgarantie détectée (>100%)</p>
     </div>
+  </div>
 
-    <label>
-      <input type="checkbox" id="hyp1">
-      Hypothèque 1er rang <span class="badge-pourcent">100%</span>
-    </label>
+  <div class="garantie-row">
+    <label><input type="checkbox" id="hyp1"> Hypothèque 1er rang <span class="badge-pourcent">100%</span></label>
     <div>
-      <input id="hyp1_pct" type="number" placeholder="Couverture (%)" disabled>
+      <input id="hyp1_pct" type="number" placeholder="%" disabled>
       <p class="alert-yellow" id="alert_hyp1">⚠ Surgarantie détectée (>100%)</p>
     </div>
   </div>
 
   <h3>Garanties moyennes</h3>
-  <div class="grid-2">
-    <label>
-      <input type="checkbox" id="nantissement">
-      Nantissement <span class="badge-pourcent">60%</span>
-    </label>
+
+  <div class="garantie-row">
+    <label><input type="checkbox" id="nantissement"> Nantissement <span class="badge-pourcent">60%</span></label>
     <div>
-      <input id="nantissement_pct" type="number" placeholder="Couverture (%)" disabled>
+      <input id="nantissement_pct" type="number" placeholder="%" disabled>
       <p class="alert-yellow" id="alert_nantissement">⚠ Surgarantie détectée (>100%)</p>
     </div>
   </div>
 
   <h3>Caution personnelle</h3>
-  <div class="grid-2">
-    <label>
-      <input type="checkbox" id="caution">
-      Caution personnelle <span class="badge-pourcent">40%</span>
-    </label>
+
+  <div class="garantie-row">
+    <label><input type="checkbox" id="caution"> Caution personnelle <span class="badge-pourcent">40%</span></label>
     <div>
       <input id="caution_eur" type="number" placeholder="Montant (€)" disabled>
     </div>
@@ -967,3 +959,4 @@ checkSurGarantie("nantissement_pct", "alert_nantissement");
 
 </body>
 </html>
+
