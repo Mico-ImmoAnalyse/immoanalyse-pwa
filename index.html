@@ -9,7 +9,6 @@
 <title>ImmoAnalyse v6</title>
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<link rel="manifest" href="manifest.webmanifest">
 
 <style>
 
@@ -744,13 +743,6 @@ document.querySelectorAll(".accordion-header").forEach(header => {
 
 </div> <!-- FIN CONTAINER -->
 
-<!-- SERVICE WORKER -->
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-
 <!-- THEME SCRIPT -->
 <script>
 const toggleBtn = document.getElementById("toggleTheme");
@@ -990,6 +982,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
