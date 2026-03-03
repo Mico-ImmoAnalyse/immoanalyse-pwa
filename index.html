@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ImmoAnalyse v6 PRO</title>
+<link rel="manifest" href="manifest.json">
 <style>
 :root {
     --bg: #0f1012;
@@ -511,6 +512,12 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
     };
 });
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+}
+</script>
 
 </body>
 </html>
+
