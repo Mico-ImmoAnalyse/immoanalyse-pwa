@@ -1,6 +1,5 @@
 // ======================================================
-//  ENGINE LPB v6 PRO — BLOC 1/4
-//  Structure, outils, normalisation, lecture des valeurs
+//  ENGINE LPB v6 PRO — VERSION FINALE
 // ======================================================
 
 // --- Lecture sécurisée des nombres ---
@@ -18,7 +17,7 @@ export function readBool(v) {
 // --- Normalisation des ratios ---
 function clampRatio(v) {
     if (v === null || v === undefined || isNaN(v)) return null;
-    return Math.max(0, Math.min(500, v)); // bornes larges pour MDB
+    return Math.max(0, Math.min(500, v));
 }
 
 // --- Pondération stricte LPB v6 PRO des garanties ---
@@ -47,8 +46,7 @@ function computeGaranties(garanties, valeurs) {
         couverture += GARANTIES_PRO.nantissement * Math.min(valeurs.nantissement_pct, 100);
     }
     if (garanties.caution && valeurs.caution_eur != null) {
-        // Caution = montant → converti en équivalent %
-        const pct = Math.min(100, valeurs.caution_eur / 10000); 
+        const pct = Math.min(100, valeurs.caution_eur / 10000);
         couverture += GARANTIES_PRO.caution * pct;
     }
 
@@ -61,20 +59,14 @@ function computeLTVNet(LTV, couverture, LTA, LTC) {
 
     let ltv = LTV;
 
-    // Impact garanties
-    const bonus = (couverture / 100) * 0.25; // 25% max d'amélioration
+    const bonus = (couverture / 100) * 0.25; // max -25 %
     ltv = ltv * (1 - bonus);
 
-    // Impact structure (LTA/LTC)
     if (LTA != null) ltv *= (1 + (LTA - 100) / 600);
     if (LTC != null) ltv *= (1 + (LTC - 100) / 600);
 
     return Math.max(0, ltv);
 }
-// ======================================================
-//  ENGINE LPB v6 PRO — BLOC 2/4
-//  Score, LTA/LTC différenciés MDB/LDT, risque, ticket IA
-// ======================================================
 
 // --- Score LTV ---
 function scoreLTV(LTV, type) {
@@ -87,7 +79,7 @@ function scoreLTV(LTV, type) {
         if (v < 85) return 15;
         if (v < 95) return 5;
         return -10;
-    } else { // LDT
+    } else {
         if (v < 50) return 35;
         if (v < 65) return 25;
         if (v < 80) return 15;
@@ -96,44 +88,44 @@ function scoreLTV(LTV, type) {
     }
 }
 
-// --- Score LTA différencié MDB / LDT ---
+// --- Score LTA ---
 function scoreLTA(LTA, type) {
     if (LTA == null) return 0;
     const v = clampRatio(LTA);
 
     if (type === "MDB") {
-        if (v < 80) return 20;       // très bon
-        if (v < 120) return 12;      // normal
-        if (v < 150) return 5;       // acceptable
-        if (v < 200) return -5;      // tension
-        return -15;                  // risque élevé
-    } else { // LDT
-        if (v < 70) return 20;       // solide
-        if (v < 85) return 12;       // acceptable
-        if (v < 100) return 5;       // fragile
-        if (v < 130) return -10;     // surendetté
-        if (v < 150) return -20;     // très fragile
-        return -30;                  // critique
+        if (v < 80) return 20;
+        if (v < 120) return 12;
+        if (v < 150) return 5;
+        if (v < 200) return -5;
+        return -15;
+    } else {
+        if (v < 70) return 20;
+        if (v < 85) return 12;
+        if (v < 100) return 5;
+        if (v < 130) return -10;
+        if (v < 150) return -20;
+        return -30;
     }
 }
 
-// --- Score LTC différencié MDB / LDT ---
+// --- Score LTC ---
 function scoreLTC(LTC, type) {
     if (LTC == null) return 0;
     const v = clampRatio(LTC);
 
     if (type === "MDB") {
-        if (v < 70) return 20;       // excellent
-        if (v < 85) return 12;       // normal
-        if (v < 100) return 5;       // tension
-        if (v < 120) return -5;      // risque
-        return -15;                  // critique
-    } else { // LDT
-        if (v < 70) return 20;       // très bon
-        if (v < 85) return 12;       // acceptable
-        if (v < 100) return 5;       // fragile
-        if (v < 115) return -10;     // très fragile
-        return -20;                  // critique
+        if (v < 70) return 20;
+        if (v < 85) return 12;
+        if (v < 100) return 5;
+        if (v < 120) return -5;
+        return -15;
+    } else {
+        if (v < 70) return 20;
+        if (v < 85) return 12;
+        if (v < 100) return 5;
+        if (v < 115) return -10;
+        return -20;
     }
 }
 
@@ -147,7 +139,7 @@ function scoreMarge(marge, type) {
         if (v >= 10) return 8;
         if (v >= 5) return 2;
         return -10;
-    } else { // LDT : marge = marge de taux / spread
+    } else {
         if (v > 5) return 10;
         if (v >= 3) return 5;
         if (v >= 1) return 2;
@@ -165,7 +157,7 @@ function scorePrecomm(precomm, type) {
         if (v >= 30) return 4;
         if (v >= 15) return 1;
         return -8;
-    } else { // LDT
+    } else {
         if (v > 60) return 8;
         if (v >= 40) return 4;
         if (v >= 20) return 1;
@@ -196,57 +188,44 @@ function scoreGaranties(couverture) {
     return -8;
 }
 
-// --- Sécurité globale (forte / moyenne / faible) ---
-function deriveSecuriteGlobale(score, LTV_net, couverture, type) {
-    if (score >= 80 && LTV_net != null && LTV_net < 70 && couverture >= 80) {
-        return "forte";
-    }
-    if (score >= 55 && LTV_net != null && LTV_net < 85 && couverture >= 60) {
-        return "moyenne";
-    }
-    return "faible";
+// --- Clamp score ---
+function clampScore(s) {
+    return Math.max(0, Math.min(100, s));
 }
 
-// --- Ticket IA (plage en euros) ---
-function deriveTicketIA(score, mise, type) {
-    if (mise == null || mise <= 0) {
-        return { plage: { min: null, max: null } };
-    }
+// --- Risque LPB v6 PRO ---
+function deriveRisque(score) {
+    if (score >= 80) return "PREMIUM";
+    if (score >= 60) return "SAFE";
+    if (score >= 40) return "TENDU";
+    return "CRITIQUE";
+}
 
-    let factorMin = 0.1;
-    let factorMax = 0.3;
+// --- Ticket IA (plage en euros, indépendant de la mise) ---
+function deriveTicketIA(score) {
+    let min = 0;
+    let max = 0;
 
-    if (score >= 80) {
-        factorMin = 0.3;
-        factorMax = 0.6;
-    } else if (score >= 60) {
-        factorMin = 0.2;
-        factorMax = 0.4;
-    } else if (score >= 40) {
-        factorMin = 0.1;
-        factorMax = 0.25;
+    if (score < 40) {
+        min = 0;
+        max = 0;
+    } else if (score < 60) {
+        min = 10;
+        max = 100;
+    } else if (score < 80) {
+        min = 100;
+        max = 500;
     } else {
-        factorMin = 0.05;
-        factorMax = 0.15;
+        min = 500;
+        max = 1000;
     }
-
-    const min = Math.round(mise * factorMin);
-    const max = Math.round(mise * factorMax);
 
     return {
         plage: {
-            min: Math.max(0, min),
-            max: Math.max(min, max)
+            min,
+            max
         }
     };
-}
-// ======================================================
-//  ENGINE LPB v6 PRO — BLOC 3/4
-//  Agrégation du score, ratios, méta, sortie principale
-// ======================================================
-
-function clampScore(s) {
-    return Math.max(0, Math.min(100, s));
 }
 
 // --- Calcul du score global LPB v6 PRO ---
@@ -272,8 +251,8 @@ function computeScoreGlobal(valeurs, garanties, type) {
 
     score = clampScore(score);
 
-    const securiteGlobale = deriveSecuriteGlobale(score, LTV_net, couverture, type);
-    const ticketIA = deriveTicketIA(score, valeurs.mise, type);
+    const risqueLPB = deriveRisque(score);
+    const ticketIA = deriveTicketIA(score);
 
     return {
         score,
@@ -288,15 +267,20 @@ function computeScoreGlobal(valeurs, garanties, type) {
             couvertureGaranties: couverture
         },
         meta: {
-            securiteGlobale,
+            risqueLPB,
             type
         },
         ticketIA
     };
 }
 
-// --- Fonction principale appelée depuis l’interface ---
+// --- Fonction principale ---
 export function runLPBEngine(input) {
+    if (!input || typeof input !== "object") {
+        console.warn("runLPBEngine: input invalide");
+        return null;
+    }
+
     const type = input.type === "LDT" ? "LDT" : "MDB";
 
     const valeurs = {
@@ -306,7 +290,6 @@ export function runLPBEngine(input) {
         marge: readNumber(input.valeurs?.marge),
         precomm: readNumber(input.valeurs?.precomm),
         liquidite: readNumber(input.valeurs?.liquidite),
-        mise: readNumber(input.valeurs?.mise),
 
         fiducie_pct: readNumber(input.valeurs?.fiducie_pct),
         g1d_pct: readNumber(input.valeurs?.g1d_pct),
@@ -332,24 +315,8 @@ export function runLPBEngine(input) {
         meta: result.meta
     };
 }
-// ======================================================
-//  ENGINE LPB v6 PRO — BLOC 4/4
-//  Export final, cohérence, sécurité
-// ======================================================
 
-// --- Vérification de cohérence interne ---
-function validateInput(input) {
-    if (!input || typeof input !== "object") {
-        console.warn("runLPBEngine: input invalide");
-        return false;
-    }
-    return true;
-}
-
-// --- Export principal déjà défini dans le bloc 3 ---
-// export function runLPBEngine(input) { ... }
-
-// --- Export global (sécurité) ---
+// --- Export global ---
 export default {
     runLPBEngine,
     readNumber
