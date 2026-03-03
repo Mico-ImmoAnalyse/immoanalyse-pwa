@@ -3,579 +3,525 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cockpit Patrimoine V6 – LPB</title>
+
+<title>ImmoAnalyse v6 PRO</title>
 
 <style>
-/* ===========================
-   THEME CLAIR / SOMBRE
-   =========================== */
+/* ---------- THEMES ---------- */
 :root {
-  --bg: #f5f5f5;
-  --text: #222;
-  --card: #ffffff;
-  --border: #ddd;
-  --accent: #007bff;
+    --bg: #0f1012;
+    --bg-section: #18191c;
+    --bg-card: #202226;
+    --text: #e7e7ea;
+    --muted: #a0a0a8;
+    --accent: #4da3ff;
+    --border: #2a2c31;
+    --badge-bg: #2b2d33;
+    --badge-border: #555861;
+    --alert-yellow: #ffcc33;
+}
+.light {
+    --bg: #f5f6f8;
+    --bg-section: #ffffff;
+    --bg-card: #f3f4f7;
+    --text: #22252b;
+    --muted: #6b6f78;
+    --accent: #0077cc;
+    --border: #d0d3dc;
+    --badge-bg: #e4e6ee;
+    --badge-border: #b5b8c3;
 }
 
-body.light {
-  --bg: #ffffff;
-  --text: #222;
-  --card: #f7f7f7;
-  --border: #ddd;
-}
-
-body.dark {
-  --bg: #1e1e1e;
-  --text: #e5e5e5;
-  --card: #2a2a2a;
-  --border: #444;
-}
-
+/* ---------- BASE ---------- */
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+h1 { text-align: center; margin: 10px 0 6px 0; color: var(--accent); font-size: 22px; }
+h2 { text-align: center; margin: 8px 0 6px 0; color: var(--accent); font-size: 18px; }
+h3 { margin: 6px 0 4px 0; color: var(--accent); font-size: 15px; }
+label { font-size: 13px; }
+
+/* ---------- CONTAINER ---------- */
+.container {
+    width: 94%;
+    max-width: 560px;
+    margin: 10px auto 20px auto;
 }
 
-/* ===========================
-   BOUTON THEME
-   =========================== */
+/* ---------- INPUTS ---------- */
+input, select {
+    width: 100%;
+    padding: 7px 8px;
+    margin: 3px 0 9px 0;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #1b1d22;
+    color: var(--text);
+    font-size: 13px;
+    box-sizing: border-box;
+}
+.light input, .light select { background: #ffffff; }
+input::placeholder { color: var(--muted); }
+
+/* ---------- BUTTONS ---------- */
+button {
+    width: 100%;
+    padding: 11px;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+}
+button:hover { background: #6bb4ff; }
+
+.secondary {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: auto;
+    font-size: 13px;
+}
+.secondary:hover { background: var(--accent); color: #000; }
+
+/* ---------- TABLE ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+}
+th, td {
+    border: 1px solid var(--border);
+    padding: 6px 4px;
+    text-align: center;
+}
+th {
+    background: var(--bg-card);
+    font-weight: 600;
+}
+.ticket-ia { font-weight: 600; }
+.mise-note { font-size: 12px; color: var(--muted); }
+
+/* ---------- SECTIONS ---------- */
+.section {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px auto;
+    box-shadow: 0 0 8px rgba(0,0,0,0.35);
+}
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+}
+@media (max-width: 800px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+.header-block { text-align: center; }
+.subtitle { color: var(--muted); margin-top: -4px; margin-bottom: 10px; font-size: 12px; }
+
+.card {
+    background: var(--bg-card);
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+.big-number { font-size: 22px; font-weight: 700; color: var(--accent); }
+.note { font-size: 11px; color: var(--muted); }
+
+/* ---------- THEME BUTTON ---------- */
 .theme-toggle {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 9999;
-  font-size: 20px;
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 999;
+}
+.theme-toggle button {
+    background: var(--bg-section);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 8px 11px;
+    border-radius: 50%;
+    font-size: 17px;
+    cursor: pointer;
 }
 
-/* ===========================
-   PANNEAU GUIDE
-   =========================== */
-#guidePanel {
-  position: fixed;
-  top: 0;
-  right: -420px;
-  width: 420px;
-  height: 100%;
-  background: var(--card);
-  border-left: 2px solid var(--border);
-  box-shadow: -4px 0 10px rgba(0,0,0,0.2);
-  transition: right 0.35s ease;
-  z-index: 9998;
-  overflow-y: auto;
-  padding: 20px;
+/* ---------- GUIDE PANEL PREMIUM ---------- */
+.guide-panel {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 360px;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg-section);
+    border-left: 1px solid var(--border);
+    padding: 10px 12px;
+    transition: right 0.3s ease;
+    z-index: 9999;
+    box-shadow: -4px 0 12px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
 }
-
-#guidePanel.open {
-  right: 0;
-}
-
-#closeGuide {
-  float: right;
-  cursor: pointer;
-  font-size: 22px;
-  margin-top: -10px;
-}
-
-.guide-tabs {
-  display: flex;
-  margin-top: 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.guide-tab {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-}
-
-.guide-tab.active {
-  border-bottom: 3px solid var(--accent);
-  font-weight: bold;
-}
-
-.guide-content {
-  display: none;
-  margin-top: 20px;
-}
-
-.guide-content.active {
-  display: block;
-}
-
-/* Accordéons */
-.accordion {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.accordion-content {
-  display: none;
-  padding: 10px;
-  border-left: 2px solid var(--accent);
-  margin-bottom: 10px;
-}
+.guide-panel.open { right: 0; }
+.guide-content { flex: 1; width: 100%; display: flex; flex-direction: column; }
 </style>
 </head>
 
-<body class="light">
+<body>
 
-<!-- BOUTON THEME -->
-<div class="theme-toggle" id="themeToggle">🌙</div>
-
-<!-- ===========================
-     GUIDE COMPLET (INTÉGRÉ)
-     =========================== -->
-<div id="guidePanel">
-  <span id="closeGuide">✖</span>
-  <h2>Guide LPB – Analyse & Audit</h2>
-
-  <div class="guide-tabs">
-    <div class="guide-tab active" data-tab="crit">Critères</div>
-    <div class="guide-tab" data-tab="gar">Garanties</div>
-    <div class="guide-tab" data-tab="alert">Alertes</div>
-    <div class="guide-tab" data-tab="ex">Exemples</div>
-    <div class="guide-tab" data-tab="opt">Optimisation</div>
-    <div class="guide-tab" data-tab="fast">Lecture rapide</div>
-    <div class="guide-tab" data-tab="faq">FAQ</div>
-  </div>
-
-  <!-- CONTENU ONGLET 1 -->
-  <div class="guide-content active" id="crit">
-    <h3>Critères d’analyse</h3>
-    <div class="accordion">LTV</div>
-    <div class="accordion-content">Ratio clé de sécurité…</div>
-
-    <div class="accordion">LTA</div>
-    <div class="accordion-content">Endettement global…</div>
-
-    <div class="accordion">LTC</div>
-    <div class="accordion-content">Robustesse du montage…</div>
-
-    <div class="accordion">Marge</div>
-    <div class="accordion-content">Rentabilité brute…</div>
-
-    <div class="accordion">Pré-commercialisation</div>
-    <div class="accordion-content">Sécurité commerciale…</div>
-
-    <div class="accordion">Liquidité</div>
-    <div class="accordion-content">Risque marché…</div>
-  </div>
-
-  <!-- CONTENU ONGLET 2 -->
-  <div class="guide-content" id="gar">
-    <h3>Garanties</h3>
-    <p>Hypothèque, fiducie, G1D, nantissement…</p>
-  </div>
-
-  <!-- CONTENU ONGLET 3 -->
-  <div class="guide-content" id="alert">
-    <h3>Alertes</h3>
-    <p>Seuils critiques, signaux rouges…</p>
-  </div>
-
-  <!-- CONTENU ONGLET 4 -->
-  <div class="guide-content" id="ex">
-    <h3>Exemples</h3>
-    <p>Cas pratiques…</p>
-  </div>
-
-  <!-- CONTENU ONGLET 5 -->
-  <div class="guide-content" id="opt">
-    <h3>Optimisation</h3>
-    <p>Stratégies d’amélioration…</p>
-  </div>
-
-  <!-- CONTENU ONGLET 6 -->
-  <div class="guide-content" id="fast">
-    <h3>Lecture rapide</h3>
-    <p>Résumé express…</p>
-  </div>
-
-  <!-- CONTENU ONGLET 7 -->
-  <div class="guide-content" id="faq">
-    <h3>FAQ</h3>
-    <p>Questions fréquentes…</p>
-  </div>
+<!-- THEME BUTTON -->
+<div class="theme-toggle">
+    <button id="toggleTheme">🌙</button>
 </div>
-<!-- ===========================
-     CONTENU PRINCIPAL
-     =========================== -->
-<div class="container" style="padding:20px; max-width:900px; margin:auto;">
 
-  <h1>Cockpit Patrimoine V6 – LPB</h1>
+<!-- GUIDE PANEL -->
+<div id="guidePanel" class="guide-panel">
+    <div class="guide-content">
+        <h2 style="margin-top:0;">Guide ImmoAnalyse</h2>
 
-  <!-- Boutons principaux -->
-  <button id="openGuide" style="margin-right:10px;">📘 Guide</button>
-  <button id="exportCSV">📤 Export CSV</button>
+        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+            <button class="secondary" onclick="closeGuide()">Fermer</button>
+        </div>
 
-  <!-- ===========================
-       SECTION : NOUVEL AUDIT
-       =========================== -->
-  <div class="section" style="margin-top:30px; padding:20px; background:var(--card); border:1px solid var(--border);">
+        <!-- Onglets -->
+        <div class="guide-tabs">
+            <div class="guide-tab active" data-tab="crit">Critères</div>
+            <div class="guide-tab" data-tab="garanties">Garanties</div>
+            <div class="guide-tab" data-tab="alertes">Alertes</div>
+            <div class="guide-tab" data-tab="exemples">Exemples</div>
+            <div class="guide-tab" data-tab="opt">Optimisation</div>
+            <div class="guide-tab" data-tab="lecture">Lecture rapide</div>
+            <div class="guide-tab" data-tab="faq">FAQ</div>
+        </div>
 
+        <!-- (Le contenu complet du guide sera dans le Bloc 2/3) -->
+        <!-- CONTENU DES ONGLETS DU GUIDE -->
+
+        <!-- Onglet CRITÈRES -->
+        <div class="guide-section" id="tab-crit">
+            <h3>Critères d’analyse LPB v6 PRO</h3>
+            <p>Le moteur LPB v6 PRO évalue un projet selon 7 axes :</p>
+            <ul>
+                <li><b>LTV</b> — ratio dette / valeur</li>
+                <li><b>LTA</b> — ratio dette / actifs (structure)</li>
+                <li><b>LTC</b> — ratio dette / coût total</li>
+                <li><b>Marge</b> — marge opérationnelle ou spread</li>
+                <li><b>Pré-commercialisation</b> — % sécurisé</li>
+                <li><b>Liquidité</b> — capacité à tenir le cycle</li>
+                <li><b>Garanties</b> — pondération stricte LPB v6 PRO</li>
+            </ul>
+            <p>Chaque critère contribue au score final (0–100).</p>
+        </div>
+
+        <!-- Onglet GARANTIES -->
+        <div class="guide-section" id="tab-garanties" style="display:none;">
+            <h3>Pondération des garanties LPB v6 PRO</h3>
+            <p>Les garanties sont classées par ordre d’importance :</p>
+
+            <ul>
+                <li><b>Fiducie</b> — pondération 1.0</li>
+                <li><b>G1D</b> — pondération 0.9</li>
+                <li><b>Hypothèque 1er rang</b> — pondération 0.8</li>
+                <li><b>Nantissement</b> — pondération 0.6</li>
+                <li><b>Caution personnelle</b> — pondération 0.3</li>
+            </ul>
+
+            <p>Si une garantie dépasse 100 %, une alerte apparaît (surgarantie).</p>
+        </div>
+
+        <!-- Onglet ALERTES -->
+        <div class="guide-section" id="tab-alertes" style="display:none;">
+            <h3>Alertes et seuils</h3>
+            <p>Le cockpit affiche automatiquement des alertes si :</p>
+            <ul>
+                <li>LTV > 90 %</li>
+                <li>LTA > 150 % (MDB) ou > 100 % (LDT)</li>
+                <li>LTC > 100 %</li>
+                <li>Marge trop faible</li>
+                <li>Pré-commercialisation insuffisante</li>
+                <li>Garanties > 100 %</li>
+            </ul>
+        </div>
+
+        <!-- Onglet EXEMPLES -->
+        <div class="guide-section" id="tab-exemples" style="display:none;">
+            <h3>Exemples de lecture</h3>
+            <p><b>Projet A (MDB)</b><br>
+            LTV 72 %, LTA 130 %, marge 12 %, garanties 80 % → Score ≈ 68/100 → SAFE</p>
+
+            <p><b>Projet B (LDT)</b><br>
+            LTV 88 %, LTA 140 %, marge 2 %, garanties 40 % → Score ≈ 38/100 → TENDU</p>
+        </div>
+
+        <!-- Onglet OPTIMISATION -->
+        <div class="guide-section" id="tab-opt" style="display:none;">
+            <h3>Optimisation du score</h3>
+            <p>Pour améliorer un projet :</p>
+            <ul>
+                <li>Renforcer les garanties</li>
+                <li>Améliorer la marge</li>
+                <li>Augmenter la pré-commercialisation</li>
+                <li>Réduire la dette (LTV/LTA/LTC)</li>
+                <li>Améliorer la liquidité</li>
+            </ul>
+        </div>
+
+        <!-- Onglet LECTURE RAPIDE -->
+        <div class="guide-section" id="tab-lecture" style="display:none;">
+            <h3>Lecture rapide</h3>
+            <p>Le score LPB v6 PRO :</p>
+            <ul>
+                <li><b>80–100</b> → PREMIUM</li>
+                <li><b>60–79</b> → SAFE</li>
+                <li><b>40–59</b> → TENDU</li>
+                <li><b>0–39</b> → CRITIQUE</li>
+            </ul>
+        </div>
+
+        <!-- Onglet FAQ -->
+        <div class="guide-section" id="tab-faq" style="display:none;">
+            <h3>FAQ</h3>
+            <p><b>Pourquoi LTA/LTC diffèrent entre MDB et LDT ?</b><br>
+            Parce que la structure financière n’a rien à voir : un MDB tourne avec un bilan gonflé, un LDT non.</p>
+
+            <p><b>Pourquoi le LTV net ?</b><br>
+            Parce qu’il intègre les garanties et la structure réelle du projet.</p>
+        </div>
+
+    </div> <!-- guide-content -->
+</div> <!-- guide-panel -->
+<!-- ========================= -->
+<!--   SECTION : NOUVEL AUDIT  -->
+<!-- ========================= -->
+
+<div class="container section">
     <h2>Nouvel audit</h2>
+    <div class="subtitle">Analyse LPB v6 PRO</div>
 
     <label>Type de projet</label>
-    <select id="projectType">
-      <option value="mdb">MDB – Marchand de biens</option>
-      <option value="ldt">LDT – Ligne de trésorerie</option>
+    <select id="typeProjet">
+        <option value="MDB">MDB</option>
+        <option value="LDT">LDT</option>
     </select>
 
-    <label>Nom du projet</label>
-    <input id="nomProjet" type="text" placeholder="Ex : Opération Lyon 7">
-
-    <!-- ===========================
-         RATIOS FINANCIERS (B1)
-         =========================== -->
-    <h3 style="margin-top:25px;">Ratios financiers</h3>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:10px;">
-
-      <!-- Ligne 1 -->
-      <div>
-        <label>LTV (%)</label>
-        <input id="ltv" type="number" placeholder="Ex : 70">
-      </div>
-
-      <div>
-        <label>LTA (%)</label>
-        <input id="lta" type="number" placeholder="Ex : 75">
-      </div>
-
-      <!-- Ligne 2 -->
-      <div>
-        <label>LTC (%)</label>
-        <input id="ltc" type="number" placeholder="Ex : 80">
-      </div>
-
-      <div>
-        <label>Marge (%)</label>
-        <input id="marge" type="number" placeholder="Ex : 15">
-      </div>
-
-      <!-- Ligne 3 -->
-      <div>
-        <label>Pré‑commercialisation (%)</label>
-        <input id="precomm" type="number" placeholder="Ex : 50">
-      </div>
-
-      <div>
-        <label>Liquidité (1–10)</label>
-        <input id="liq" type="number" placeholder="Ex : 7">
-      </div>
-
+    <div class="grid-2">
+        <div>
+            <label>LTV (%)</label>
+            <input id="ltv" type="number" placeholder="ex : 75">
+        </div>
+        <div>
+            <label>LTA (%)</label>
+            <input id="lta" type="number" placeholder="ex : 120">
+        </div>
     </div>
 
-    <!-- ===========================
-         MODULE LDT (AFFICHAGE DYNAMIQUE)
-         =========================== -->
-    <div id="ldtSection" style="margin-top:30px; display:none;">
-
-      <h3>Module LDT</h3>
-
-      <label>Montant recherché (€)</label>
-      <input id="ldtMontant" type="number" placeholder="Ex : 150000">
-
-      <label>Durée (mois)</label>
-      <input id="ldtDuree" type="number" placeholder="Ex : 24">
-
-      <label>Taux (%)</label>
-      <input id="ldtTaux" type="number" placeholder="Ex : 8">
-
-      <label>Capacité de remboursement (€ / mois)</label>
-      <input id="ldtCapacite" type="number" placeholder="Ex : 3500">
-
-      <label>Fréquence</label>
-      <select id="ldtFrequence">
-        <option value="mensuel">Mensuel</option>
-        <option value="trimestriel">Trimestriel</option>
-      </select>
+    <div class="grid-2">
+        <div>
+            <label>LTC (%)</label>
+            <input id="ltc" type="number" placeholder="ex : 85">
+        </div>
+        <div>
+            <label>Marge (%)</label>
+            <input id="marge" type="number" placeholder="ex : 12">
+        </div>
     </div>
 
-    <!-- ===========================
-         MODULE GARANTIES
-         =========================== -->
-    <div style="margin-top:30px;">
-      <h3>Garanties</h3>
-
-      <label>Hypothèque (%)</label>
-      <input id="gHypo" type="number" placeholder="Ex : 100">
-
-      <label>Fiducie (%)</label>
-      <input id="gFidu" type="number" placeholder="Ex : 100">
-
-      <label>G1D (%)</label>
-      <input id="g1d" type="number" placeholder="Ex : 100">
-
-      <label>Nantissement (%)</label>
-      <input id="gNant" type="number" placeholder="Ex : 100">
-
-      <label>Mise (€)</label>
-      <input id="mise" type="number" placeholder="Ex : 50000">
+    <div class="grid-2">
+        <div>
+            <label>Pré-commercialisation (%)</label>
+            <input id="precomm" type="number" placeholder="ex : 40">
+        </div>
+        <div>
+            <label>Liquidité (1 à 10)</label>
+            <input id="liquidite" type="number" placeholder="ex : 7">
+        </div>
     </div>
 
-    <!-- BOUTON AUDITER -->
-    <button id="auditer" style="margin-top:25px; width:100%; padding:12px; font-size:16px;">
-      AUDITER LE PROJET
-    </button>
+    <label>Mise (€)</label>
+    <input id="mise" type="number" placeholder="ex : 50000">
+</div>
 
-  </div>
+<!-- ========================= -->
+<!--   SECTION : GARANTIES     -->
+<!-- ========================= -->
 
-  <!-- ===========================
-       TABLEAU DES PROJETS
-       =========================== -->
-  <div class="section" style="margin-top:40px; padding:20px; background:var(--card); border:1px solid var(--border);">
+<div class="container section">
+    <h2>Garanties</h2>
+
+    <label><input type="checkbox" id="g_fiducie"> Fiducie</label>
+    <input id="fiducie_pct" type="number" placeholder="% couverture">
+
+    <label><input type="checkbox" id="g_g1d"> Garantie 1ère demande</label>
+    <input id="g1d_pct" type="number" placeholder="% couverture">
+
+    <label><input type="checkbox" id="g_hyp1"> Hypothèque 1er rang</label>
+    <input id="hyp1_pct" type="number" placeholder="% couverture">
+
+    <label><input type="checkbox" id="g_nant"> Nantissement</label>
+    <input id="nant_pct" type="number" placeholder="% couverture">
+
+    <label><input type="checkbox" id="g_caution"> Caution personnelle</label>
+    <input id="caution_eur" type="number" placeholder="Montant €">
+</div>
+
+<!-- ========================= -->
+<!--   BOUTON AJOUT PROJET     -->
+<!-- ========================= -->
+
+<div class="container">
+    <button onclick="runEngine()">Ajouter au portefeuille</button>
+</div>
+
+<!-- ========================= -->
+<!--   TABLEAU PROJETS AUDITÉS -->
+<!-- ========================= -->
+
+<div class="container section">
     <h2>Projets audités</h2>
 
-    <table id="projetsTable" style="width:100%; border-collapse:collapse; margin-top:15px;">
-      <thead>
-        <tr style="background:var(--border);">
-          <th>Projet</th>
-          <th>Type</th>
-          <th>Score</th>
-          <th>Ticket IA (€)</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+    <table id="tableProjets">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Score</th>
+                <th>Risque</th>
+                <th>LTV net</th>
+                <th>Mise (€)</th>
+                <th>Ticket IA</th>
+                <th>Suppr.</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
-  </div>
-
 </div>
-<!-- ===========================
-     SCRIPTS
-     =========================== -->
 
-<script>
-/* ===========================
-   THEME CLAIR / SOMBRE
-   =========================== */
-const themeToggle = document.getElementById("themeToggle");
-const body = document.body;
+<!-- ========================= -->
+<!--   SCRIPTS                 -->
+<!-- ========================= -->
 
-function applyTheme() {
-  const saved = localStorage.getItem("theme") || "light";
-  body.className = saved;
-  themeToggle.textContent = saved === "light" ? "🌙" : "☀️";
-}
+<script type="module">
+import { runLPBEngine, readNumber } from "./engine/engine.js";
 
-themeToggle.addEventListener("click", () => {
-  const newTheme = body.classList.contains("light") ? "dark" : "light";
-  body.className = newTheme;
-  localStorage.setItem("theme", newTheme);
-  themeToggle.textContent = newTheme === "light" ? "🌙" : "☀️";
-});
+let projets = [];
 
-applyTheme();
-</script>
+// ----------------------------
+//   AJOUT D’UN PROJET
+// ----------------------------
+window.runEngine = function () {
+    const input = {
+        type: document.getElementById("typeProjet").value,
+        valeurs: {
+            LTV: readNumber(document.getElementById("ltv").value),
+            LTA: readNumber(document.getElementById("lta").value),
+            LTC: readNumber(document.getElementById("ltc").value),
+            marge: readNumber(document.getElementById("marge").value),
+            precomm: readNumber(document.getElementById("precomm").value),
+            liquidite: readNumber(document.getElementById("liquidite").value),
+            mise: readNumber(document.getElementById("mise").value),
 
-<script>
-/* ===========================
-   GUIDE : OUVERTURE / ONGLET / ACCORDÉONS
-   =========================== */
-document.getElementById("openGuide").onclick = () => {
-  document.getElementById("guidePanel").classList.add("open");
+            fiducie_pct: readNumber(document.getElementById("fiducie_pct").value),
+            g1d_pct: readNumber(document.getElementById("g1d_pct").value),
+            hyp1_pct: readNumber(document.getElementById("hyp1_pct").value),
+            nantissement_pct: readNumber(document.getElementById("nant_pct").value),
+            caution_eur: readNumber(document.getElementById("caution_eur").value)
+        },
+        garanties: {
+            fiducie: document.getElementById("g_fiducie").checked,
+            g1d: document.getElementById("g_g1d").checked,
+            hyp1: document.getElementById("g_hyp1").checked,
+            nantissement: document.getElementById("g_nant").checked,
+            caution: document.getElementById("g_caution").checked
+        }
+    };
+
+    const result = runLPBEngine(input);
+
+    projets.push({
+        score: result.score,
+        risque: result.meta.securiteGlobale,
+        ltvnet: result.ratios.LTV_net,
+        mise: input.valeurs.mise,
+        ticket: result.ticketIA.plage
+    });
+
+    renderTable();
 };
 
-document.getElementById("closeGuide").onclick = () => {
-  document.getElementById("guidePanel").classList.remove("open");
+// ----------------------------
+//   AFFICHAGE TABLEAU
+// ----------------------------
+function renderTable() {
+    const tbody = document.querySelector("#tableProjets tbody");
+    tbody.innerHTML = "";
+
+    projets.forEach((p, i) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${i + 1}</td>
+            <td>${p.score}</td>
+            <td>${p.risque}</td>
+            <td>${p.ltvnet?.toFixed(1)}%</td>
+            <td>${p.mise}</td>
+            <td>${p.ticket.min}–${p.ticket.max} €</td>
+            <td><button class="secondary" onclick="suppr(${i})">X</button></td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+window.suppr = function (i) {
+    projets.splice(i, 1);
+    renderTable();
+};
+
+// ----------------------------
+//   THEME SOMBRE / CLAIR
+// ----------------------------
+const toggleBtn = document.getElementById("toggleTheme");
+toggleBtn.onclick = () => {
+    document.body.classList.toggle("light");
+    toggleBtn.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+};
+
+// ----------------------------
+//   GUIDE PREMIUM
+// ----------------------------
+window.closeGuide = function () {
+    document.getElementById("guidePanel").classList.remove("open");
 };
 
 document.querySelectorAll(".guide-tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
-    document.querySelectorAll(".guide-content").forEach(c => c.classList.remove("active"));
+    tab.onclick = () => {
+        document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
 
-    tab.classList.add("active");
-    document.getElementById(tab.dataset.tab).classList.add("active");
-  });
+        document.querySelectorAll(".guide-section").forEach(sec => sec.style.display = "none");
+        document.getElementById("tab-" + tab.dataset.tab).style.display = "block";
+    };
 });
-
-document.querySelectorAll(".accordion").forEach(acc => {
-  acc.addEventListener("click", () => {
-    const content = acc.nextElementSibling;
-    content.style.display = content.style.display === "block" ? "none" : "block";
-  });
-});
-</script>
-
-<script>
-/* ===========================
-   EXPORT CSV
-   =========================== */
-document.getElementById("exportCSV").onclick = () => {
-  const rows = [["Projet", "Type", "Score", "Ticket IA (€)"]];
-  document.querySelectorAll("#projetsTable tbody tr").forEach(tr => {
-    const cells = [...tr.children].slice(0, 4).map(td => td.textContent);
-    rows.push(cells);
-  });
-
-  let csv = rows.map(r => r.join(";")).join("\n");
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "projets_audites.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-};
-</script>
-
-<script>
-/* ===========================
-   AFFICHAGE DYNAMIQUE LDT
-   =========================== */
-const projectType = document.getElementById("projectType");
-const ldtSection = document.getElementById("ldtSection");
-
-projectType.addEventListener("change", () => {
-  ldtSection.style.display = projectType.value === "ldt" ? "block" : "none";
-});
-</script>
-
-<script>
-/* ===========================
-   MOTEUR IA LPB v6
-   =========================== */
-
-function readNumber(id) {
-  const v = parseFloat(document.getElementById(id).value);
-  return isNaN(v) ? null : v;
-}
-
-document.getElementById("auditer").onclick = () => {
-
-  const type = projectType.value;
-  const nom = document.getElementById("nomProjet").value || "Projet sans nom";
-
-  // Ratios financiers
-  const ratios = {
-    LTV: readNumber("ltv"),
-    LTA: readNumber("lta"),
-    LTC: readNumber("ltc"),
-    marge: readNumber("marge"),
-    precomm: readNumber("precomm"),
-    liquidite: readNumber("liq"),
-    mise: readNumber("mise")
-  };
-
-  // Garanties
-  const garanties = {
-    hypo: readNumber("gHypo"),
-    fidu: readNumber("gFidu"),
-    g1d: readNumber("g1d"),
-    nant: readNumber("gNant")
-  };
-
-  // LDT
-  const ldt = type === "ldt" ? {
-    montant: readNumber("ldtMontant"),
-    duree: readNumber("ldtDuree"),
-    taux: readNumber("ldtTaux"),
-    capacite: readNumber("ldtCapacite"),
-    frequence: document.getElementById("ldtFrequence").value
-  } : null;
-
-  /* ===========================
-     CALCUL SCORE LPB v6
-     =========================== */
-
-  let score = 0;
-
-  // LTV (toujours utilisé)
-  if (ratios.LTV !== null) {
-    if (ratios.LTV <= 70) score += 30;
-    else if (ratios.LTV <= 80) score += 20;
-    else if (ratios.LTV <= 90) score += 10;
-  }
-
-  // LTA (optionnel)
-  if (ratios.LTA !== null) {
-    if (ratios.LTA <= 75) score += 15;
-    else if (ratios.LTA <= 85) score += 10;
-  }
-
-  // LTC (optionnel)
-  if (ratios.LTC !== null) {
-    if (ratios.LTC <= 80) score += 15;
-    else if (ratios.LTC <= 90) score += 10;
-  }
-
-  // Marge
-  if (ratios.marge !== null) {
-    if (ratios.marge >= 20) score += 15;
-    else if (ratios.marge >= 10) score += 10;
-  }
-
-  // Pré‑commercialisation
-  if (ratios.precomm !== null) {
-    if (ratios.precomm >= 60) score += 10;
-    else if (ratios.precomm >= 30) score += 5;
-  }
-
-  // Liquidité
-  if (ratios.liquidite !== null) {
-    score += ratios.liquidite; // 1 à 10
-  }
-
-  // Garanties
-  const totalGaranties =
-    (garanties.hypo || 0) +
-    (garanties.fidu || 0) +
-    (garanties.g1d || 0) +
-    (garanties.nant || 0);
-
-  score += Math.min(totalGaranties / 40, 20);
-
-  // Score final borné
-  score = Math.min(100, Math.round(score));
-
-  /* ===========================
-     TICKET IA LPB v6
-     =========================== */
-  let ticket = 0;
-
-  if (score >= 80) ticket = 50000;
-  else if (score >= 60) ticket = 30000;
-  else if (score >= 40) ticket = 15000;
-  else ticket = 5000;
-
-  /* ===========================
-     AJOUT AU TABLEAU
-     =========================== */
-  const tbody = document.querySelector("#projetsTable tbody");
-  const tr = document.createElement("tr");
-
-  tr.innerHTML = `
-    <td>${nom}</td>
-    <td>${type.toUpperCase()}</td>
-    <td>${score}</td>
-    <td>${ticket}</td>
-    <td><button class="deleteBtn">🗑️</button></td>
-  `;
-
-  tbody.appendChild(tr);
-
-  tr.querySelector(".deleteBtn").onclick = () => tr.remove();
-};
 </script>
 
 </body>
