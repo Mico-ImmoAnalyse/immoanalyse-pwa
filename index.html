@@ -131,6 +131,15 @@ th {
   font-weight: 600;
 }
 
+.ticket-ia {
+  font-weight: 600;
+}
+
+.mise-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
 /* ---------- ALERTES GARANTIES ---------- */
 .alert-yellow {
   color: var(--alert-yellow);
@@ -874,16 +883,17 @@ window.runEngine = function() {
 
   const tableBody = document.getElementById("tableProjets");
   const tr = document.createElement("tr");
-
-  tr.innerHTML = `
-    <td>${nomProjet} (${type})</td>
-    <td>${ltvNet}</td>
-    <td>${risque}</td>
-    <td>${tickets}</td>
-    <td><button class="secondary" onclick="supprimerProjet(this)">🗑️</button></td>
-  `;
-
-  tableBody.appendChild(tr);
+tr.innerHTML = `
+  <td>${nomProjet} (${type})</td>
+  <td>${ltvNet}</td>
+  <td>${risque}</td>
+  <td>
+    <span class="ticket-ia">(${tickets})</span><br>
+    <span class="mise-note">mise : ${valeurs.mise ?? 0} €</span>
+  </td>
+  <td><button class="secondary" onclick="supprimerProjet(this)">🗑️</button></td>
+`;
+tableProjets.appendChild(tr);
 
   // Score portefeuille
   const rows = tableBody.querySelectorAll("tr");
@@ -976,6 +986,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
