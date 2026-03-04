@@ -6,8 +6,9 @@ const FILES_TO_CACHE = [
   "./style.css",
   "./engine/engine.js",
   "./manifest.json",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icon/icon-192.png",
+  "./icon/icon-512.png",
+  "./icon/maskable-512.png"
 ];
 
 // INSTALLATION
