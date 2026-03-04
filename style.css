@@ -1,20 +1,31 @@
-/* ============================================================
-   ImmoAnalyse v6 — Style professionnel
-   Palette sobre, lisible, adaptée aux interfaces financières
-============================================================ */
-
 /* ---------- Variables globales ---------- */
 :root {
+  --bg: #0f1012;
+  --bg-alt: #18191c;
+  --bg-card: #202226;
+  --text: #f9fafb;
+  --text-muted: #9ca3af;
+  --border: #2d2f33;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --danger: #ef4444;
+  --radius: 10px;
+  --shadow: 0 12px 30px rgba(0,0,0,0.45);
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+}
+
+/* Thème clair */
+body.light {
   --bg: #f4f6f8;
   --bg-alt: #ffffff;
-  --text: #1f2937;
-  --text-light: #6b7280;
+  --bg-card: #ffffff;
+  --text: #111827;
+  --text-muted: #6b7280;
   --border: #d1d5db;
   --primary: #2563eb;
-  --primary-hover: #1e40af;
-  --radius: 8px;
-  --shadow: 0 2px 6px rgba(0,0,0,0.08);
-  --font: "Inter", Arial, sans-serif;
+  --primary-hover: #1d4ed8;
+  --danger: #dc2626;
+  --shadow: 0 6px 18px rgba(15,23,42,0.12);
 }
 
 /* ---------- Reset minimal ---------- */
@@ -26,161 +37,313 @@
 
 body {
   font-family: var(--font);
-  background: var(--bg);
+  background: radial-gradient(circle at top, #111827 0, var(--bg) 45%, #020617 100%);
   color: var(--text);
   line-height: 1.5;
-  padding: 20px;
+  padding: 24px;
 }
 
 /* ---------- Container principal ---------- */
 .container {
-  max-width: 900px;
-  margin: auto;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 24px;
 }
 
 /* ---------- Titres ---------- */
 h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 8px;
   font-weight: 700;
-  color: var(--primary);
+  letter-spacing: 0.03em;
 }
 
 h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
+  font-size: 18px;
+  margin-bottom: 12px;
   font-weight: 600;
 }
 
 h3 {
-  font-size: 16px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 8px;
   font-weight: 600;
-  color: var(--text-light);
+  color: var(--text-muted);
+}
+
+/* ---------- Header actions ---------- */
+.header-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 /* ---------- Cartes ---------- */
 .card {
-  background: var(--bg-alt);
-  padding: 20px;
-  margin-bottom: 25px;
+  background: var(--bg-card);
+  padding: 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
 
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.big-number {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.note {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
 /* ---------- Labels & Inputs ---------- */
 label {
   display: block;
-  margin-top: 12px;
+  margin-top: 10px;
+  font-size: 13px;
   font-weight: 500;
 }
 
 input,
 select {
   width: 100%;
-  padding: 10px;
-  margin-top: 6px;
+  padding: 8px 10px;
+  margin-top: 4px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 14px;
-  background: #fff;
-  transition: border 0.2s;
+  border-radius: 8px;
+  font-size: 13px;
+  background: var(--bg-alt);
+  color: var(--text);
 }
 
 input:focus,
 select:focus {
-  border-color: var(--primary);
   outline: none;
+  border-color: var(--primary);
 }
 
-/* ---------- Bouton principal ---------- */
+/* ---------- Boutons ---------- */
+button {
+  font-family: inherit;
+}
+
 .btn-primary {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary);
-  color: white;
+  color: #fff;
   border: none;
   border-radius: var(--radius);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 25px;
-  transition: background 0.2s;
+  box-shadow: var(--shadow);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
 }
 
-/* ---------- Tableau portefeuille ---------- */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-}
-
-th {
-  background: var(--primary);
-  color: white;
-  padding: 10px;
-  text-align: left;
-  font-weight: 600;
-}
-
-td {
-  padding: 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-tr:nth-child(even) {
-  background: #f9fafb;
-}
-
-td button {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: var(--radius);
+.secondary {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
   cursor: pointer;
 }
 
-td button:hover {
-  background: #b91c1c;
+.secondary:hover {
+  border-color: var(--primary);
 }
 
-/* ---------- Statistiques ---------- */
-.stats {
-  margin-top: 15px;
+.secondary.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ---------- Tableau ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
   font-weight: 600;
-  color: var(--text-light);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
 }
 
-/* ---------- Messages ---------- */
-.note {
-  color: var(--text-light);
-  font-style: italic;
+tbody tr:nth-child(even) {
+  background: rgba(148,163,184,0.06);
+}
+
+.type-tag {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* ---------- Theme toggle ---------- */
+.theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 50;
+}
+
+.theme-toggle button {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* ---------- Guide panel ---------- */
+.guide-panel {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.guide-panel.open {
+  display: flex;
+}
+
+.guide-content {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  background: var(--bg-alt);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
+/* Tabs */
+.guide-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.guide-tab {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.guide-tab.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(37,99,235,0.08);
+}
+
+/* Sections */
+.guide-section {
+  display: none;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.guide-section.active {
+  display: block;
+}
+
+/* Accordéons */
+.accordion {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-content {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: none;
+  border-top: 1px solid var(--border);
+}
+
+.accordion.open .accordion-content {
+  display: block;
+}
+
+/* Garanties alertes */
+.alert-garantie {
+  font-size: 11px;
+  color: #facc15;
+  margin-top: 2px;
+}
+
+.g-strong {
+  color: #22c55e;
+}
+
+.g-medium {
+  color: #eab308;
+}
+
+.g-weak {
+  color: #f97316;
+}
+
 /* ---------- Responsive ---------- */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 22px;
+@media (max-width: 480px) {
+  body {
+    padding: 16px;
   }
-
-  .card {
-    padding: 15px;
-  }
-
-  input,
-  select {
-    font-size: 13px;
-  }
-
-  .btn-primary {
-    font-size: 15px;
+  .guide-content {
+    max-width: 100%;
+    border-radius: 0;
   }
 }
