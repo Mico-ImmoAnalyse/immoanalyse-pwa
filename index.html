@@ -1149,7 +1149,8 @@ window.runEngine = function () {
         risque: result.meta.risqueLPB,
         ltvnet: result.ratios.LTV_net,
         mise: mise || 0,
-        ticket: result.ticketIA.plage
+        ticketMin: result.ticketIA.plage.min,
+        ticketMax: result.ticketIA.plage.max
     });
 
     renderTable();
@@ -1165,8 +1166,9 @@ function renderTable() {
 
     projets.forEach((p, i) => {
         const tr = document.createElement("tr");
+
         const ltvText = p.ltvnet != null ? p.ltvnet.toFixed(1) + "%" : "-";
-        const ticketText = p.ticket.min + "–" + p.ticket.max + " €";
+        const ticketText = `${p.ticketMin} – ${p.ticketMax} €`;
         const miseText = p.mise ? p.mise.toLocaleString("fr-FR") + " €" : "-";
 
         tr.innerHTML = `
@@ -1177,6 +1179,7 @@ function renderTable() {
             <td>${miseText}</td>
             <td><button class="secondary" onclick="suppr(${i})">X</button></td>
         `;
+
         tbody.appendChild(tr);
     });
 }
@@ -1191,7 +1194,7 @@ window.suppr = function (i) {
 };
 
 /* -----------------------------
-   EXPORT CSV — corrigé
+   EXPORT CSV
 ------------------------------*/
 window.exportCSV = function () {
     if (projets.length === 0) return;
@@ -1199,7 +1202,7 @@ window.exportCSV = function () {
     let csv = "Projet;Type;LTV net;Risque;Ticket min;Ticket max;Mise\n";
 
     projets.forEach(p => {
-        csv += `${p.nom};${p.type};${p.ltvnet || ""};${p.risque};${p.ticket.min};${p.ticket.max};${p.mise || ""}\n`;
+        csv += `${p.nom};${p.type};${p.ltvnet};${p.risque};${p.ticketMin};${p.ticketMax};${p.mise}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -1214,7 +1217,7 @@ window.exportCSV = function () {
 };
 
 /* -----------------------------
-   THÈME SOMBRE / CLAIR
+   THÈME
 ------------------------------*/
 document.getElementById("toggleTheme").onclick = () => {
     document.body.classList.toggle("light");
@@ -1223,7 +1226,7 @@ document.getElementById("toggleTheme").onclick = () => {
 };
 
 /* -----------------------------
-   GUIDE : ONGLET + ACCORDÉONS
+   GUIDE
 ------------------------------*/
 document.querySelectorAll(".guide-tab").forEach(tab => {
     tab.addEventListener("click", () => {
@@ -1241,9 +1244,6 @@ document.querySelectorAll(".accordion-header").forEach(header => {
     });
 });
 
-/* -----------------------------
-   GUIDE : OUVERTURE / FERMETURE
-------------------------------*/
 window.openGuide = function () {
     document.getElementById("guidePanel").classList.add("open");
 };
@@ -1254,6 +1254,7 @@ window.closeGuide = function () {
 
 </body>
 </html>
+
 
 
 
