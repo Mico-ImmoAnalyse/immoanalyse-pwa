@@ -279,7 +279,7 @@ th { background: var(--bg-card); }
     <h2>Nouvel audit</h2>
 
     <label>Nom du projet</label>
-    <input id="nomProjet" type="text" placeholder="ex : Opération République">
+    <input id="nomProjet" type="text">
 
     <label>Type de projet</label>
     <select id="typeProjet">
@@ -288,40 +288,25 @@ th { background: var(--bg-card); }
     </select>
 
     <div class="grid-2">
-        <div>
-            <label>LTV (%)</label>
-            <input id="ltv" type="number">
-        </div>
-        <div>
-            <label>LTA (%)</label>
-            <input id="lta" type="number">
-        </div>
+        <div><label>LTV (%)</label><input id="ltv" type="number"></div>
+        <div><label>LTA (%)</label><input id="lta" type="number"></div>
     </div>
 
     <div class="grid-2">
-        <div>
-            <label>LTC (%)</label>
-            <input id="ltc" type="number">
-        </div>
-        <div>
-            <label>Marge (%)</label>
-            <input id="marge" type="number">
-        </div>
+        <div><label>LTC (%)</label><input id="ltc" type="number"></div>
+        <div><label>Marge (%)</label><input id="marge" type="number"></div>
     </div>
 
     <div class="grid-2">
-        <div>
-            <label>Pré-commercialisation (%)</label>
-            <input id="precomm" type="number">
-        </div>
-        <div>
-            <label>Liquidité (1–10)</label>
-            <input id="liquidite" type="number">
-        </div>
+        <div><label>Pré-commercialisation (%)</label><input id="precomm" type="number"></div>
+        <div><label>Liquidité (1–10)</label><input id="liquidite" type="number"></div>
     </div>
 
     <label>Mise (€) — optionnelle</label>
     <input id="mise" type="number">
+
+    <!-- BOUTON AUDITER & SAUVEGARDER -->
+    <button onclick="runEngine()">Auditer & sauvegarder</button>
 </div>
 
 <!-- GARANTIES -->
@@ -547,5 +532,6 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
 
 </body>
 </html>
+
 
 
