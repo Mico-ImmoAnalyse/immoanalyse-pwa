@@ -8,7 +8,6 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-
 /* ---------- THEMES ---------- */
 :root {
     --bg: #0f1012;
@@ -17,9 +16,10 @@
     --text: #e7e7ea;
     --muted: #a0a0a8;
     --accent: #4da3ff;
-    --border: #3d3f46; /* renforcé */
+    --border: #3d3f46;
     --alert-yellow: #ffcc33;
 }
+
 .light {
     --bg: #f5f6f8;
     --bg-section: #ffffff;
@@ -42,7 +42,7 @@ body {
 /* ---------- CONTAINERS ---------- */
 .container {
     width: 92%;
-    max-width: 420px;
+    max-width: 400px;
     margin: 10px auto 20px auto;
 }
 
@@ -106,31 +106,34 @@ button:hover { background: #6bb4ff; }
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 6px;
+    border-spacing: 0 10px;
     font-size: 13px;
 }
+
 th, td {
     border: 1px solid var(--border);
-    padding: 8px 6px;
+    padding: 10px 8px;
     background: var(--bg-card);
     text-align: center;
 }
-td:nth-child(2) {
-    white-space: normal;
-}
+
+td:nth-child(1) { text-align: left; }
 
 /* ---------- HEADER CARDS ---------- */
 .card {
     background: var(--bg-card);
-    padding: 8px;
+    padding: 12px;
     border-radius: 8px;
     border: 1px solid var(--border);
+    text-align: center;
 }
+
 .big-number {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--accent);
 }
+
 .note {
     font-size: 11px;
     color: var(--muted);
@@ -145,8 +148,8 @@ td:nth-child(2) {
 .guide-panel {
     position: fixed;
     top: 0;
-    right: -320px;
-    width: 320px;
+    right: -300px;
+    width: 300px;
     height: 100vh;
     overflow-y: auto;
     background: var(--bg-section);
@@ -179,10 +182,6 @@ td:nth-child(2) {
     border-color: var(--accent);
 }
 
-/* ---------- GUIDE SECTIONS ---------- */
-.guide-section { display: none; }
-.guide-section.active { display: block; }
-
 /* ---------- ACCORDIONS ---------- */
 .accordion {
     background: var(--bg-card);
@@ -198,7 +197,6 @@ td:nth-child(2) {
     justify-content: space-between;
     align-items: center;
 }
-.accordion-header:hover { background: var(--bg-section); }
 .accordion-content {
     display: none;
     padding: 8px;
@@ -207,7 +205,6 @@ td:nth-child(2) {
     border-top: 1px solid var(--border);
 }
 .accordion.open .accordion-content { display: block; }
-.accordion-arrow { font-size: 12px; opacity: 0.7; }
 
 /* ---------- THEME BUTTON ---------- */
 .theme-toggle {
@@ -225,8 +222,8 @@ td:nth-child(2) {
     border-radius: 50%;
     font-size: 17px;
 }
-
 </style>
+
 </head>
 
 <body>
@@ -236,6 +233,532 @@ td:nth-child(2) {
     <button id="toggleTheme">🌙</button>
 </div>
 
+<body>
+
+<!-- THEME BUTTON -->
+<div class="theme-toggle">
+    <button id="toggleTheme">🌙</button>
+</div>
+
+<!-- GUIDE PANEL -->
+<div id="guidePanel" class="guide-panel">
+<div class="guide-content">
+
+<h2 style="margin-top:0;">Guide ImmoAnalyse</h2>
+
+<div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+    <button class="secondary" onclick="closeGuide()">Fermer</button>
+</div>
+
+<div class="guide-tabs">
+    <div class="guide-tab active" data-tab="crit">Critères</div>
+    <div class="guide-tab" data-tab="garanties">Garanties</div>
+    <div class="guide-tab" data-tab="alertes">Alertes</div>
+    <div class="guide-tab" data-tab="exemples">Exemples</div>
+    <div class="guide-tab" data-tab="opt">Optimisation</div>
+    <div class="guide-tab" data-tab="lecture">Lecture rapide</div>
+    <div class="guide-tab" data-tab="faq">FAQ</div>
+</div>
+
+<!-- ONGLET : CRITERES -->
+<div class="guide-section active" id="crit">
+
+    <div class="accordion">
+        <div class="accordion-header">LTV — Loan To Value <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 < 60% — Très sécurisé<br>
+            🟠 60–85% — Zone de vigilance<br>
+            🔴 > 85% — Risque élevé
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">LTA — Loan To Assets <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 < 70% — Structure solide<br>
+            🟠 70–85% — Endettement à surveiller<br>
+            🔴 > 85% — Structure fragile
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">LTC — Loan To Cost <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 < 70% — Excellent<br>
+            🟠 70–85% — Acceptable<br>
+            🔴 > 85% — Risque de dépassement
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Marge (MDB) <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 > 20% — Très bon<br>
+            🟠 10–20% — Correct<br>
+            🔴 < 10% — Risque de perte
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Pré-commercialisation <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 > 50% — Très sécurisé<br>
+            🟠 30–50% — À surveiller<br>
+            🔴 < 30% — Risque commercial
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Liquidité (1–10) <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 8–10 — Marché très liquide<br>
+            🟠 5–7 — Liquide<br>
+            🔴 1–4 — Revente difficile
+        </div>
+    </div>
+
+</div>
+
+<!-- ONGLET : GARANTIES -->
+<div class="guide-section" id="garanties">
+
+    <div class="accordion">
+        <div class="accordion-header">Pondération dynamique LPB v6 <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Hypothèque (1.0) × couverture<br>
+            Nantissement (0.6) × couverture<br>
+            Caution × 0.4<br><br>
+            Pondération finale = min(100, somme pondérée)
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Typologie des garanties <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            🟢 Très fortes : Fiducie, G1D, Hypothèque 1er rang<br>
+            🟠 Moyennes : Nantissement<br>
+            🔴 Faibles : Caution personnelle
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Surgarantie <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Une couverture > 100% déclenche une alerte jaune.
+        </div>
+    </div>
+
+</div>
+
+<!-- ONGLET : ALERTES -->
+<div class="guide-section" id="alertes">
+
+    <div class="accordion">
+        <div class="accordion-header">Alertes financières <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            LTV trop élevé, marge insuffisante, garanties faibles.
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Alertes commerciales <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Pré-commercialisation faible, liquidité insuffisante.
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Alertes structurelles <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Endettement global trop élevé, absence de garanties fortes.
+        </div>
+    </div>
+
+</div>
+
+<!-- ONGLET : EXEMPLES -->
+<div class="guide-section" id="exemples">
+
+    <div class="accordion">
+        <div class="accordion-header">Exemple MDB <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            LTV = 88% 🔴<br>
+            Marge = 12% 🟠<br>
+            Garanties = Caution 🔴
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Exemple LDT <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            LTV = 72% 🟠<br>
+            Liquidité = 8 🟢<br>
+            PréComm = 55% 🟢
+        </div>
+    </div>
+
+</div>
+
+<!-- ONGLET : OPTIMISATION -->
+<div class="guide-section" id="opt">
+
+    <div class="accordion">
+        <div class="accordion-header">Optimiser un projet MDB <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Marge > 15%, LTV < 75%, garantie forte.
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Optimiser un projet LDT <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Analyser taux d’occupation, charges, saison basse.
+        </div>
+    </div>
+
+</div>
+
+<!-- ONGLET : LECTURE RAPIDE -->
+<div class="guide-section" id="lecture">
+    <p><b>Lecture en 10 secondes :</b></p>
+    LTV, garanties, marge, liquidité, statut IA.
+</div>
+
+<!-- ONGLET : FAQ -->
+<div class="guide-section" id="faq">
+
+    <div class="accordion">
+        <div class="accordion-header">Pourquoi un projet SAFE peut avoir un ticket faible ? <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Parce que les garanties ou la mise peuvent être insuffisantes.
+        </div>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-header">Pourquoi le LTV net diffère du LTV brut ? <span class="accordion-arrow">▼</span></div>
+        <div class="accordion-content">
+            Le LTV net intègre les garanties fortes.
+        </div>
+    </div>
+
+</div>
+
+</div>
+</div>
+
+<!-- HEADER -->
+<div class="container section">
+    <h1>ImmoAnalyse v6 PRO</h1>
+
+    <!-- BOUTONS GUIDE + EXPORT -->
+    <div style="display:flex; gap:8px; margin-top:8px;">
+        <button class="secondary" onclick="openGuide()">Guide</button>
+        <button class="secondary" onclick="exportCSV()">Export CSV</button>
+    </div>
+
+    <div class="grid-2" style="margin-top:10px;">
+        <div class="card">
+            <h3>Score moyen du portefeuille</h3>
+            <p id="metricScore" class="big-number">0/100</p>
+            <p class="note">Aucun projet</p>
+        </div>
+
+        <div class="card">
+            <h3>Total investi</h3>
+            <p id="metricInvest" class="big-number">0 €</p>
+            <p class="note">Capital engagé</p>
+        </div>
+    </div>
+</div>
+
+<!-- FORMULAIRE -->
+<div class="container section">
+    <h2>Nouvel audit</h2>
+
+    <label>Nom du projet</label>
+    <input id="nomProjet" type="text">
+
+    <label>Type de projet</label>
+    <select id="typeProjet">
+        <option value="MDB">MDB</option>
+        <option value="LDT">LDT</option>
+    </select>
+
+    <div class="grid-2">
+        <div><label>LTV (%)</label><input id="ltv" type="number"></div>
+        <div><label>LTA (%)</label><input id="lta" type="number"></div>
+    </div>
+
+    <div class="grid-2">
+        <div><label>LTC (%)</label><input id="ltc" type="number"></div>
+        <div><label>Marge (%)</label><input id="marge" type="number"></div>
+    </div>
+
+    <div class="grid-2">
+        <div><label>Pré-commercialisation (%)</label><input id="precomm" type="number"></div>
+        <div><label>Liquidité (1–10)</label><input id="liquidite" type="number"></div>
+    </div>
+
+    <label>Mise (€) — optionnelle</label>
+    <input id="mise" type="number">
+</div>
+
+<!-- GARANTIES -->
+<div class="container section">
+    <h2>Garanties</h2>
+
+    <h3 class="g-strong">Garanties très fortes</h3>
+
+    <label><input type="checkbox" id="g_fiducie"> Fiducie</label>
+    <input id="fiducie_pct" type="number" placeholder="% couverture">
+    <div id="alert_fiducie" class="alert-garantie"></div>
+
+    <label><input type="checkbox" id="g_g1d"> Garantie 1ère demande</label>
+    <input id="g1d_pct" type="number" placeholder="% couverture">
+    <div id="alert_g1d" class="alert-garantie"></div>
+
+    <label><input type="checkbox" id="g_hyp1"> Hypothèque 1er rang</label>
+    <input id="hyp1_pct" type="number" placeholder="% couverture">
+    <div id="alert_hyp1" class="alert-garantie"></div>
+
+    <h3 class="g-medium">Garanties moyennes</h3>
+
+    <label><input type="checkbox" id="g_nant"> Nantissement</label>
+    <input id="nant_pct" type="number" placeholder="% couverture">
+    <div id="alert_nant" class="alert-garantie"></div>
+
+    <h3 class="g-weak">Garanties faibles</h3>
+
+    <label><input type="checkbox" id="g_caution"> Caution personnelle</label>
+    <input id="caution_eur" type="number" placeholder="Montant €">
+</div>
+
+<!-- BOUTON AUDITER -->
+<div class="container section">
+    <button onclick="runEngine()">Auditer & sauvegarder</button>
+</div>
+
+<!-- TABLEAU -->
+<div class="container section">
+    <h2>Projets audités</h2>
+    <table id="tableProjets">
+        <thead>
+            <tr>
+                <th>Projet</th>
+                <th>LTV net</th>
+                <th>Risque</th>
+                <th>Tickets</th>
+                <th>Mise (€)</th>
+                <th>Suppr.</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script>
+// ----------------------
+// THEME
+// ----------------------
+document.getElementById("toggleTheme").onclick = () => {
+    document.body.classList.toggle("light");
+};
+
+// ----------------------
+// GUIDE PANEL
+// ----------------------
+function openGuide() {
+    document.getElementById("guidePanel").classList.add("open");
+}
+function closeGuide() {
+    document.getElementById("guidePanel").classList.remove("open");
+}
+
+// ----------------------
+// GUIDE TABS
+// ----------------------
+document.querySelectorAll(".guide-tab").forEach(tab => {
+    tab.onclick = () => {
+        document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
+    };
+});
+
+// ----------------------
+// ACCORDIONS
+// ----------------------
+document.querySelectorAll(".accordion-header").forEach(header => {
+    header.onclick = () => {
+        header.parentElement.classList.toggle("open");
+    };
+});
+
+// ----------------------
+// EXPORT CSV
+// ----------------------
+function exportCSV() {
+    let projets = JSON.parse(localStorage.getItem("projets") || "[]");
+    if (projets.length === 0) {
+        alert("Aucun projet à exporter.");
+        return;
+    }
+
+    let csv = "Projet;LTV net;Risque;Ticket IA;Mise (€)\n";
+
+    projets.forEach(p => {
+        csv += `${p.nom} (${p.type});${p.ltvNet};${p.risque};${p.ticketMin} - ${p.ticketMax};${p.mise || 0}\n`;
+    });
+
+    let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "immoanalyse_export.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// ----------------------
+// MOTEUR LPB v6
+// ----------------------
+function runEngine() {
+
+    let nom = document.getElementById("nomProjet").value.trim();
+    let type = document.getElementById("typeProjet").value;
+
+    let ltv = parseFloat(document.getElementById("ltv").value) || 0;
+    let lta = parseFloat(document.getElementById("lta").value) || 0;
+    let ltc = parseFloat(document.getElementById("ltc").value) || 0;
+    let marge = parseFloat(document.getElementById("marge").value) || 0;
+    let precomm = parseFloat(document.getElementById("precomm").value) || 0;
+    let liquidite = parseFloat(document.getElementById("liquidite").value) || 0;
+    let mise = parseFloat(document.getElementById("mise").value) || 0;
+
+    // Garanties
+    let g_fid = document.getElementById("g_fiducie").checked ? parseFloat(document.getElementById("fiducie_pct").value) || 0 : 0;
+    let g_g1d = document.getElementById("g_g1d").checked ? parseFloat(document.getElementById("g1d_pct").value) || 0 : 0;
+    let g_hyp = document.getElementById("g_hyp1").checked ? parseFloat(document.getElementById("hyp1_pct").value) || 0 : 0;
+    let g_nant = document.getElementById("g_nant").checked ? parseFloat(document.getElementById("nant_pct").value) || 0 : 0;
+    let g_caut = document.getElementById("g_caution").checked ? parseFloat(document.getElementById("caution_eur").value) || 0 : 0;
+
+    // Pondération garanties
+    let pond =
+        g_fid * 1.0 +
+        g_g1d * 1.0 +
+        g_hyp * 1.0 +
+        g_nant * 0.6 +
+        (g_caut > 0 ? 40 : 0);
+
+    if (pond > 100) pond = 100;
+
+    // LTV net
+    let ltvNet = Math.max(0, ltv - pond);
+
+    // Score global
+    let score = 100;
+    score -= Math.max(0, ltvNet - 60) * 0.8;
+    score -= Math.max(0, lta - 70) * 0.5;
+    score -= Math.max(0, ltc - 70) * 0.5;
+    score += marge * 0.6;
+    score += precomm * 0.3;
+    score += liquidite * 1.2;
+
+    if (score < 0) score = 0;
+    if (score > 100) score = 100;
+
+    // Risque
+    let risque = "SAFE";
+    if (score < 40) risque = "RISQUÉ";
+    if (score < 20) risque = "DANGER";
+
+    // Ticket IA
+    let ticketMin = Math.round((score / 100) * 2000);
+    let ticketMax = Math.round((score / 100) * 4000);
+
+    // Sauvegarde
+    let projets = JSON.parse(localStorage.getItem("projets") || "[]");
+
+    projets.push({
+        nom,
+        type,
+        ltvNet: ltvNet.toFixed(1) + "%",
+        risque,
+        ticketMin,
+        ticketMax,
+        mise
+    });
+
+    localStorage.setItem("projets", JSON.stringify(projets));
+
+    renderTable();
+    updateMetrics();
+}
+
+// ----------------------
+// METRIQUES
+// ----------------------
+function updateMetrics() {
+    let projets = JSON.parse(localStorage.getItem("projets") || "[]");
+
+    if (projets.length === 0) {
+        document.getElementById("metricScore").innerText = "0/100";
+        document.getElementById("metricInvest").innerText = "0 €";
+        return;
+    }
+
+    let totalInvest = projets.reduce((sum, p) => sum + (p.mise || 0), 0);
+    document.getElementById("metricInvest").innerText = totalInvest.toLocaleString("fr-FR") + " €";
+
+    // Score moyen = basé sur ticketMin (proxy)
+    let avgScore = projets.reduce((sum, p) => sum + (p.ticketMin / 20), 0) / projets.length;
+    document.getElementById("metricScore").innerText = Math.round(avgScore) + "/100";
+}
+
+// ----------------------
+// TABLEAU
+// ----------------------
+function renderTable() {
+    let projets = JSON.parse(localStorage.getItem("projets") || "[]");
+    let tbody = document.querySelector("#tableProjets tbody");
+    tbody.innerHTML = "";
+
+    projets.forEach((p, i) => {
+        let tr = document.createElement("tr");
+
+        let ticketText = `${p.ticketMin.toLocaleString("fr-FR")} – ${p.ticketMax.toLocaleString("fr-FR")} €`;
+
+        tr.innerHTML = `
+            <td>${p.nom} (${p.type})</td>
+            <td>${p.ltvNet}</td>
+            <td>${p.risque}</td>
+            <td>${ticketText}</td>
+            <td>${p.mise ? p.mise.toLocaleString("fr-FR") + " €" : "-"}</td>
+            <td><button class="secondary" onclick="suppr(${i})">X</button></td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+// ----------------------
+// SUPPRESSION
+// ----------------------
+function suppr(i) {
+    let projets = JSON.parse(localStorage.getItem("projets") || "[]");
+    projets.splice(i, 1);
+    localStorage.setItem("projets", JSON.stringify(projets));
+    renderTable();
+    updateMetrics();
+}
+
+// ----------------------
+// INIT
+// ----------------------
+renderTable();
+updateMetrics();
+</script>
+    
 <!-- GUIDE PANEL (version 6.3 complète) -->
 <div id="guidePanel" class="guide-panel">
 <div class="guide-content">
@@ -738,3 +1261,4 @@ window.closeGuide = function () {
 
 </body>
 </html>
+
