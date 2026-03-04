@@ -41,6 +41,7 @@ body {
   color: var(--text);
   line-height: 1.5;
   padding: 24px;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ---------- Container principal ---------- */
@@ -125,6 +126,7 @@ select {
   font-size: 13px;
   background: var(--bg-alt);
   color: var(--text);
+  transition: border-color 0.2s;
 }
 
 input:focus,
@@ -149,6 +151,7 @@ button {
   font-weight: 600;
   cursor: pointer;
   box-shadow: var(--shadow);
+  transition: background 0.2s;
 }
 
 .btn-primary:hover {
@@ -163,6 +166,7 @@ button {
   color: var(--text);
   font-size: 13px;
   cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .secondary:hover {
@@ -172,6 +176,10 @@ button {
 .secondary.danger {
   border-color: var(--danger);
   color: var(--danger);
+}
+
+.secondary.danger:hover {
+  background: rgba(239,68,68,0.12);
 }
 
 /* ---------- Tableau ---------- */
@@ -194,6 +202,10 @@ th {
 
 tbody tr:nth-child(even) {
   background: rgba(148,163,184,0.06);
+}
+
+tbody tr:last-child td {
+  border-bottom: 1px solid var(--border);
 }
 
 .type-tag {
@@ -270,6 +282,7 @@ tbody tr:nth-child(even) {
   font-size: 12px;
   cursor: pointer;
   color: var(--text-muted);
+  transition: 0.2s;
 }
 
 .guide-tab.active {
@@ -295,6 +308,7 @@ tbody tr:nth-child(even) {
   border: 1px solid var(--border);
   margin-bottom: 8px;
   overflow: hidden;
+  transition: 0.2s;
 }
 
 .accordion-header {
