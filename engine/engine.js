@@ -1,129 +1,181 @@
-// ===============================
-// FONCTION PRINCIPALE : AUDITER
-// ===============================
-function auditer() {
+// ======================================================
+//  MOTEUR IA LPB v6 — Pondération dynamique + LTV net
+// ======================================================
 
-    // 1. Récupération des données
-    const montantProjet = parseFloat(document.getElementById("montantProjet").value);
+export function runLPBEngine(input) {
+  const { type, valeurs, garanties, ldt } = input;
 
-    if (!montantProjet || montantProjet <= 0) {
-        alert("Le champ 'Montant projet' est obligatoire pour l'analyse IA.");
-        return;
+  // -------------------------------
+  // 1) LECTURE DES VALEURS
+  // -------------------------------
+  const LTV = valeurs.LTV ?? 0;
+  const LTA = valeurs.LTA ?? 0;
+  const LTC = valeurs.LTC ?? 0;
+  const marge = valeurs.marge ?? 0;
+  const precomm = valeurs.precomm ?? 0;
+  const liquidite = valeurs.liquidite ?? 0;
+  const mise = valeurs.mise ?? 0;
+
+  // -------------------------------
+  // 2) POIDS LPB v6 DES GARANTIES
+  // -------------------------------
+  const poids = {
+    fiducie: 1.0,
+    g1d: 1.0,
+    hyp1: 1.0,
+    nantissement: 0.6,
+    caution: 0.4
+  };
+
+  // -------------------------------
+  // 3) CALCUL PONDÉRATION DYNAMIQUE
+  // -------------------------------
+  function pondGarantie(active, couverture, poidsBase) {
+    if (!active || couverture == null || isNaN(couverture)) return 0;
+
+    const brute = poidsBase * couverture;
+    return Math.min(brute, 100); // plafonnement LPB v6
+  }
+
+  // Fiducie
+  const p_fiducie = pondGarantie(garanties.fiducie, garanties.fiducie_pct, poids.fiducie);
+
+  // G1D
+  const p_g1d = pondGarantie(garanties.g1d, garanties.g1d_pct, poids.g1d);
+
+  // Hypothèque
+  const p_hyp1 = pondGarantie(garanties.hyp1, garanties.hyp1_pct, poids.hyp1);
+
+  // Nantissement
+  const p_nant = pondGarantie(garanties.nantissement, garanties.nantissement_pct, poids.nantissement);
+
+  // Caution → conversion en %
+  let p_caution = 0;
+  if (garanties.caution && garanties.caution_eur != null && garanties.caution_eur > 0) {
+    const montantProjet = ldt?.montant ?? 100000; // fallback minimal
+    const cautionPct = (garanties.caution_eur / montantProjet) * 100;
+    const brute = cautionPct * poids.caution;
+    p_caution = Math.min(brute, 100);
+  }
+
+  // Pondération totale
+  const pondTotale = Math.min(
+    p_fiducie + p_g1d + p_hyp1 + p_nant + p_caution,
+    100
+  );
+
+  // -------------------------------
+  // 4) LTV NET LPB v6
+  // -------------------------------
+  const LTV_net = LTV * (1 - pondTotale / 100);
+
+  // -------------------------------
+  // 5) SCORE GLOBAL LPB v6
+  // -------------------------------
+  let score = 0;
+
+  // LTV net
+  if (LTV_net < 60) score += 25;
+  else if (LTV_net < 75) score += 18;
+  else if (LTV_net < 85) score += 10;
+  else score += 2;
+
+  // LTA
+  if (LTA < 70) score += 15;
+  else if (LTA < 85) score += 10;
+  else score += 3;
+
+  // LTC
+  if (LTC < 70) score += 15;
+  else if (LTC < 85) score += 10;
+  else score += 3;
+
+  // Marge (MDB uniquement)
+  if (type === "MDB") {
+    if (marge > 20) score += 15;
+    else if (marge > 10) score += 10;
+    else score += 3;
+  }
+
+  // Pré‑commercialisation
+  if (precomm > 50) score += 10;
+  else if (precomm > 30) score += 6;
+  else score += 2;
+
+  // Liquidité
+  if (liquidite >= 8) score += 10;
+  else if (liquidite >= 5) score += 6;
+  else score += 2;
+
+  // Garanties
+  if (pondTotale >= 80) score += 10;
+  else if (pondTotale >= 40) score += 6;
+  else score += 2;
+
+  // Mise
+  if (mise >= 500) score += 10;
+  else if (mise >= 250) score += 6;
+  else score += 2;
+
+  if (score > 100) score = 100;
+
+  // -------------------------------
+  // 6) SÉCURITÉ GLOBALE
+  // -------------------------------
+  let securiteGlobale = "critique";
+
+  if (score >= 80) securiteGlobale = "forte";
+  else if (score >= 60) securiteGlobale = "moyenne";
+  else if (score >= 40) securiteGlobale = "faible";
+  else securiteGlobale = "critique";
+
+  // -------------------------------
+  // 7) TICKET IA LPB v6
+  // -------------------------------
+  function ticket(min, max) {
+    return { plage: { min, max } };
+  }
+
+  let ticketIA;
+
+  if (securiteGlobale === "forte") {
+    ticketIA = ticket(500, 1000);
+  } else if (securiteGlobale === "moyenne") {
+    ticketIA = ticket(250, 500);
+  } else if (securiteGlobale === "faible") {
+    ticketIA = ticket(100, 250);
+  } else {
+    ticketIA = ticket(0, 100);
+  }
+
+  // -------------------------------
+  // 8) DIAGNOSTIC
+  // -------------------------------
+  const diagnostic = [];
+
+  if (LTV > 85) diagnostic.push("LTV élevé");
+  if (LTC > 85) diagnostic.push("LTC élevé");
+  if (marge < 10 && type === "MDB") diagnostic.push("Marge insuffisante");
+  if (precomm < 30) diagnostic.push("Pré‑commercialisation faible");
+  if (liquidite < 5) diagnostic.push("Liquidité faible");
+  if (pondTotale < 20) diagnostic.push("Garanties insuffisantes");
+
+  // -------------------------------
+  // 9) RETOUR MOTEUR IA
+  // -------------------------------
+  return {
+    ratios: {
+      LTV,
+      LTV_net,
+      LTA,
+      LTC
+    },
+    score,
+    diagnostic,
+    ticketIA,
+    meta: {
+      pondTotale,
+      securiteGlobale
     }
-
-    const hypo1 = parseFloat(document.getElementById("hypo1").value) || 0;
-    const nantissement = parseFloat(document.getElementById("nantissement").value) || 0;
-    const caution = parseFloat(document.getElementById("caution").value) || 0;
-
-    const ltv = parseFloat(document.getElementById("ltv").value) || 0;
-    const lta = parseFloat(document.getElementById("lta").value) || 0;
-    const ltc = parseFloat(document.getElementById("ltc").value) || 0;
-    const marge = parseFloat(document.getElementById("marge").value) || 0;
-
-    const typeProjet = document.getElementById("typeProjet").value;
-
-
-    // ===============================
-    // 2. Pondération des garanties
-    // ===============================
-    let pondHypo = 1.0;
-    let pondNant = 0.6;
-    let pondCaution = 0.4;
-
-    if (caution >= montantProjet) {
-        pondCaution = 0.6;
-    }
-
-    let couvertureCaution = (caution / montantProjet) * 100;
-
-    let couverturePonderee =
-        (hypo1 * pondHypo) +
-        (nantissement * pondNant) +
-        (couvertureCaution * pondCaution);
-
-
-    // ===============================
-    // 3. Calcul du LTV net
-    // ===============================
-    let ltvNet = ltv * (1 - (couverturePonderee / 100));
-
-    if (couverturePonderee >= 150) {
-        ltvNet = 0;
-    }
-
-
-    // ===============================
-    // 4. Détermination du risque IA
-    // ===============================
-    let risqueIA = "MODÉRÉ";
-
-    if (couverturePonderee >= 120) {
-        risqueIA = "SAFE";
-    } else if (couverturePonderee < 60 || ltv > 80 || marge < 10) {
-        risqueIA = "RISQUÉ";
-    }
-
-    let ltaImpact = lta;
-    if (couverturePonderee >= 100) {
-        ltaImpact = 0;
-    }
-
-
-    // ===============================
-    // 5. Ticket IA
-    // ===============================
-    let ticketMin = 50;
-    let ticketMax = 500;
-
-    if (couverturePonderee >= 120 && couverturePonderee < 150) {
-        ticketMin = 10;
-        ticketMax = 1000;
-    }
-    else if (couverturePonderee >= 150 && couverturePonderee < 200) {
-        ticketMin = 10;
-        ticketMax = 2000;
-    }
-    else if (couverturePonderee >= 200) {
-        ticketMin = 10;
-        ticketMax = 3000;
-    }
-
-
-    // ===============================
-    // 6. AFFICHAGE DES RÉSULTATS
-    // ===============================
-    document.getElementById("couverturePonderee").textContent = couverturePonderee.toFixed(1) + " %";
-    document.getElementById("ltvNet").textContent = ltvNet.toFixed(1) + " %";
-    document.getElementById("risqueIA").textContent = risqueIA;
-    document.getElementById("ticketMin").textContent = ticketMin + " €";
-    document.getElementById("ticketMax").textContent = ticketMax + " €";
-
-    // Ligne surgarantie
-    document.getElementById("surgarantie").textContent =
-        couverturePonderee >= 120 ? "Oui (SAFE)" : "Non";
-
-    // LTA impacté
-    document.getElementById("ltaImpact").textContent = ltaImpact;
-}
-
-
-
-// ===============================
-// AUTRES FONCTIONS
-// ===============================
-
-function sauvegarder() {
-    alert("Fonction Sauvegarder OK");
-}
-
-function ouvrirGuide() {
-    alert("Ouverture du guide…");
-}
-
-function exportCSV() {
-    alert("Export CSV OK");
-}
-
-function toggleTheme() {
-    document.body.classList.toggle("dark");
+  };
 }
