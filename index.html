@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ImmoAnalyse v6 PRO</title>
 
 <!-- Manifest PWA -->
@@ -110,7 +109,6 @@ th { background: var(--bg-card); }
     justify-content: space-between;
     align-items: center;
 }
-
 .header-metrics {
     display: flex;
     flex-direction: column;
@@ -171,7 +169,7 @@ th { background: var(--bg-card); }
     <button id="toggleTheme">🌙</button>
 </div>
 
-<!-- GUIDE COMPLET -->
+<!-- GUIDE COMPLET (version actuelle) -->
 <div id="guidePanel" class="guide-panel">
     <div class="guide-content">
         <h2>Guide ImmoAnalyse</h2>
@@ -304,9 +302,6 @@ th { background: var(--bg-card); }
 
     <label>Mise (€) — optionnelle</label>
     <input id="mise" type="number">
-
-    <!-- BOUTON AUDITER & SAUVEGARDER -->
-    <button onclick="runEngine()">Auditer & sauvegarder</button>
 </div>
 
 <!-- GARANTIES -->
@@ -333,6 +328,11 @@ th { background: var(--bg-card); }
     <input id="caution_eur" type="number" placeholder="Montant €">
 </div>
 
+<!-- BOUTON AUDITER & SAUVEGARDER (déplacé sous Garanties) -->
+<div class="container section">
+    <button onclick="runEngine()">Auditer & sauvegarder</button>
+</div>
+
 <!-- TABLEAU -->
 <div class="container section">
     <h2>Projets audités</h2>
@@ -352,7 +352,6 @@ th { background: var(--bg-card); }
         <tbody></tbody>
     </table>
 </div>
-
 <script type="module">
 import { runLPBEngine, readNumber } from "./engine/engine.js";
 
@@ -529,9 +528,5 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
     };
 });
 </script>
-
 </body>
 </html>
-
-
-
