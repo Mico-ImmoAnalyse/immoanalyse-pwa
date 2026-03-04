@@ -234,10 +234,16 @@
 <div class="container section">
     <h2>Nouvel audit</h2>
 
-    <label>Nom du projet</label>
-    <input id="nomProjet" type="text">
+    <!-- Nom du projet -->
+    <label for="nomProjet">Nom du projet</label>
+    <input id="nomProjet" type="text" placeholder="Ex : L'Ivoire">
 
-    <label>Type de projet</label>
+    <!-- Montant projet (obligatoire) -->
+    <label for="montantProjet">Montant projet (€)</label>
+    <input id="montantProjet" type="number" placeholder="Ex : 310000" required>
+
+    <!-- Type de projet -->
+    <label for="typeProjet">Type de projet</label>
     <select id="typeProjet">
         <option value="MDB">MDB</option>
         <option value="LDT">LDT</option>
@@ -496,3 +502,4 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
