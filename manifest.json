@@ -1,7 +1,8 @@
 {
   "name": "ImmoAnalyse v6 PRO",
   "short_name": "ImmoAnalyse",
-  "start_url": "index.html",
+  "id": "./",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0f1012",
