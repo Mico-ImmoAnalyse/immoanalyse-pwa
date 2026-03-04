@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ImmoAnalyse v6 PRO</title>
+
+<!-- Manifest PWA -->
 <link rel="manifest" href="manifest.json">
+
+<!-- Styles -->
 <style>
 :root {
     --bg: #0f1012;
@@ -31,9 +36,10 @@ body {
     color: var(--text);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-h1 { text-align: center; margin: 10px 0 4px 0; color: var(--accent); font-size: 22px; }
-h2 { text-align: left; margin: 8px 0 6px 0; color: var(--accent); font-size: 18px; }
+h1 { text-align: left; margin: 10px 0 4px 0; color: var(--accent); font-size: 22px; }
+h2 { margin: 8px 0 6px 0; color: var(--accent); font-size: 18px; }
 h3 { margin: 6px 0 4px 0; color: var(--accent); font-size: 15px; }
+
 .container {
     width: 94%;
     max-width: 560px;
@@ -47,6 +53,7 @@ h3 { margin: 6px 0 4px 0; color: var(--accent); font-size: 15px; }
     margin: 10px auto;
     box-shadow: 0 0 8px rgba(0,0,0,0.35);
 }
+
 input, select {
     width: 100%;
     padding: 7px 8px;
@@ -59,38 +66,32 @@ input, select {
     box-sizing: border-box;
 }
 .light input, .light select { background: #ffffff; }
+
 button {
-    width: 100%;
-    padding: 11px;
+    padding: 10px 14px;
     background: var(--accent);
     border: none;
     border-radius: 6px;
     color: #000;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 10px;
     font-size: 14px;
 }
 button:hover { background: #6bb4ff; }
+
 .secondary {
     background: transparent;
     border: 1px solid var(--accent);
     color: var(--accent);
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    width: auto;
-    font-size: 13px;
 }
 .secondary:hover { background: var(--accent); color: #000; }
+
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px;
 }
-@media (max-width: 800px) {
-    .grid-2 { grid-template-columns: 1fr; }
-}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -103,32 +104,26 @@ th, td {
     text-align: center;
 }
 th { background: var(--bg-card); }
-.theme-toggle {
-    position: fixed;
-    top: 14px;
-    right: 14px;
-    z-index: 999;
-}
-.theme-toggle button {
-    background: var(--bg-section);
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 8px 11px;
-    border-radius: 50%;
-    font-size: 17px;
-    cursor: pointer;
-}
+
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .header-metrics {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
     font-size: 12px;
     color: var(--muted);
 }
+
+.theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+}
+
 .guide-panel {
     position: fixed;
     top: 0;
@@ -141,11 +136,9 @@ th { background: var(--bg-card); }
     padding: 10px 12px;
     transition: right 0.3s ease;
     z-index: 9999;
-    box-shadow: -4px 0 12px rgba(0,0,0,0.5);
-    display: flex;
-    flex-direction: column;
 }
 .guide-panel.open { right: 0; }
+
 .guide-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -163,7 +156,9 @@ th { background: var(--bg-card); }
     background: var(--accent);
     color: #000;
 }
+
 .guide-section { font-size: 13px; }
+
 .alert-garantie {
     color: #ff6666;
     font-size: 11px;
@@ -176,12 +171,15 @@ th { background: var(--bg-card); }
     <button id="toggleTheme">🌙</button>
 </div>
 
+<!-- GUIDE COMPLET -->
 <div id="guidePanel" class="guide-panel">
     <div class="guide-content">
-        <h2 style="margin-top:0;">Guide ImmoAnalyse</h2>
+        <h2>Guide ImmoAnalyse</h2>
+
         <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
             <button class="secondary" onclick="closeGuide()">Fermer</button>
         </div>
+
         <div class="guide-tabs">
             <div class="guide-tab active" data-tab="crit">Critères</div>
             <div class="guide-tab" data-tab="garanties">Garanties</div>
@@ -194,10 +192,9 @@ th { background: var(--bg-card); }
 
         <div class="guide-section" id="tab-crit">
             <h3>Critères d’analyse</h3>
-            <p>Le moteur LPB v6 PRO évalue :</p>
             <ul>
                 <li>LTV, LTA, LTC</li>
-                <li>Marge</li>
+                <li>Marge opérationnelle</li>
                 <li>Pré-commercialisation</li>
                 <li>Liquidité</li>
                 <li>Garanties pondérées</li>
@@ -211,30 +208,35 @@ th { background: var(--bg-card); }
                 <li>G1D : 0.9</li>
                 <li>Hypothèque 1er rang : 0.8</li>
                 <li>Nantissement : 0.6</li>
-                <li>Caution : 0.3</li>
+                <li>Caution personnelle : 0.3</li>
             </ul>
-            <p>Au-delà de 100 %, la surgarantie est signalée mais plafonnée dans le calcul.</p>
         </div>
 
         <div class="guide-section" id="tab-alertes" style="display:none;">
             <h3>Alertes</h3>
             <ul>
-                <li>LTV très élevée</li>
+                <li>LTV trop élevée</li>
                 <li>LTA/LTC hors normes</li>
-                <li>Pré-commercialisation faible</li>
-                <li>Garanties insuffisantes ou surgaranties</li>
+                <li>Pré-commercialisation insuffisante</li>
+                <li>Garanties faibles</li>
             </ul>
         </div>
 
         <div class="guide-section" id="tab-exemples" style="display:none;">
             <h3>Exemples</h3>
-            <p>SAFE : score 65, ticket IA 100–500 €.</p>
-            <p>CRITIQUE : score 30, ticket IA 0–0 €.</p>
+            <p>SAFE : score 65 → ticket IA 100–500 €.</p>
+            <p>PREMIUM : score 90 → ticket IA 500–1000 €.</p>
+            <p>CRITIQUE : score 30 → ticket IA 0–0 €.</p>
         </div>
 
         <div class="guide-section" id="tab-opt" style="display:none;">
             <h3>Optimisation</h3>
-            <p>Renforcer garanties, marge, pré-commercialisation, structure LTA/LTC.</p>
+            <ul>
+                <li>Renforcer les garanties</li>
+                <li>Améliorer la marge</li>
+                <li>Augmenter la pré-commercialisation</li>
+                <li>Réduire LTA/LTC</li>
+            </ul>
         </div>
 
         <div class="guide-section" id="tab-lecture" style="display:none;">
@@ -254,19 +256,25 @@ th { background: var(--bg-card); }
     </div>
 </div>
 
+<!-- HEADER -->
 <div class="container section">
     <div class="header-top">
         <div>
             <h1>ImmoAnalyse v6 PRO</h1>
             <div class="header-metrics">
                 <span id="metricScore">Score portefeuille : -</span>
-                <span id="metricInvest">Total mises : - €</span>
+                <span id="metricInvest">Total investi : - €</span>
             </div>
         </div>
-        <button class="secondary" onclick="openGuide()">Guide</button>
+
+        <div style="display:flex; gap:8px;">
+            <button class="secondary" onclick="openGuide()">Guide</button>
+            <button class="secondary" onclick="exportCSV()">Export CSV</button>
+        </div>
     </div>
 </div>
 
+<!-- FORMULAIRE -->
 <div class="container section">
     <h2>Nouvel audit</h2>
 
@@ -282,40 +290,41 @@ th { background: var(--bg-card); }
     <div class="grid-2">
         <div>
             <label>LTV (%)</label>
-            <input id="ltv" type="number" placeholder="ex : 75">
+            <input id="ltv" type="number">
         </div>
         <div>
             <label>LTA (%)</label>
-            <input id="lta" type="number" placeholder="ex : 120">
+            <input id="lta" type="number">
         </div>
     </div>
 
     <div class="grid-2">
         <div>
             <label>LTC (%)</label>
-            <input id="ltc" type="number" placeholder="ex : 85">
+            <input id="ltc" type="number">
         </div>
         <div>
             <label>Marge (%)</label>
-            <input id="marge" type="number" placeholder="ex : 12">
+            <input id="marge" type="number">
         </div>
     </div>
 
     <div class="grid-2">
         <div>
             <label>Pré-commercialisation (%)</label>
-            <input id="precomm" type="number" placeholder="ex : 40">
+            <input id="precomm" type="number">
         </div>
         <div>
-            <label>Liquidité (1 à 10)</label>
-            <input id="liquidite" type="number" placeholder="ex : 7">
+            <label>Liquidité (1–10)</label>
+            <input id="liquidite" type="number">
         </div>
     </div>
 
     <label>Mise (€) — optionnelle</label>
-    <input id="mise" type="number" placeholder="ex : 100">
+    <input id="mise" type="number">
 </div>
 
+<!-- GARANTIES -->
 <div class="container section">
     <h2>Garanties</h2>
 
@@ -339,11 +348,7 @@ th { background: var(--bg-card); }
     <input id="caution_eur" type="number" placeholder="Montant €">
 </div>
 
-<div class="container">
-    <button onclick="runEngine()">Ajouter au portefeuille</button>
-    <button class="secondary" onclick="exportCSV()">Exporter CSV</button>
-</div>
-
+<!-- TABLEAU -->
 <div class="container section">
     <h2>Projets audités</h2>
     <table id="tableProjets">
@@ -368,36 +373,44 @@ import { runLPBEngine, readNumber } from "./engine/engine.js";
 
 let projets = [];
 
+/* -----------------------------
+   MISE À JOUR DES MÉTRIQUES
+------------------------------*/
 function updateMetrics() {
     if (projets.length === 0) {
         document.getElementById("metricScore").textContent = "Score portefeuille : -";
-        document.getElementById("metricInvest").textContent = "Total mises : - €";
+        document.getElementById("metricInvest").textContent = "Total investi : - €";
         return;
     }
+
     const avgScore = projets.reduce((s, p) => s + p.score, 0) / projets.length;
     const totalMise = projets.reduce((s, p) => s + (p.mise || 0), 0);
-    document.getElementById("metricScore").textContent = "Score portefeuille : " + avgScore.toFixed(1);
-    document.getElementById("metricInvest").textContent = "Total mises : " + totalMise + " €";
+
+    document.getElementById("metricScore").textContent =
+        "Score portefeuille : " + avgScore.toFixed(1);
+
+    document.getElementById("metricInvest").textContent =
+        "Total investi : " + totalMise + " €";
 }
 
+/* -----------------------------
+   SURGARANTIE
+------------------------------*/
 function checkGarantie(idInput, idAlert) {
     const v = readNumber(document.getElementById(idInput).value);
     const alertEl = document.getElementById(idAlert);
-    if (v != null && v > 100) {
-        alertEl.textContent = "Surgarantie détectée (>100 %).";
-    } else {
-        alertEl.textContent = "";
-    }
+    alertEl.textContent = (v != null && v > 100) ? "Surgarantie détectée (>100 %)." : "";
 }
 
 ["fiducie_pct","g1d_pct","hyp1_pct","nant_pct"].forEach(id => {
     const alertId = "alert_" + id.split("_")[0];
     const el = document.getElementById(id);
-    if (el) {
-        el.addEventListener("input", () => checkGarantie(id, alertId));
-    }
+    if (el) el.addEventListener("input", () => checkGarantie(id, alertId));
 });
 
+/* -----------------------------
+   AJOUT D’UN PROJET
+------------------------------*/
 window.runEngine = function () {
     const nom = document.getElementById("nomProjet").value.trim() || "Sans nom";
 
@@ -444,6 +457,9 @@ window.runEngine = function () {
     updateMetrics();
 };
 
+/* -----------------------------
+   AFFICHAGE DU TABLEAU
+------------------------------*/
 function renderTable() {
     const tbody = document.querySelector("#tableProjets tbody");
     tbody.innerHTML = "";
@@ -467,35 +483,50 @@ function renderTable() {
     });
 }
 
+/* -----------------------------
+   SUPPRESSION D’UN PROJET
+------------------------------*/
 window.suppr = function (i) {
     projets.splice(i, 1);
     renderTable();
     updateMetrics();
 };
 
+/* -----------------------------
+   EXPORT CSV
+------------------------------*/
 window.exportCSV = function () {
     if (projets.length === 0) return;
+
     let csv = "Projet;Score;Risque;LTV net;Mise;Ticket min;Ticket max\n";
+
     projets.forEach(p => {
         csv += `${p.nom};${p.score};${p.risque};${p.ltvnet || ""};${p.mise || ""};${p.ticket.min};${p.ticket.max}\n`;
     });
+
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement("a");
     a.href = url;
     a.download = "portefeuille_immoanalyse.csv";
-    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+
     URL.revokeObjectURL(url);
 };
 
-const toggleBtn = document.getElementById("toggleTheme");
-toggleBtn.onclick = () => {
+/* -----------------------------
+   THÈME SOMBRE / CLAIR
+------------------------------*/
+document.getElementById("toggleTheme").onclick = () => {
     document.body.classList.toggle("light");
-    toggleBtn.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+    document.getElementById("toggleTheme").textContent =
+        document.body.classList.contains("light") ? "☀️" : "🌙";
 };
 
+/* -----------------------------
+   GUIDE OUVERTURE / FERMETURE
+------------------------------*/
 window.openGuide = function () {
     document.getElementById("guidePanel").classList.add("open");
 };
@@ -507,17 +538,14 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
     tab.onclick = () => {
         document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
+
         document.querySelectorAll(".guide-section").forEach(sec => sec.style.display = "none");
         document.getElementById("tab-" + tab.dataset.tab).style.display = "block";
     };
 });
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
-}
-</script>
 
 </body>
 </html>
+
 
