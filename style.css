@@ -361,3 +361,48 @@ tbody tr:last-child td {
     border-radius: 0;
   }
 }
+/* ---------- Patch lisibilité tableau (mode clair) ---------- */
+
+body.light table th,
+body.light table td {
+  color: #1a1a1a;
+}
+
+body.light table tbody tr:nth-child(even) {
+  background: rgba(0,0,0,0.06);
+}
+
+body.light table tbody tr:nth-child(odd) {
+  background: rgba(0,0,0,0.03);
+}
+
+body.light table th {
+  background: #f3f3f3;
+  border-bottom: 1px solid #d1d5db;
+  color: #111;
+}
+
+body.light .row-explain {
+  background: rgba(0,0,0,0.08);
+  color: #333;
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+/* Couleurs renforcées */
+body.light td span[style*="color:red"] {
+  color: #b00000 !important;
+  font-weight: 700;
+}
+
+body.light td span[style*="color:orange"] {
+  color: #d67a00 !important;
+  font-weight: 600;
+}
+
+body.light td span[style*="color:green"] {
+  color: #0a7a0a !important;
+  font-weight: 600;
+}
+
+
