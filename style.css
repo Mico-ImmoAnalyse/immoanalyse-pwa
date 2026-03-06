@@ -350,51 +350,47 @@ tbody tr:last-child td {
 .g-weak {
   color: #f97316;
 }
-/* ---------- Patch lisibilité tableau (mode clair) ---------- */
 
-/* Texte plus foncé dans le tableau */
-body.light table td,
+/* ---------- Patch lisibilité tableau (mode clair, version propre) ---------- */
+
+/* Titres du tableau en blanc */
 body.light table th {
-  color: #1a1a1a;
+  color: #f5f5f5 !important;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255,255,255,0.2) !important;
 }
 
-/* Lignes alternées plus visibles */
-body.light table tbody tr:nth-child(even) {
-  background: rgba(0,0,0,0.06);
+/* Texte du tableau */
+body.light table td {
+  color: #fafafa !important;
 }
 
-body.light table tbody tr:nth-child(odd) {
-  background: rgba(0,0,0,0.03);
-}
-
-/* En-têtes plus contrastées */
-body.light table th {
-  background: #f3f3f3;
-  border-bottom: 1px solid #d1d5db;
-  color: #111;
+/* Tag (MDB, LDT) */
+body.light .type-tag {
+  color: #e5e5e5 !important;
 }
 
 /* Ligne d’explication automatique */
 body.light .row-explain {
-  background: rgba(0,0,0,0.08);
-  color: #333;
+  color: #f0f0f0 !important;
+  background: rgba(255,255,255,0.05) !important;
   font-size: 13px;
   padding: 6px 10px;
 }
 
 /* Couleurs renforcées pour les indicateurs */
 body.light td span[style*="color:red"] {
-  color: #b00000 !important;
+  color: #ff6b6b !important;
   font-weight: 700;
 }
 
 body.light td span[style*="color:orange"] {
-  color: #d67a00 !important;
+  color: #ffb347 !important;
   font-weight: 600;
 }
 
 body.light td span[style*="color:green"] {
-  color: #0a7a0a !important;
+  color: #7dff7d !important;
   font-weight: 600;
 }
 
