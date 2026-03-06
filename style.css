@@ -350,6 +350,53 @@ tbody tr:last-child td {
 .g-weak {
   color: #f97316;
 }
+/* ---------- Patch lisibilité tableau (mode clair) ---------- */
+
+/* Texte plus foncé dans le tableau */
+body.light table td,
+body.light table th {
+  color: #1a1a1a;
+}
+
+/* Lignes alternées plus visibles */
+body.light table tbody tr:nth-child(even) {
+  background: rgba(0,0,0,0.06);
+}
+
+body.light table tbody tr:nth-child(odd) {
+  background: rgba(0,0,0,0.03);
+}
+
+/* En-têtes plus contrastées */
+body.light table th {
+  background: #f3f3f3;
+  border-bottom: 1px solid #d1d5db;
+  color: #111;
+}
+
+/* Ligne d’explication automatique */
+body.light .row-explain {
+  background: rgba(0,0,0,0.08);
+  color: #333;
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+/* Couleurs renforcées pour les indicateurs */
+body.light td span[style*="color:red"] {
+  color: #b00000 !important;
+  font-weight: 700;
+}
+
+body.light td span[style*="color:orange"] {
+  color: #d67a00 !important;
+  font-weight: 600;
+}
+
+body.light td span[style*="color:green"] {
+  color: #0a7a0a !important;
+  font-weight: 600;
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 480px) {
@@ -404,5 +451,6 @@ body.light td span[style*="color:green"] {
   color: #0a7a0a !important;
   font-weight: 600;
 }
+
 
 
