@@ -305,6 +305,7 @@ Le LTV net intègre les garanties fortes.
 <tr>
 <th>Projet</th>
 <th>LTV net réel</th>
+<th>Couverture réelle</th>   <!-- AJOUT -->
 <th>Sécurité</th>
 <th>Tickets</th>
 <th>Mise (€)</th>
@@ -389,14 +390,15 @@ const result = runLPBEngine(input);
 if (!result) return;
 
 projets.push({
-nom,
-type: typeProjet,
-score: result.score,
-securite: result.meta.securiteGlobale,
-ltvnet: result.ratios.LTV_net_reel,
-mise: input.valeurs.mise || 0,
-ticketMin: result.ticketIA.plage.min,
-ticketMax: result.ticketIA.plage.max
+    nom,
+    type: typeProjet,
+    score: result.score,
+    securite: result.meta.securiteGlobale,
+    ltvnet: result.ratios.LTV_net_reel,
+    coverageReal: result.ratios.coverageReal,   // ← AJOUT
+    mise: input.valeurs.mise || 0,
+    ticketMin: result.ticketIA.plage.min,
+    ticketMax: result.ticketIA.plage.max
 });
 
 renderTable();
@@ -411,12 +413,25 @@ tbody.innerHTML = "";
 projets.forEach((p, i) => {
 const tr = document.createElement("tr");
 const ltvText = p.ltvnet != null ? p.ltvnet.toFixed(1) + "%" : "-";
+let covText = "-";
+if (p.coverageReal != null) {
+    const v = p.coverageReal;
+    let color = "black";
+
+    if (v < 40) color = "green";
+    else if (v < 80) color = "orange";
+    else color = "red";
+
+    const alert = (v >= 100) ? " ⚠️" : "";
+covText = `<span style="color:${color}; font-weight:bold;">${v.toFixed(1)}%</span>${alert}`;
+}
 const ticketText = `${p.ticketMin} – ${p.ticketMax} €`;
 const miseText = p.mise ? p.mise.toLocaleString("fr-FR") + " €" : "-";
 
 tr.innerHTML = `
 <td>${p.nom} <span class="type-tag">(${p.type})</span></td>
 <td>${ltvText}</td>
+<td>${covText}</td>
 <td>${p.securite}</td>
 <td>${ticketText}</td>
 <td>${miseText}</td>
@@ -494,3 +509,4 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 
 </body>
 </html>
+
