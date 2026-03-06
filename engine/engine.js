@@ -1,10 +1,56 @@
 // ======================================================
-//  MOTEUR IA LPB v6 — Pondération dynamique + LTV net
+//  MOTEUR IA LPB v6 — Pondération dynamique + LTV net RÉEL
 // ======================================================
 
 export function readNumber(v) {
     const n = parseFloat(v);
     return isNaN(n) ? null : n;
+}
+
+// -------------------------------
+// 0) Haircuts "réels" par type de garantie
+// -------------------------------
+const REAL_GUARANTEE_WEIGHTS = {
+    hypotheque: 0.85,   // 85% de valeur réelle
+    caution: 0.60,      // 60% de valeur réelle
+    nantissement: 0.50, // 50% de valeur réelle
+    fiducie: 1.00,      // 100% de valeur réelle
+    g1d: 1.00           // 100% de valeur réelle
+};
+
+function computeRealGuaranteeCoverage(montantProjet, garanties) {
+    const hypotheque_pct = garanties.hyp1_pct ?? 0;
+    const nantissement_pct = garanties.nantissement_pct ?? 0;
+    const fiducie_pct = garanties.fiducie_pct ?? 0;
+    const g1d_pct = garanties.g1d_pct ?? 0;
+    const caution_montant = garanties.caution_eur ?? 0;
+    const cout_projet = montantProjet ?? 0;
+
+    const hypoReal = hypotheque_pct * REAL_GUARANTEE_WEIGHTS.hypotheque;
+    const nantReal = nantissement_pct * REAL_GUARANTEE_WEIGHTS.nantissement;
+    const fiducieReal = fiducie_pct * REAL_GUARANTEE_WEIGHTS.fiducie;
+    const g1dReal = g1d_pct * REAL_GUARANTEE_WEIGHTS.g1d;
+
+    let cautionPct = 0;
+    if (cout_projet > 0 && caution_montant > 0) {
+        cautionPct = (caution_montant / cout_projet) * 100;
+    }
+    const cautionReal = cautionPct * REAL_GUARANTEE_WEIGHTS.caution;
+
+    let totalReal = hypoReal + nantReal + fiducieReal + g1dReal + cautionReal;
+    if (totalReal > 100) totalReal = 100;
+
+    return {
+        totalReal,
+        details: {
+            hypoReal,
+            nantReal,
+            fiducieReal,
+            g1dReal,
+            cautionReal,
+            cautionPct
+        }
+    };
 }
 
 export function runLPBEngine(input) {
@@ -24,7 +70,7 @@ export function runLPBEngine(input) {
     const mise = valeurs.mise ?? 0;
 
     // -------------------------------
-    // 2) POIDS LPB v6 DES GARANTIES
+    // 2) POIDS LPB v6 DES GARANTIES (MÉTHODOLOGIQUE)
     // -------------------------------
     const poids = {
         fiducie: 1.0,
@@ -35,7 +81,7 @@ export function runLPBEngine(input) {
     };
 
     // -------------------------------
-    // 3) PONDÉRATION DYNAMIQUE
+    // 3) PONDÉRATION DYNAMIQUE LPB (inchangée)
     // -------------------------------
     function pondGarantie(active, couverture, poidsBase) {
         if (!active || couverture == null || isNaN(couverture)) return 0;
@@ -48,7 +94,6 @@ export function runLPBEngine(input) {
     const p_hyp1 = pondGarantie(garanties.hyp1, garanties.hyp1_pct, poids.hyp1);
     const p_nant = pondGarantie(garanties.nantissement, garanties.nantissement_pct, poids.nantissement);
 
-    // Caution → conversion en %
     let p_caution = 0;
     if (garanties.caution && garanties.caution_eur > 0 && montantProjet > 0) {
         const cautionPct = (garanties.caution_eur / montantProjet) * 100;
@@ -61,19 +106,29 @@ export function runLPBEngine(input) {
     );
 
     // -------------------------------
-    // 4) LTV NET LPB v6
+    // 4) LTV NET RÉEL PROFESSIONNEL
     // -------------------------------
-    const LTV_net = LTV * (1 - pondTotale / 100);
+    const { totalReal } = computeRealGuaranteeCoverage(montantProjet, garanties);
+
+    let LTV_net_reel = LTV * (1 - totalReal / 100);
+
+    const MIN_RESIDUAL = 5;
+    if (LTV_net_reel < MIN_RESIDUAL) {
+        LTV_net_reel = MIN_RESIDUAL;
+    }
+    if (LTV < MIN_RESIDUAL) {
+        LTV_net_reel = LTV;
+    }
 
     // -------------------------------
-    // 5) SCORE GLOBAL LPB v6
+    // 5) SCORE GLOBAL LPB v6 (basé maintenant sur LTV_net_réel)
     // -------------------------------
     let score = 0;
 
-    // LTV net
-    if (LTV_net < 60) score += 25;
-    else if (LTV_net < 75) score += 18;
-    else if (LTV_net < 85) score += 10;
+    // LTV net réel
+    if (LTV_net_reel < 60) score += 25;
+    else if (LTV_net_reel < 75) score += 18;
+    else if (LTV_net_reel < 85) score += 10;
     else score += 2;
 
     // LTA
@@ -103,7 +158,7 @@ export function runLPBEngine(input) {
     else if (liquidite >= 5) score += 6;
     else score += 2;
 
-    // Garanties
+    // Garanties (pondération LPB, inchangée)
     if (pondTotale >= 80) score += 10;
     else if (pondTotale >= 40) score += 6;
     else score += 2;
@@ -153,7 +208,7 @@ export function runLPBEngine(input) {
     return {
         ratios: {
             LTV,
-            LTV_net,
+            LTV_net_reel,   // nouveau LTV net réel professionnel
             LTA,
             LTC,
             pondTotale
