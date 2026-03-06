@@ -1,13 +1,19 @@
-/* --- Lisibilité renforcée du tableau en mode clair --- */
+/* --- Lisibilité avancée du tableau Projets audités (mode clair) --- */
 
-/* Texte plus foncé pour une meilleure lecture */
-body.light #tableProjets td,
-body.light #tableProjets th {
+/* Texte plus foncé et plus lisible */
+body.light #tableProjets td {
     color: #1a1a1a;
+    font-size: 15px;
     font-weight: 500;
 }
 
-/* Lignes alternées plus visibles */
+body.light #tableProjets th {
+    color: #0f0f0f;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Lignes alternées plus contrastées */
 body.light #tableProjets tr:nth-child(even) {
     background: rgba(0,0,0,0.08);
 }
@@ -16,24 +22,23 @@ body.light #tableProjets tr:nth-child(odd) {
     background: rgba(0,0,0,0.03);
 }
 
-/* En-têtes plus contrastées */
+/* En-têtes plus visibles */
 body.light #tableProjets th {
-    background: #f5f5f5;
-    color: #111;
+    background: #f3f3f3;
     border-bottom: 2px solid rgba(0,0,0,0.25);
-    font-weight: 600;
 }
 
 /* Ligne d’explication automatique */
 body.light .row-explain {
     background: rgba(0,0,0,0.08);
     color: #333;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 /* Couleurs des indicateurs renforcées */
 body.light td span[style*="color:red"] {
-    color: #c00000 !important;
+    color: #b00000 !important;
     font-weight: 700;
 }
 
@@ -51,4 +56,10 @@ body.light td span[style*="color:green"] {
 body.light .secondary.danger {
     color: #b00000;
     border-color: #b00000;
+}
+
+/* Espacement vertical pour aérer le tableau */
+body.light #tableProjets td {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
