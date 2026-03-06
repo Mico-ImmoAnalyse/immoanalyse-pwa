@@ -359,5 +359,54 @@ tbody tr:last-child td {
   .guide-content {
     max-width: 100%;
     border-radius: 0;
+/* --- Lisibilité du tableau Projets audités --- */
+
+#tableProjets td,
+#tableProjets th {
+    padding: 10px 12px;
+}
+
+/* Alternance des lignes */
+#tableProjets tr:nth-child(even) {
+    background: rgba(0,0,0,0.03);
+}
+
+body.light #tableProjets tr:nth-child(even) {
+    background: rgba(0,0,0,0.06);
+}
+
+/* En-têtes plus visibles */
+#tableProjets th {
+    font-weight: 600;
+    border-bottom: 2px solid rgba(0,0,0,0.15);
+}
+
+body.light #tableProjets th {
+    border-bottom: 2px solid rgba(0,0,0,0.25);
+}
+
+/* Ligne d’explication automatique */
+.row-explain {
+    background: rgba(0,0,0,0.03);
+}
+
+body.light .row-explain {
+    background: rgba(0,0,0,0.05);
+}
+
+/* Renforcer la lisibilité des couleurs (vert/orange/rouge) */
+td span[style*="color:red"] {
+    font-weight: 700;
+}
+
+td span[style*="color:orange"] {
+    font-weight: 600;
+}
+
+td span[style*="color:green"] {
+    font-weight: 600;
+}
+    
   }
 }
+
