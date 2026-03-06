@@ -1,13 +1,137 @@
-/* --- Lisibilité renforcée du tableau en mode clair --- */
+/* ---------------------------------------------------
+   STYLE GLOBAL LPB v6 PRO
+--------------------------------------------------- */
 
-/* Texte plus foncé pour une meilleure lecture */
-body.light #tableProjets td,
-body.light #tableProjets th {
-    color: #1a1a1a;
-    font-weight: 500;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #eaeaea;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* Lignes alternées plus visibles */
+body.light {
+    background: #f5f5f5;
+    color: #1a1a1a;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+/* ---------------------------------------------------
+   BOUTONS
+--------------------------------------------------- */
+
+button {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+button.primary {
+    background: #007bff;
+    color: white;
+}
+
+button.primary:hover {
+    background: #0069d9;
+}
+
+button.secondary {
+    background: transparent;
+    border: 1px solid #888;
+    color: #ddd;
+}
+
+button.secondary:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+button.secondary.danger {
+    border-color: #ff4d4d;
+    color: #ff4d4d;
+}
+
+body.light button.secondary {
+    color: #333;
+    border-color: #999;
+}
+
+body.light button.secondary:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+body.light button.secondary.danger {
+    color: #b00000;
+    border-color: #b00000;
+}
+
+/* ---------------------------------------------------
+   INPUTS
+--------------------------------------------------- */
+
+input, select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #666;
+    background: #1e1e1e;
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body.light input,
+body.light select {
+    background: #fff;
+    color: #111;
+    border: 1px solid #bbb;
+}
+
+/* ---------------------------------------------------
+   TABLEAU PROJETS AUDITÉS
+--------------------------------------------------- */
+
+#tableProjets {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* En-têtes */
+#tableProjets th {
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255,255,255,0.15);
+    background: #1e1e1e;
+}
+
+body.light #tableProjets th {
+    background: #f3f3f3;
+    color: #111;
+    border-bottom: 2px solid rgba(0,0,0,0.25);
+}
+
+/* Cellules */
+#tableProjets td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+body.light #tableProjets td {
+    color: #1a1a1a;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Alternance des lignes */
+#tableProjets tr:nth-child(even) {
+    background: rgba(255,255,255,0.03);
+}
+
 body.light #tableProjets tr:nth-child(even) {
     background: rgba(0,0,0,0.08);
 }
@@ -16,39 +140,119 @@ body.light #tableProjets tr:nth-child(odd) {
     background: rgba(0,0,0,0.03);
 }
 
-/* En-têtes plus contrastées */
-body.light #tableProjets th {
-    background: #f5f5f5;
-    color: #111;
-    border-bottom: 2px solid rgba(0,0,0,0.25);
-    font-weight: 600;
+/* Ligne d’explication automatique */
+.row-explain {
+    background: rgba(255,255,255,0.05);
 }
 
-/* Ligne d’explication automatique */
 body.light .row-explain {
     background: rgba(0,0,0,0.08);
     color: #333;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* Couleurs des indicateurs renforcées */
-body.light td span[style*="color:red"] {
-    color: #c00000 !important;
+/* Couleurs des indicateurs */
+td span[style*="color:red"] {
     font-weight: 700;
+}
+
+td span[style*="color:orange"] {
+    font-weight: 600;
+}
+
+td span[style*="color:green"] {
+    font-weight: 600;
+}
+
+body.light td span[style*="color:red"] {
+    color: #b00000 !important;
 }
 
 body.light td span[style*="color:orange"] {
     color: #d67a00 !important;
-    font-weight: 600;
 }
 
 body.light td span[style*="color:green"] {
     color: #0a7a0a !important;
-    font-weight: 600;
 }
 
-/* Bouton supprimer plus visible */
-body.light .secondary.danger {
-    color: #b00000;
-    border-color: #b00000;
+/* ---------------------------------------------------
+   PANNEAU GUIDE
+--------------------------------------------------- */
+
+#guidePanel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 380px;
+    height: 100%;
+    background: #1e1e1e;
+    color: #fff;
+    padding: 20px;
+    transition: right 0.3s;
+    overflow-y: auto;
+    z-index: 999;
 }
+
+#guidePanel.open {
+    right: 0;
+}
+
+body.light #guidePanel {
+    background: #fff;
+    color: #111;
+}
+
+/* Onglets du guide */
+.guide-tab {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.guide-tab.active {
+    border-bottom: 2px solid #007bff;
+    font-weight: bold;
+}
+
+/* Accordéons */
+.accordion-header {
+    padding: 10px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.05);
+    margin-top: 10px;
+}
+
+.accordion-header:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
+}
+
+.accordion.open .accordion-content {
+    display: block;
+}
+
+/* ---------------------------------------------------
+   METRIQUES
+--------------------------------------------------- */
+
+.metric-box {
+    padding: 15px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+body.light .metric-box {
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+/* ---------------------------------------------------
+   FIN STYLE
+--------------------------------------------------- */
