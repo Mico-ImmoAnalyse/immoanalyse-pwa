@@ -1,412 +1,52 @@
-/* ---------- Variables globales ---------- */
-:root {
-  --bg: #0f1012;
-  --bg-alt: #18191c;
-  --bg-card: #202226;
-  --text: #f9fafb;
-  --text-muted: #9ca3af;
-  --border: #2d2f33;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --danger: #ef4444;
-  --radius: 10px;
-  --shadow: 0 12px 30px rgba(0,0,0,0.45);
-  --font: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+/* --- Lisibilité renforcée du tableau en mode clair --- */
+
+/* Texte plus foncé en mode clair */
+body.light #tableProjets td,
+body.light #tableProjets th {
+    color: #222;
 }
 
-/* Thème clair */
-body.light {
-  --bg: #f4f6f8;
-  --bg-alt: #ffffff;
-  --bg-card: #ffffff;
-  --text: #111827;
-  --text-muted: #6b7280;
-  --border: #d1d5db;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --danger: #dc2626;
-  --shadow: 0 6px 18px rgba(15,23,42,0.12);
+/* Fond des lignes alternées plus visible */
+body.light #tableProjets tr:nth-child(even) {
+    background: rgba(0,0,0,0.08);
 }
 
-/* ---------- Reset minimal ---------- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: var(--font);
-  background: radial-gradient(circle at top, #111827 0, var(--bg) 45%, #020617 100%);
-  color: var(--text);
-  line-height: 1.5;
-  padding: 24px;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ---------- Container principal ---------- */
-.container {
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.section {
-  margin-bottom: 24px;
-}
-
-/* ---------- Titres ---------- */
-h1 {
-  font-size: 24px;
-  margin-bottom: 8px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-
-h2 {
-  font-size: 18px;
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-h3 {
-  font-size: 14px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-/* ---------- Header actions ---------- */
-.header-actions {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-/* ---------- Cartes ---------- */
-.card {
-  background: var(--bg-card);
-  padding: 16px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.big-number {
-  font-size: 22px;
-  font-weight: 700;
-  margin-top: 4px;
-}
-
-.note {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-/* ---------- Labels & Inputs ---------- */
-label {
-  display: block;
-  margin-top: 10px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 8px 10px;
-  margin-top: 4px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 13px;
-  background: var(--bg-alt);
-  color: var(--text);
-  transition: border-color 0.2s;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: var(--primary);
-}
-
-/* ---------- Boutons ---------- */
-button {
-  font-family: inherit;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: background 0.2s;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
-
-.secondary {
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.secondary:hover {
-  border-color: var(--primary);
-}
-
-.secondary.danger {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-.secondary.danger:hover {
-  background: rgba(239,68,68,0.12);
-}
-
-/* ---------- Tableau ---------- */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  font-weight: 600;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
-}
-
-tbody tr:nth-child(even) {
-  background: rgba(148,163,184,0.06);
-}
-
-tbody tr:last-child td {
-  border-bottom: 1px solid var(--border);
-}
-
-.type-tag {
-  color: var(--text-muted);
-  font-size: 11px;
-}
-
-/* ---------- Theme toggle ---------- */
-.theme-toggle {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 50;
-}
-
-.theme-toggle button {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-alt);
-  color: var(--text);
-  cursor: pointer;
-}
-
-/* ---------- Guide panel ---------- */
-.guide-panel {
-  position: fixed;
-  inset: 0;
-  background: rgba(15,23,42,0.75);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 40;
-}
-
-.guide-panel.open {
-  display: flex;
-}
-
-.guide-content {
-  width: 100%;
-  max-width: 520px;
-  max-height: 90vh;
-  background: var(--bg-alt);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.guide-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-/* Tabs */
-.guide-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.guide-tab {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 12px;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: 0.2s;
-}
-
-.guide-tab.active {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: rgba(37,99,235,0.08);
-}
-
-/* Sections */
-.guide-section {
-  display: none;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.guide-section.active {
-  display: block;
-}
-
-/* Accordéons */
-.accordion {
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  margin-bottom: 8px;
-  overflow: hidden;
-  transition: 0.2s;
-}
-
-.accordion-header {
-  padding: 8px 10px;
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.accordion-content {
-  padding: 8px 10px;
-  font-size: 12px;
-  color: var(--text-muted);
-  display: none;
-  border-top: 1px solid var(--border);
-}
-
-.accordion.open .accordion-content {
-  display: block;
-}
-
-/* Garanties alertes */
-.alert-garantie {
-  font-size: 11px;
-  color: #facc15;
-  margin-top: 2px;
-}
-
-.g-strong {
-  color: #22c55e;
-}
-
-.g-medium {
-  color: #eab308;
-}
-
-.g-weak {
-  color: #f97316;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 480px) {
-  body {
-    padding: 16px;
-  }
-  .guide-content {
-    max-width: 100%;
-    border-radius: 0;
-/* --- Lisibilité du tableau Projets audités --- */
-
-#tableProjets td,
-#tableProjets th {
-    padding: 10px 12px;
-}
-
-/* Alternance des lignes */
-#tableProjets tr:nth-child(even) {
+/* Fond des lignes impaires légèrement grisé */
+body.light #tableProjets tr:nth-child(odd) {
     background: rgba(0,0,0,0.03);
 }
 
-body.light #tableProjets tr:nth-child(even) {
-    background: rgba(0,0,0,0.06);
-}
-
-/* En-têtes plus visibles */
-#tableProjets th {
-    font-weight: 600;
-    border-bottom: 2px solid rgba(0,0,0,0.15);
-}
-
+/* En-têtes plus contrastées */
 body.light #tableProjets th {
+    background: #f2f2f2;
+    color: #111;
     border-bottom: 2px solid rgba(0,0,0,0.25);
 }
 
-/* Ligne d’explication automatique */
-.row-explain {
-    background: rgba(0,0,0,0.03);
-}
-
+/* Ligne d’explication plus lisible */
 body.light .row-explain {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0,0,0,0.08);
+    color: #333;
 }
 
-/* Renforcer la lisibilité des couleurs (vert/orange/rouge) */
-td span[style*="color:red"] {
+/* Couleurs des indicateurs renforcées */
+body.light td span[style*="color:red"] {
+    color: #c40000 !important;
     font-weight: 700;
 }
 
-td span[style*="color:orange"] {
+body.light td span[style*="color:orange"] {
+    color: #d67a00 !important;
     font-weight: 600;
 }
 
-td span[style*="color:green"] {
+body.light td span[style*="color:green"] {
+    color: #0a7a0a !important;
     font-weight: 600;
 }
-    
-  }
-}
 
+/* Bouton supprimer plus visible en mode clair */
+body.light .secondary.danger {
+    color: #b00000;
+    border-color: #b00000;
+}
