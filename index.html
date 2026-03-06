@@ -420,16 +420,15 @@ const result = runLPBEngine(input);
 if (!result) return;
 
 projets.push({
-nom,
-type: typeProjet,
-score: result.score,
-securite: result.meta.securiteGlobale,
-ltvnet: result.ratios.LTV_net_reel,
-coverageReal: result.ratios.coverageReal,
-mise: input.valeurs.mise || 0,
-ticketMin
-ticketMin: result.ticketIA.plage.min,
-ticketMax: result.ticketIA.plage.max
+    nom,
+    type: typeProjet,
+    score: result.score,
+    securite: result.meta.securiteGlobale,
+    ltvnet: result.ratios.LTV_net_reel,
+    coverageReal: result.ratios.coverageReal,
+    mise: input.valeurs.mise || 0,
+    ticketMin: result.ticketIA.plage.min,
+    ticketMax: result.ticketIA.plage.max
 });
 
 renderTable();
@@ -547,3 +546,4 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 </body>
 </html>
     
+
