@@ -8,6 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <!-- TOGGLE THEME -->
@@ -18,6 +19,7 @@
 <!-- GUIDE PANEL -->
 <div id="guidePanel" class="guide-panel">
 <div class="guide-content">
+
 <div class="guide-header">
 <h2>Guide ImmoAnalyse</h2>
 <button class="secondary" onclick="closeGuide()">Fermer</button>
@@ -92,6 +94,7 @@
 
 <!-- ONGLET : GARANTIES -->
 <div class="guide-section" id="garanties">
+
 <div class="accordion">
 <div class="accordion-header">Pondération dynamique LPB v6 <span class="accordion-arrow">▼</span></div>
 <div class="accordion-content">
@@ -111,14 +114,39 @@ Pondération finale = min(100, somme pondérée)
 </div>
 </div>
 
+<!-- AJOUT : COUVERTURE RÉELLE (%) -->
+<div class="accordion">
+<div class="accordion-header">Couverture réelle (%) <span class="accordion-arrow">▼</span></div>
+<div class="accordion-content">
+<p><b>Définition :</b> Valeur réelle des garanties après haircuts :</p>
+<ul>
+<li>Hypothèque : 85 %</li>
+<li>Caution : 60 %</li>
+<li>Nantissement : 50 %</li>
+<li>Fiducie : 100 %</li>
+<li>G1D : 100 %</li>
+</ul>
+
+<p><b>Interprétation :</b></p>
+<ul>
+<li><span style="color:green;font-weight:bold;">🟢 &lt; 40 %</span> — Couverture faible</li>
+<li><span style="color:orange;font-weight:bold;">🟠 40–80 %</span> — Couverture correcte</li>
+<li><span style="color:red;font-weight:bold;">🔴 &gt; 80 %</span> — Couverture forte</li>
+<li><span style="color:red;font-weight:bold;">⚠️ = 100 %</span> — Sur‑couverture (LTV net = 5 %)</li>
+</ul>
+
+<p><b>Impact :</b> Plus la couverture réelle augmente, plus le LTV net réel diminue.</p>
+</div>
+</div>
+
 <div class="accordion">
 <div class="accordion-header">Surgarantie <span class="accordion-arrow">▼</span></div>
 <div class="accordion-content">
 Une couverture &gt; 100% déclenche une alerte jaune.
 </div>
 </div>
-</div>
 
+</div>
 <!-- ONGLET : ALERTES -->
 <div class="guide-section" id="alertes">
 <div class="accordion">
@@ -210,6 +238,7 @@ Le LTV net intègre les garanties fortes.
 <!-- HEADER -->
 <div class="container section">
 <h1>ImmoAnalyse v6 PRO</h1>
+
 <div class="header-actions">
 <button class="secondary" onclick="openGuide()">Guide</button>
 <button class="secondary" onclick="exportCSV()">Export CSV</button>
@@ -270,6 +299,7 @@ Le LTV net intègre les garanties fortes.
 <h2>Garanties</h2>
 
 <h3 class="g-strong">Garanties très fortes</h3>
+
 <label><input type="checkbox" id="g_fiducie"> Fiducie</label>
 <input id="fiducie_pct" type="number" placeholder="% couverture">
 <div id="alert_fiducie" class="alert-garantie"></div>
@@ -291,7 +321,6 @@ Le LTV net intègre les garanties fortes.
 <label><input type="checkbox" id="g_caution"> Caution personnelle</label>
 <input id="caution_eur" type="number" placeholder="Montant €">
 </div>
-
 <!-- BOUTON AUDITER & SAUVEGARDER -->
 <div class="container section">
 <button class="btn-primary" onclick="runEngine()">Auditer & sauvegarder</button>
@@ -300,12 +329,13 @@ Le LTV net intègre les garanties fortes.
 <!-- TABLEAU -->
 <div class="container section">
 <h2>Projets audités</h2>
+
 <table id="tableProjets">
 <thead>
 <tr>
 <th>Projet</th>
 <th>LTV net réel</th>
-<th>Couverture réelle</th>   <!-- AJOUT -->
+<th>Couverture réelle</th>
 <th>Sécurité</th>
 <th>Tickets</th>
 <th>Mise (€)</th>
@@ -390,15 +420,16 @@ const result = runLPBEngine(input);
 if (!result) return;
 
 projets.push({
-    nom,
-    type: typeProjet,
-    score: result.score,
-    securite: result.meta.securiteGlobale,
-    ltvnet: result.ratios.LTV_net_reel,
-    coverageReal: result.ratios.coverageReal,   // ← AJOUT
-    mise: input.valeurs.mise || 0,
-    ticketMin: result.ticketIA.plage.min,
-    ticketMax: result.ticketIA.plage.max
+nom,
+type: typeProjet,
+score: result.score,
+securite: result.meta.securiteGlobale,
+ltvnet: result.ratios.LTV_net_reel,
+coverageReal: result.ratios.coverageReal,
+mise: input.valeurs.mise || 0,
+ticketMin
+ticketMin: result.ticketIA.plage.min,
+ticketMax: result.ticketIA.plage.max
 });
 
 renderTable();
@@ -412,19 +443,22 @@ tbody.innerHTML = "";
 
 projets.forEach((p, i) => {
 const tr = document.createElement("tr");
+
 const ltvText = p.ltvnet != null ? p.ltvnet.toFixed(1) + "%" : "-";
+
 let covText = "-";
 if (p.coverageReal != null) {
-    const v = p.coverageReal;
-    let color = "black";
+const v = p.coverageReal;
+let color = "black";
 
-    if (v < 40) color = "green";
-    else if (v < 80) color = "orange";
-    else color = "red";
+if (v < 40) color = "green";
+else if (v < 80) color = "orange";
+else color = "red";
 
-    const alert = (v >= 100) ? " ⚠️" : "";
+const alert = (v >= 100) ? " ⚠️" : "";
 covText = `<span style="color:${color}; font-weight:bold;">${v.toFixed(1)}%</span>${alert}`;
 }
+
 const ticketText = `${p.ticketMin} – ${p.ticketMax} €`;
 const miseText = p.mise ? p.mise.toLocaleString("fr-FR") + " €" : "-";
 
@@ -437,6 +471,7 @@ tr.innerHTML = `
 <td>${miseText}</td>
 <td><button class="secondary danger" onclick="suppr(${i})">X</button></td>
 `;
+
 tbody.appendChild(tr);
 });
 }
@@ -452,9 +487,10 @@ updateMetrics();
 window.exportCSV = function () {
 if (projets.length === 0) return;
 
-let csv = "Projet;Type;LTV net réel;Sécurité;Ticket min;Ticket max;Mise\n";
+let csv = "Projet;Type;LTV net réel;Couverture réelle;Sécurité;Ticket min;Ticket max;Mise\n";
+
 projets.forEach(p => {
-csv += `${p.nom};${p.type};${p.ltvnet ?? ""};${p.securite};${p.ticketMin};${p.ticketMax};${p.mise ?? ""}\n`;
+csv += `${p.nom};${p.type};${p.ltvnet ?? ""};${p.coverageReal ?? ""};${p.securite};${p.ticketMin};${p.ticketMax};${p.mise ?? ""}\n`;
 });
 
 const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -493,6 +529,7 @@ header.parentElement.classList.toggle("open");
 window.openGuide = function () {
 document.getElementById("guidePanel").classList.add("open");
 };
+
 window.closeGuide = function () {
 document.getElementById("guidePanel").classList.remove("open");
 };
@@ -509,4 +546,4 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 
 </body>
 </html>
-
+    
