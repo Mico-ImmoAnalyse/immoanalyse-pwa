@@ -353,6 +353,37 @@ import { runLPBEngine, readNumber } from "./engine/engine.js";
 
 let projets = [];
 
+/* ---------- PERSISTANCE LOCALSTORAGE ---------- */
+
+const STORAGE_KEY = "immoanalyse_v6_projets";
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.warn("Erreur lecture storage", e);
+    return [];
+  }
+}
+
+function saveToStorage(list) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.warn("Erreur écriture storage", e);
+  }
+}
+
+/* Restaurer au chargement */
+document.addEventListener("DOMContentLoaded", () => {
+  projets = loadFromStorage();
+  renderTable();
+  updateMetrics();
+});
+    
 /* MISE À JOUR DES MÉTRIQUES */
 function updateMetrics() {
 if (projets.length === 0) {
@@ -432,6 +463,7 @@ projets.push({
     ticketMax: result.ticketIA.plage.max
 });
 
+saveToStorage(projets);
 renderTable();
 updateMetrics();
 };
@@ -491,9 +523,10 @@ function renderTable() {
 
 /* SUPPRESSION */
 window.suppr = function (i) {
-projets.splice(i, 1);
-renderTable();
-updateMetrics();
+  projets.splice(i, 1);
+  saveToStorage(projets);
+  renderTable();
+  updateMetrics();
 };
 
 /* EXPORT CSV */
@@ -560,6 +593,7 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 </body>
 </html>
     
+
 
 
 
