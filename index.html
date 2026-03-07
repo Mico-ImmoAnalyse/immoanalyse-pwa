@@ -386,17 +386,43 @@ document.addEventListener("DOMContentLoaded", () => {
     
 /* MISE À JOUR DES MÉTRIQUES */
 function updateMetrics() {
-if (projets.length === 0) {
-document.getElementById("metricScore").textContent = "0/100";
-document.getElementById("metricInvest").textContent = "0 €";
-return;
-}
+    const scoreEl = document.getElementById("metricScore");
+    const investEl = document.getElementById("metricInvest");
 
-const avgScore = projets.reduce((s, p) => s + p.score, 0) / projets.length;
-const totalMise = projets.reduce((s, p) => s + (p.mise || 0), 0);
+    if (projets.length === 0) {
+        scoreEl.textContent = "0/100";
+        investEl.textContent = "0 €";
+        return;
+    }
 
-document.getElementById("metricScore").textContent = avgScore.toFixed(0) + "/100";
-document.getElementById("metricInvest").textContent = totalMise.toLocaleString("fr-FR") + " €";
+    // Total investi
+    const totalMise = projets.reduce((s, p) => s + (p.mise || 0), 0);
+    investEl.textContent = totalMise.toLocaleString("fr-FR") + " €";
+
+    // Pondération par mise
+    const poids = projets.map(p => {
+        if (!p.mise || p.mise <= 0) return 0.05; // poids minimal
+        return p.mise / totalMise;
+    });
+
+    // Coefficients de sécurité
+    const coef = projets.map(p => {
+        if (p.securite === "SAFE") return 1.00;
+        if (p.securite === "MEDIUM") return 0.80;
+        return 0.60; // RISK
+    });
+
+    // Score pondéré
+    const scoresPond = projets.map((p, i) => p.score * coef[i]);
+
+    // Score portefeuille
+    let scorePortefeuille = scoresPond.reduce((s, sp, i) => s + sp * poids[i], 0);
+
+    // Effet plancher si projet dangereux
+    const hasDanger = projets.some(p => p.securite === "RISK" && p.score < 40);
+    if (hasDanger) scorePortefeuille = Math.min(scorePortefeuille, 55);
+
+    scoreEl.textContent = scorePortefeuille.toFixed(0) + "/100";
 }
 
 /* SURGARANTIE */
@@ -593,6 +619,7 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 </body>
 </html>
     
+
 
 
 
