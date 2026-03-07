@@ -383,7 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTable();
   updateMetrics();
 });
-    
+
 /* MISE À JOUR DES MÉTRIQUES */
 function updateMetrics() {
     const scoreEl = document.getElementById("metricScore");
@@ -401,7 +401,7 @@ function updateMetrics() {
 
     // Pondération par mise
     const poids = projets.map(p => {
-        if (!p.mise || p.mise <= 0) return 0.05; // poids minimal
+        if (!p.mise || p.mise <= 0) return 0.05;
         return p.mise / totalMise;
     });
 
@@ -409,7 +409,7 @@ function updateMetrics() {
     const coef = projets.map(p => {
         if (p.securite === "SAFE") return 1.00;
         if (p.securite === "MEDIUM") return 0.80;
-        return 0.60; // RISK
+        return 0.60;
     });
 
     // Score pondéré
@@ -418,88 +418,91 @@ function updateMetrics() {
     // Score portefeuille
     let scorePortefeuille = scoresPond.reduce((s, sp, i) => s + sp * poids[i], 0);
 
-    // Effet plancher si projet dangereux
+    // Effet plancher
     const hasDanger = projets.some(p => p.securite === "RISK" && p.score < 40);
     if (hasDanger) scorePortefeuille = Math.min(scorePortefeuille, 55);
 
     scoreEl.textContent = scorePortefeuille.toFixed(0) + "/100";
 
-// Indicateur visuel
-if (scorePortefeuille >= 75) {
-    scoreEl.style.color = "#22c55e"; // vert
-} else if (scorePortefeuille >= 55) {
-    scoreEl.style.color = "#eab308"; // orange
-} else {
-    scoreEl.style.color = "#ef4444"; // rouge
-}
+    // Indicateur visuel
+    if (scorePortefeuille >= 75) {
+        scoreEl.style.color = "#22c55e";
+    } else if (scorePortefeuille >= 55) {
+        scoreEl.style.color = "#eab308";
+    } else {
+        scoreEl.style.color = "#ef4444";
+    }
+}   // ← FIN CORRECTE DE updateMetrics()
+
 
 /* SURGARANTIE */
 function checkGarantie(idInput, idAlert) {
-const v = readNumber(document.getElementById(idInput).value);
-const alertEl = document.getElementById(idAlert);
-alertEl.textContent = (v != null && v > 100) ? "Surgarantie détectée (>100 %)." : "";
+    const v = readNumber(document.getElementById(idInput).value);
+    const alertEl = document.getElementById(idAlert);
+    alertEl.textContent = (v != null && v > 100) ? "Surgarantie détectée (>100 %)." : "";
 }
 
+/* Tableau des garanties */
 [
-["fiducie_pct", "alert_fiducie"],
-["g1d_pct", "alert_g1d"],
-["hyp1_pct", "alert_hyp1"],
-["nantissement_pct", "alert_nant"]
+    ["fiducie_pct", "alert_fiducie"],
+    ["g1d_pct", "alert_g1d"],
+    ["hyp1_pct", "alert_hyp1"],
+    ["nantissement_pct", "alert_nant"]
 ].forEach(([inputId, alertId]) => {
-const el = document.getElementById(inputId);
-if (el) el.addEventListener("input", () => checkGarantie(inputId, alertId));
+    const el = document.getElementById(inputId);
+    if (el) el.addEventListener("input", () => checkGarantie(inputId, alertId));
 });
 
 /* AJOUT D’UN PROJET */
 window.runEngine = function () {
-const nom = document.getElementById("nomProjet").value.trim() || "Sans nom";
-const typeProjet = document.getElementById("typeProjet").value;
-const montantProjet = readNumber(document.getElementById("montantProjet").value);
+    const nom = document.getElementById("nomProjet").value.trim() || "Sans nom";
+    const typeProjet = document.getElementById("typeProjet").value;
+    const montantProjet = readNumber(document.getElementById("montantProjet").value);
 
-const input = {
-type: typeProjet,
-valeurs: {
-montantProjet,
-LTV: readNumber(document.getElementById("ltv").value),
-LTA: readNumber(document.getElementById("lta").value),
-LTC: readNumber(document.getElementById("ltc").value),
-marge: readNumber(document.getElementById("marge").value),
-precomm: readNumber(document.getElementById("precomm").value),
-liquidite: readNumber(document.getElementById("liquidite").value),
-mise: readNumber(document.getElementById("mise").value)
-},
-garanties: {
-fiducie: document.getElementById("g_fiducie").checked,
-g1d: document.getElementById("g_g1d").checked,
-hyp1: document.getElementById("g_hyp1").checked,
-nantissement: document.getElementById("g_nant").checked,
-caution: document.getElementById("g_caution").checked,
-fiducie_pct: readNumber(document.getElementById("fiducie_pct").value),
-g1d_pct: readNumber(document.getElementById("g1d_pct").value),
-hyp1_pct: readNumber(document.getElementById("hyp1_pct").value),
-nantissement_pct: readNumber(document.getElementById("nantissement_pct").value),
-caution_eur: readNumber(document.getElementById("caution_eur").value)
-}
-};
+    const input = {
+        type: typeProjet,
+        valeurs: {
+            montantProjet,
+            LTV: readNumber(document.getElementById("ltv").value),
+            LTA: readNumber(document.getElementById("lta").value),
+            LTC: readNumber(document.getElementById("ltc").value),
+            marge: readNumber(document.getElementById("marge").value),
+            precomm: readNumber(document.getElementById("precomm").value),
+            liquidite: readNumber(document.getElementById("liquidite").value),
+            mise: readNumber(document.getElementById("mise").value)
+        },
+        garanties: {
+            fiducie: document.getElementById("g_fiducie").checked,
+            g1d: document.getElementById("g_g1d").checked,
+            hyp1: document.getElementById("g_hyp1").checked,
+            nantissement: document.getElementById("g_nant").checked,
+            caution: document.getElementById("g_caution").checked,
+            fiducie_pct: readNumber(document.getElementById("fiducie_pct").value),
+            g1d_pct: readNumber(document.getElementById("g1d_pct").value),
+            hyp1_pct: readNumber(document.getElementById("hyp1_pct").value),
+            nantissement_pct: readNumber(document.getElementById("nantissement_pct").value),
+            caution_eur: readNumber(document.getElementById("caution_eur").value)
+        }
+    };
 
-const result = runLPBEngine(input);
-if (!result) return;
+    const result = runLPBEngine(input);
+    if (!result) return;
 
-projets.push({
-    nom,
-    type: typeProjet,
-    score: result.score,
-    securite: result.meta.securiteGlobale,
-    ltvnet: result.ratios.LTV_net_reel,
-    coverageReal: result.ratios.coverageReal,
-    mise: input.valeurs.mise || 0,
-    ticketMin: result.ticketIA.plage.min,
-    ticketMax: result.ticketIA.plage.max
-});
+    projets.push({
+        nom,
+        type: typeProjet,
+        score: result.score,
+        securite: result.meta.securiteGlobale,
+        ltvnet: result.ratios.LTV_net_reel,
+        coverageReal: result.ratios.coverageReal,
+        mise: input.valeurs.mise || 0,
+        ticketMin: result.ticketIA.plage.min,
+        ticketMax: result.ticketIA.plage.max
+    });
 
-saveToStorage(projets);
-renderTable();
-updateMetrics();
+    saveToStorage(projets);
+    renderTable();
+    updateMetrics();
 };
 
 /* AFFICHAGE DU TABLEAU */
@@ -627,6 +630,7 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 </body>
 </html>
     
+
 
 
 
