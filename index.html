@@ -423,6 +423,14 @@ function updateMetrics() {
     if (hasDanger) scorePortefeuille = Math.min(scorePortefeuille, 55);
 
     scoreEl.textContent = scorePortefeuille.toFixed(0) + "/100";
+
+// Indicateur visuel
+if (scorePortefeuille >= 75) {
+    scoreEl.style.color = "#22c55e"; // vert
+} else if (scorePortefeuille >= 55) {
+    scoreEl.style.color = "#eab308"; // orange
+} else {
+    scoreEl.style.color = "#ef4444"; // rouge
 }
 
 /* SURGARANTIE */
@@ -619,6 +627,7 @@ navigator.serviceWorker.register('sw.js').catch(console.error);
 </body>
 </html>
     
+
 
 
 
